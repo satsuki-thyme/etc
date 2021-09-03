@@ -1,0 +1,89 @@
+<!doctype html>
+<html>
+<head>
+</head>
+<body>
+<ol id="stream-items-id">
+  <li class="stream-item">1</li>
+  <li class="stream-item">2</li>
+  <li class="stream-item">3</li>
+  <li class="stream-item">4</li>
+  <li class="stream-item">5</li>
+  <li class="stream-item">6</li>
+  <li class="stream-item">7</li>
+  <li class="stream-item">8</li>
+  <li class="stream-item">9</li>
+  <li class="stream-item">10</li>
+  <li class="stream-item">11</li>
+  <li class="stream-item">12</li>
+  <li class="stream-item">13</li>
+  <li class="stream-item">14</li>
+  <li class="stream-item">15</li>
+  <li class="stream-item">16</li>
+  <li class="stream-item">17</li>
+  <li class="stream-item">18</li>
+  <li class="stream-item">19</li>
+  <li class="stream-item">20</li>
+  <li class="stream-item">21</li>
+  <li class="stream-item">22</li>
+  <li class="stream-item">23</li>
+  <li class="stream-item">24</li>
+  <li class="stream-item">25</li>
+  <li class="stream-item">26</li>
+  <li class="stream-item">27</li>
+  <li class="stream-item">28</li>
+  <li class="stream-item">29</li>
+  <li class="stream-item">30</li>
+  <li class="stream-item">31</li>
+  <li class="stream-item">32</li>
+  <li class="stream-item">33</li>
+  <li class="stream-item">34</li>
+  <li class="stream-item">35</li>
+  <li class="stream-item">36</li>
+  <li class="stream-item">37</li>
+  <li class="stream-item">38</li>
+  <li class="stream-item">39</li>
+  <li class="stream-item">40</li>
+  <li class="stream-item">41</li>
+  <li class="stream-item">42</li>
+  <li class="stream-item">43</li>
+  <li class="stream-item">44</li>
+  <li class="stream-item">45</li>
+  <li class="stream-item">46</li>
+  <li class="stream-item">47</li>
+  <li class="stream-item">48</li>
+  <li class="stream-item">49</li>
+  <li class="stream-item">50</li>
+  <li class="stream-item">51</li>
+  <li class="stream-item">52</li>
+  <li class="stream-item">53</li>
+  <li class="stream-item">54</li>
+  <li class="stream-item">55</li>
+  <li class="stream-item">56</li>
+  <li class="stream-item">57</li>
+  <li class="stream-item">58</li>
+  <li class="stream-item">59</li>
+  <li class="stream-item">60</li>
+</ol>
+</body>
+<script type="text/javascript">
+var interval = 60000 // インターバルの間隔。ミリセカンド。
+var scroll = 20 // ウィンドウ高さの倍数。これだけスクロールしてるとアンロードされない。
+var tweets = 50 // 非アンロード対象のツイート数。
+var unload = function() {
+  var tweets_blk = document.getElementById("stream-items-id")
+  var tweets_num = document.getElementsByClassName("stream-item").length
+  if (window.scrollY * scroll > window.innerHeight || tweets_num < tweets + 1) {
+    return true
+  } else {
+    for (var i = tweets_num - tweets - 1; i >= 0; i--) {
+      var child = tweets_blk.lastElementChild
+      tweets_blk.removeChild(child)
+      child = null
+    }
+  }
+}
+unload()
+setInterval(unload, interval)
+</script>
+</html>

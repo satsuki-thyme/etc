@@ -1,0 +1,16 @@
+@charset: urf8;
+body {
+  margin: 50px auto;
+  padding: 0px 20px;
+  width: 600px;
+  font-family: "メイリオ", "Meiryo", "Lucida Grande", "sans-serif";
+  font-size: 15.2px;
+  line-height: 22.8px;
+  text-align: left;
+  vertical-align: baseline;
+  direction: ltr;
+  unicode-bidi: bidi-override;
+  word-break: normal;
+  word-wrap: break-word;
+  color: #444444;
+}

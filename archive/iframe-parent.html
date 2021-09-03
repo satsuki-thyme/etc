@@ -1,0 +1,68 @@
+<iframe id="if1" src="./iframe-child.html"></iframe>
+<ul class="if-link">
+  <li><a href="#p1"  target-iframe="if1">#p1</a></li>
+  <li><a href="#p2"  target-iframe="if1">#p2</a></li>
+  <li><a href="#p3"  target-iframe="if1">#p3</a></li>
+  <li><a href="#p4"  target-iframe="if1">#p4</a></li>
+  <li><a href="#p5"  target-iframe="if1">#p5</a></li>
+  <li><a href="#p6"  target-iframe="if1">#p6</a></li>
+  <li><a href="#p7"  target-iframe="if1">#p7</a></li>
+  <li><a href="#p8"  target-iframe="if1">#p8</a></li>
+  <li><a href="#p9"  target-iframe="if1">#p9</a></li>
+  <li><a href="#p10" target-iframe="if1">#p10</a></li>
+  <li><a href="#p11" target-iframe="if1">#p11</a></li>
+  <li><a href="#p12" target-iframe="if1">#p12</a></li>
+</ul>
+<ul class="if-link">
+  <li><a href="#p13" target-iframe="if1">#p13</a></li>
+  <li><a href="#p14" target-iframe="if1">#p14</a></li>
+  <li><a href="#p15" target-iframe="if1">#p15</a></li>
+  <li><a href="#p16" target-iframe="if1">#p16</a></li>
+  <li><a href="#p17" target-iframe="if1">#p17</a></li>
+  <li><a href="#p18" target-iframe="if1">#p18</a></li>
+  <li><a href="#p19" target-iframe="if1">#p19</a></li>
+  <li><a href="#p20" target-iframe="if1">#p20</a></li>
+  <li><a href="#p21" target-iframe="if1">#p21</a></li>
+  <li><a href="#p22" target-iframe="if1">#p22</a></li>
+  <li><a href="#p23" target-iframe="if1">#p23</a></li>
+  <li><a href="#p24" target-iframe="if1">#p24</a></li>
+</ul>
+<ul class="if-link">
+  <li><a href="#p25" target-iframe="if1">#p25</a></li>
+  <li><a href="#p26" target-iframe="if1">#p26</a></li>
+  <li><a href="#p27" target-iframe="if1">#p27</a></li>
+  <li><a href="#p28" target-iframe="if1">#p28</a></li>
+  <li><a href="#p29" target-iframe="if1">#p29</a></li>
+  <li><a href="#p30" target-iframe="if1">#p30</a></li>
+  <li><a href="#p31" target-iframe="if1">#p31</a></li>
+  <li><a href="#p32" target-iframe="if1">#p32</a></li>
+  <li><a href="#p33" target-iframe="if1">#p33</a></li>
+</ul>
+
+<style>
+#if1,
+.if-link {
+  float: left;
+}
+#if1 {
+  width: 500px;
+  height: 300px;
+}
+.if-link {
+  margin: 0;
+  padding-left: 15px;
+  list-style: none;
+}
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+$(function() {
+  $('.if-link').on('click', 'a', function(event) {
+    event.preventDefault()
+    var target = $(this).attr('target-iframe')
+    var href = $(this).attr('href').slice(1)
+    var content = $('#' + target).contents()
+    $('html, body', content).animate({scrollTop: content.find('[name=' + href + ']').offset().top}, 300)
+  })
+})
+</script>

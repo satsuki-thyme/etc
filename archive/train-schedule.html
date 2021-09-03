@@ -1,0 +1,94 @@
+<div class="train-schedule-outer">
+<div class="train-schedule">
+<table>
+<caption>発車ご案内</caption>
+<tbody>
+<tr><td>こだま</td><td>643</td><td>21：33</td><td>名古屋</td></tr>
+<tr><td>のぞみ</td><td>21</td><td>21：45</td><td>博多</td></tr>
+<tr><td>ひかり</td><td>507</td><td>21：50</td><td>新大阪</td></tr>
+<tr><td>のぞみ</td><td>161</td><td>21：55</td><td>広島</td></tr>
+<tr><td>のぞみ</td><td>105</td><td>22：00</td><td>広島</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<style>
+.train-schedule-outer {
+  width: 100%;
+  text-align: center;
+}
+.train-schedule {
+  display: inline-block;
+  max-width: 50%;
+  text-align: left;
+  line-height: 1;
+  padding: 12px 12px 0 12px;
+  background-color: #585648;
+}
+.train-schedule table {
+  border-collapse: collapse;
+}
+.train-schedule caption {
+  margin-bottom: 5px;
+  color: #faf5ff;
+}
+.train-schedule tr + tr,
+.train-schedule tfoot {
+  border-top: 3px solid #080808;
+}
+.train-schedule td {
+  padding: 3px 5px;
+  color: #faf5ff;
+  background-color: #1f2120;
+}
+.train-schedule td:nth-child(2) {
+  font-size: 80%;
+  text-align: center;
+}
+.kodama td:nth-child(1),
+.kodama td:nth-child(2) {
+  color: #59b1ff; /* 「こだま」の文字色 */
+}
+.nozomi td:nth-child(1),
+.nozomi td:nth-child(2) {
+  color: #fcf862; /* 「のぞみ」の文字色 */
+}
+.hikari td:nth-child(1),
+.hikari td:nth-child(2) {
+  color: #fc2029; /* 「ひかり」の文字色 */
+}
+.over td {
+  color: #4a4a44 !important; /* 過ぎた時間の文字色 */
+}
+</style>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+$(document).ready(function() {
+  $('.train-schedule').find('tbody tr').each(function() {
+    var target = $(this).children('td:nth-child(1)').text()
+    if (target == 'こだま') {
+      $(this).addClass('kodama')
+    } else if (target == 'のぞみ') {
+      $(this).addClass('nozomi')
+    } else if (target == 'ひかり') {
+      $(this).addClass('hikari')
+    }
+  })
+  check()
+  setInterval(check, 60000)
+})
+function check() {
+  var d = new Date()
+  var now_value = d.getHours() * 60 + d.getMinutes()
+  $('.train-schedule').find('tbody tr').each(function() {
+    var table_value = +$(this).children('td:nth-child(3)').text().replace('：', ':').split(':')[0] * 60 + +$(this).children('td:nth-child(3)').text().replace('：', ':').split(':')[1]
+    if (now_value <= 1) {
+      $(this).removeClass('over')
+    } else if (table_value <= now_value + 1) {
+      $(this).addClass('over')
+    }
+  })
+}
+</script>
+

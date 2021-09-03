@@ -1,0 +1,1 @@
+javascript:void((function(){var interval=60000,scroll=20,tweets=50,unload=function(){var e=document.getElementById("stream-items-id"),t=document.getElementsByClassName("stream-item").length;if(window.scrollY>window.innerHeight*scroll||tweets+1>t)return!0;for(var l=t-tweets-1;l>=0;l--){var n=e.lastElementChild;e.removeChild(n),n=null}};unload(),setInterval(unload,interval)})());

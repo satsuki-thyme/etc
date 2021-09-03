@@ -1,0 +1,53 @@
+<!doctype html>
+<title>ランダム数値</title>
+<script src="//etc.c/script/jquery.min.js"></script>
+<script>
+$(function() {
+  $('#update').on('click', function(event) {
+    event.preventDefault()
+    const start = Number($('#start').val())
+    const end = Number($('#end').val())
+    const output = Math.floor(Math.random() * (end - start + 1)) + start
+    $('#output').text(output)
+  })
+})
+</script>
+<style>
+#container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 300px;
+  height: 400px;
+  margin: auto;
+}
+#container input,
+#container button,
+#container p {
+  padding: 0 0 0 0.1em;
+  font-size: 50px;
+  letter-spacing: 0.1;
+  text-align: center;
+}
+#container input,
+#container button {
+  width: 100%;
+  box-sizing: border-box;
+}
+#container input::-webkit-outer-spin-button,
+#container input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+#container button {
+  height: 100px;
+}
+</style>
+<div id="container">
+  <div><input type="number" id="start" placeholder="始まりの数"></div>
+  <div><input type="number" id="end" placeholder="終わりの数"></div>
+  <div><button id="update">更新</button></div>
+  <div><p id="output">値</p></div>
+</div>

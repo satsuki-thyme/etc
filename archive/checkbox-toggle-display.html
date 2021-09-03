@@ -1,0 +1,56 @@
+<div id="checkbox">
+  <input type="checkbox" target="content-1">
+  <input type="checkbox" target="content-2">
+  <input type="checkbox" target="content-3">
+</div>
+<div id="contents">
+  <div id="content-1">
+    コンテンツ 1
+  </div>
+  <div id="content-2">
+    コンテンツ 2
+  </div>
+  <div id="content-3">
+    コンテンツ 3
+  </div>
+</div>
+
+<style>
+#content-1,
+#content-2,
+#content-3 {
+  float: left;
+  display: inline-block;
+  width: 100px;
+  height: 100px;
+  text-align: center;
+  vertical-align: middle;
+}
+#content-1 {
+  background-color: #f88;
+}
+#content-2 {
+  background-color: #8f8;
+}
+#content-3 {
+  background-color: #88f;
+}
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+$(function() {
+  $(document).ready(function() {
+    $('[type="checkbox"]').trigger('change')
+  })
+  $('#checkbox').on('change', '[type="checkbox"]', function() {
+    var target = $(this).attr('target')
+    var property = $(this).prop('checked')
+    if (property) {
+      $('#' + target).css('display', 'initial')
+    } else {
+      $('#' + target).css('display', 'none')
+    }
+  })
+})
+</script>

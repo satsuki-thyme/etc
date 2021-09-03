@@ -1,0 +1,29 @@
+<script>
+(function(f) {
+  var s = document.createElement('script')
+  s.src = 'https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js'
+  document.documentElement.appendChild(s)
+  s.onload = function() {
+    var $ = jQuery.noConflict(true)
+    f($)
+  }
+})
+(function($) {
+  var css = '<style>body{margin:50px auto;padding:0 20px;width:600px;font-family:"メイリオ",Meiryo,"Lucida Grande",sans-serif;font-size:15.2px;line-height:22.8px;text-align:left;vertical-align:baseline;direction:ltr;unicode-bidi:bidi-override;word-break:normal;word-wrap:break-word;color:#444}</style>'
+  var word = $('body').text().replace(/\n/g, '<br>').replace(/｜(.+?)《(.+?)》/g, '<ruby>$1<rt>$2</rt></ruby>').replace(/｜(（.*）)/g, '$1')
+  $('head').append(css)
+  $('body').empty()
+  $('body').append(word)
+})
+</script>
+『行くわね』
+『⋯⋯頼む』
+
+　どうしようもない状況になったら頼むと事前に示し合わせていたルリが、状況を察知して素早く力を行使する。
+
+　これで負けることはないだろう。ルリの力はやはり本物で、俺よりも余程魔法に長けている。魔力は好きに使っていいと言ってあるし、俺が行動不能の間も凌いでくれるだろう。
+
+　⋯⋯しかし、やらかしたな。
+
+　導師相手にも楽に戦えてしまうルリが居なければ現時点で敗北必至だった。
+　二対一のようで卑怯にも思えるが、そこは精霊魔導師という建前で勘弁してもらいたい。ルリには勝負を決めないようにとも言ってあるし。
