@@ -1,17 +1,4 @@
-<!doctype html>
-<title>ランダム数値</title>
-<script src="//etc.c/script/jquery.min.js"></script>
-<script>
-$(function() {
-  $('#update').on('click', function(event) {
-    event.preventDefault()
-    const start = Number($('#start').val())
-    const end = Number($('#end').val())
-    const output = Math.floor(Math.random() * (end - start + 1)) + start
-    $('#output').text(output)
-  })
-})
-</script>
+<title>ランダム整数</title>
 <style>
 #container {
   position: absolute;
@@ -19,35 +6,102 @@ $(function() {
   right: 0;
   bottom: 0;
   left: 0;
-  width: 300px;
+  width: 320px;
   height: 400px;
   margin: auto;
+  text-align: right;
 }
+#container div:last-child {
+  margin-top: 30px;
+}
+#container div:last-child span {
+  margin-left: 10px;
+}
+#container label,
 #container input,
 #container button,
-#container p {
-  padding: 0 0 0 0.1em;
-  font-size: 50px;
+#container span {
+  margin: 0;
+  padding: 0;
+  width: 200px;
+  height: 50px;
   letter-spacing: 0.1;
   text-align: center;
+  line-height: 50px;
+  vertical-align: middle;
+  box-sizing: border-box;
+}
+#container label {
+  font-size: 16px;
 }
 #container input,
+#container span {
+  font-size: 40px;
+}
+#container input {
+  border-width: 1px;
+}
 #container button {
-  width: 100%;
-  box-sizing: border-box;
+  margin-top: 1px;
+  padding-left: 1em;
+  font-size: 28px;
+  letter-spacing: 1em;
+}
+#container span {
+  display: inline-block;
 }
 #container input::-webkit-outer-spin-button,
 #container input::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
-#container button {
-  height: 100px;
-}
 </style>
 <div id="container">
-  <div><input type="number" id="start" placeholder="始まりの数"></div>
-  <div><input type="number" id="end" placeholder="終わりの数"></div>
+  <div><label>最小値: <input type="number" id="min"></label></div>
+  <div><label>最大値: <input type="number" id="max"></label></div>
   <div><button id="update">更新</button></div>
-  <div><p id="output">値</p></div>
+  <div><label>ランダム: <span id="output">値</span></label></div>
 </div>
+<script>
+let searchArr = location.search.slice(1).split("&")
+let searchObj = {}
+for (let i = 0; i < searchArr.length; i++) {
+  let w = searchArr[i].split("=")
+  searchObj[w[0]] = w[1]
+}
+let min = 0
+searchObj["min"] != undefined ? min = Number(searchObj["min"]) : 0
+let max = 0
+searchObj["max"] != undefined ? max = Number(searchObj["max"]) : 0
+let elm_min = document.querySelector("#min")
+let elm_max = document.querySelector("#max")
+elm_min.value = min
+elm_max.value = max
+let elm_update = document.querySelector("#update")
+let elm_output = document.querySelector("#output")
+let innerMin = 0
+let innerMax = 0
+if (min <= max) {
+  innerMin = min
+  innerMax = max
+} else if (min > max) {
+  innerMin = max
+  innerMax = min
+}
+update()
+elm_update.addEventListener("click", e => {
+  exec()
+})
+function exec() {
+  if (min === Number(elm_min.value) && max === Number(elm_max.value)) {
+    update()
+  } else {
+    min = elm_min.value
+    max = elm_max.value
+    location.search = "min=" + min + "&max=" + max
+  }
+}
+function update() {
+  elm_output.innerHTML = String(Math.floor(Math.random() * (Math.abs(innerMax - innerMin) + 1) + innerMin))
+}
+</script>
