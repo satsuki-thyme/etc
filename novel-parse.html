@@ -1,0 +1,288 @@
+<style>
+/*
+
+  一般的な設定
+
+*/
+h1 {
+  margin-top: 0;
+  margin-left: 0;
+  font-size: 40px;
+  font-weight: bold;
+}
+h2 {
+  margin-top: 50px;
+  margin-left: 15px;
+  font-size: 30px;
+  font-weight: bold;
+}
+h3 {
+  margin-top: 40px;
+  margin-left: 30px;
+  font-size: 20px;
+  font-weight: bold;
+}
+h4 {
+  margin-top: 30px;
+  margin-left: 45px;
+  font-size: 20px;
+  font-weight: bold;
+}
+h5 {
+  margin-top: 20px;
+  margin-left: 60px;
+  font-size: 20px;
+  font-weight: normal;
+}
+h6 {
+  margin-top: 10px;
+  margin-left: 75px;
+  font-size: 20px;
+  font-weight: normal;
+}
+h1 ~ p,
+h1 ~ ol,
+h1 ~ ul,
+h1 ~ dl {
+  margin-left: 10px;
+}
+h2 ~ p,
+h2 ~ ol,
+h2 ~ ul,
+h2 ~ dl {
+  margin-left: 25px;
+}
+h3 ~ p,
+h3 ~ ol,
+h3 ~ ul,
+h3 ~ dl {
+  margin-left: 40px;
+}
+h4 ~ p,
+h4 ~ ol,
+h4 ~ ul,
+h4 ~ dl {
+  margin-left: 65px;
+}
+h5 ~ p,
+h5 ~ ol,
+h5 ~ ul,
+h5 ~ dl {
+  margin-left: 80px;
+}
+h6 ~ p,
+h6 ~ ol,
+h6 ~ ul,
+h6 ~ dl {
+  margin-left: 15px;
+}
+
+/*
+
+  このページ固有の設定
+
+*/
+body {
+  color: #333;
+  background-color: #fff;
+}
+div {
+  margin: 0;
+}
+#text {
+  width: 600px;
+  margin: auto;
+  padding: 50px 0 100px 0;
+  font-family: "メイリオ", "Meiryo", 'Lucida Grande', "sans-serif";
+  font-size: 16px;
+  line-height: 28.8px;
+}
+#count {
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+#count-full.loaded,
+#count-select.selected {
+  padding: 8px;
+  float: left;
+  line-height: 1em;
+  background-color: #ccc;
+}
+#count-full.unloaded,
+#count-select.unselected {
+  display: none;
+}
+@media (prefers-color-scheme: dark) {
+  body {
+    color: #ccc;
+    background-color: #000;
+  }
+  #count-full.loaded,
+  #count-select.selected {
+    background-color: #222;
+  }
+}
+body.light {
+  color: #333;
+  background-color: #fff;
+}
+body.light #count-full.loaded,
+body.light #count-select.selected {
+  background-color: #ccc;
+}
+body.dark {
+  color: #ccc;
+  background-color: #000;
+}
+body.dark #count-full.loaded,
+body.dark #count-select.selected {
+  background-color: #222;
+}
+</style>
+<div id="text">
+  <h1>使い方</h1>
+  <p>表示するテキストファイルをドラッグ & ドロップしてください。</p>
+
+  <h2>文字数</h2>
+  <p>表示される文字数は以下の文字を含みません。</p>
+  <ul>
+    <li>全角スペース</li>
+    <li>半角スペース</li>
+    <li>タブ</li>
+    <li>改行記号</li>
+    <li>ルビ</li>
+  </ul>
+  <p>ただし文章を選択したときに表示される「選択」の文字数にはルビが含まれます。</p>
+
+  <h2>オプション</h2>
+  <p>URL の末尾で、半角「 ? 」に続けてオプションを指定することができます。<br>
+    半角「 & 」で区切って複数のオプションを指定することができます。</p>
+  <p>例：<code>?format=post&theme=light</code></p>
+  <p>指定できるオプションは以下のとおりです。</p>
+
+  <h3>フォーマット</h3>
+  <dl>
+    <dt>format=reading</dt>
+    <dd>閲覧用の表示でデフォルトです。指定する必要はありません。</dd>
+    <dt>format=post</dt>
+    <dd>Markdown が非表示になりますが面倒なのでテキトーです。ルビ記法をそのまま表示し、ルビに解釈することしません。</dd>
+    <dt>format=docx</dt>
+    <dd><strong>未実装</strong></dd>
+  </dl>
+
+  <h3>テーマ</h3>
+  <p>テーマはブラウザの設定から自動的に選ばれますが、明示的に指定することも可能です。</p>
+  <dl>
+    <dt>theme=light</dt>
+    <dd>明るい配色です。</dd>
+    <dt>theme=dark</dt>
+    <dd>暗い配色です。</dd>
+  </dl>
+</div>
+<div id="count">
+  <div id="count-full" class="unloaded"></div>
+  <div id="count-select" class="unselected"></div>
+</div>
+<script>
+let searchArr = location.search.slice(1).split("&")
+let searchObj = {}
+searchArr.forEach(function(e) {
+  let w = e.split("=")
+  searchObj[w[0]] = w[1]
+})
+let elm_body = document.querySelector("body")
+let elm_text = document.querySelector("#text")
+let elm_countFull = document.querySelector("#count-full")
+let elm_countSelect = document.querySelector("#count-select")
+let formatObj = {
+  reading: function(src) {
+    elm_countFull.innerHTML = "全文：" + rubyRemove(mdRemove(src)).replace(/[\s　]/g, "").length + "文字"
+    elm_countFull.classList.add("loaded")
+    elm_countFull.classList.remove("unloaded")
+    return lbParse(rubyParse(src))
+  },
+  post: function(src) {
+    return lbParse(mdRemove(src))
+  },
+  docx: function(src) {
+    return docxParse(src)
+  }
+}
+if (searchObj["theme"] !== undefined) {
+  elm_body.classList.add(searchObj["theme"])
+}
+if (searchObj["format"] !== undefined && formatObj[searchObj["format"]] === undefined) {
+  alert("指定されたフォーマットには対応していません。")
+}
+window.addEventListener('dragover', function(e) {
+  e.preventDefault()
+  e.stopPropagation()
+  let id = e.target.id
+  e.dataTransfer.setData("id", id)
+})
+window.addEventListener("drop", function(e) {
+  e.preventDefault()
+  e.stopPropagation()
+  let fr = new FileReader()
+  fr.readAsText(e.dataTransfer.files[0])
+  fr.addEventListener("load", function() {
+    exec(fr.result)
+  })
+})
+window.addEventListener('mouseup', function(src) {
+  countSelect(src)
+})
+window.addEventListener('touched', function(src) {
+  countSelect(src)
+})
+function exec(src) {
+  if (searchObj["format"] === undefined) {
+    elm_text.innerHTML = formatObj["reading"](src)
+  } else if (formatObj[searchObj["format"]] !== undefined) {
+    elm_text.innerHTML = formatObj[searchObj["format"]](src)
+  }
+}
+function lbParse(src) {
+  return src.replace(/^$/g, '<p><br></p>')
+            .replace(/^(.+?)$/gm, '<p>$1</p>')
+}
+function rubyParse(src) {
+  return src.replace(/｜([^｜]*?)《(.*?)》/g, '<ruby>$1<rt>$2</rt></ruby>')
+            .replace(/([\u4E00-\u9FFF]+)（(.*?)）/g, '<ruby>$1<rt>$2</rt></ruby>')
+            .replace(/｜(（.*?）)/g, "$1")
+}
+function rubyRemove(src) {
+  return src.replace(/｜([^｜]*?)《.*?》/g, "$1")
+            .replace(/([\u4E00-\u9FFF]+)（(.*?)）/g, "$1")
+            .replace(/｜(（.*?）)/g, "$1")
+}
+function mdRemove(src) {
+  return src.replace(/^[ \t]*[#*+-_~=`>|].*(\r\n|\r|\n)/gm, "")
+}
+function docxParse(src) {
+  
+}
+function countSelect(src) {
+  setTimeout(() => {
+    let selected = document.getSelection()
+    if (selected.isCollapsed === false) {
+      elm_countSelect.innerHTML = "選択：" + 
+                                  selected.getRangeAt(0)
+                                          .toString()
+                                          .replace(/^[#*+-]+.*\n/gm, "")
+                                          .replace(/｜([^｜]*?)《.*?》/g, "$1")
+                                          .replace(/([\u4E00-\u9FFF]+)（.*?）/g, "$1")
+                                          .replace(/｜?(（.*?）)/g, "$1")
+                                          .replace(/[ 　\t\n\r]/gm, "")
+                                          .length +
+                                  "文字"
+      elm_countSelect.classList.add("selected")
+      elm_countSelect.classList.remove("unselected")
+    } else {
+      elm_countSelect.classList.add("unselected")
+      elm_countSelect.classList.remove("selected")
+    }
+  }, 3)
+}
+</script>
