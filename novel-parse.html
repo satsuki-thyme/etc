@@ -76,11 +76,13 @@ h6 ~ ul,
 h6 ~ dl {
   margin-left: 15px;
 }
-label,
+label {
+  display: block;
+}
 dt {
   display: inline-block;
 }
-dd + label {
+label + label {
   margin-top: 15px;
 }
 /*
@@ -175,18 +177,18 @@ body.dark #count-select.selected {
     <label>
       <input id="format-reading" type="radio" name="format" value="reading" checked>
       <dt>閲覧</dt>
+      <dd>閲覧用の表示でデフォルトです。指定する必要はありません。</dd>
     </label>
-    <dd>閲覧用の表示でデフォルトです。指定する必要はありません。</dd>
     <label>
       <input id="format-post" type="radio" name="format" value="post">
       <dt>投稿</dt>
+      <dd>Markdown が非表示になりますが面倒なのでテキトーです。ネット小説記法のルビをそのまま表示し、上付け文字に解釈することしません。</dd>
     </label>
-    <dd>Markdown が非表示になりますが面倒なのでテキトーです。ネット小説記法のルビをそのまま表示し、上付け文字に解釈することしません。</dd>
     <label>
       <input id="format-odt" type="radio" name="format" value="odt">
       <dt>ODT</dt>
+      <dd>ネット小説記法のルビを解釈し、 odt に変換してダウンロードします。 LibreOffice などで開くことができます。ダウンロードに際してブラウザから危険性を示唆されます。自己責任でご利用ください。</dd>
     </label>
-    <dd>ネット小説記法のルビを解釈し、 odt に変換してダウンロードします。 LibreOffice などで開くことができます。ダウンロードに際してブラウザから危険性を示唆されます。自己責任でご利用ください。</dd>
   </dl>
 
   <h3>テーマ</h3>
@@ -195,13 +197,13 @@ body.dark #count-select.selected {
     <label>
       <input id="theme-light" type="radio" name="theme" value="light">
       <dt>ライト</dt>
+      <dd>明るい配色です。</dd>
     </label>
-    <dd>明るい配色です。</dd>
     <label>
       <input id="theme-dark" type="radio" name="theme" value="dark">
       <dt>ダーク</dt>
+      <dd>暗い配色です。</dd>
     </label>
-    <dd>暗い配色です。</dd>
   </dl>
 </div>
 <div id="count">
@@ -280,11 +282,23 @@ elm_themeDark.addEventListener("change", function(e) {
   searchObj["theme"] = "dark"
   toggleTheme(searchObj["theme"])
 })
-if (searchObj["theme"] !== undefined) {
-  toggleTheme(searchObj["theme"])
+if (searchObj["format"] === "reading") {
+  elm_formatReading.checked = true
+} else if (searchObj["format"] === "post") {
+  elm_formatPost.checked = true
+} else if (searchObj["format"] === "odt") {
+  elm_formatOdt.checked = true
+}
+if (searchObj["theme"] === "light") {
+  elm_themeLight.checked = true
+} else if (searchObj["theme"] === "dark") {
+  elm_themeDark.checked = true
 }
 if (searchObj["format"] !== undefined && formatObj[searchObj["format"]] === undefined) {
   alert("指定されたフォーマットには対応していません。")
+}
+if (searchObj["theme"] !== undefined) {
+  toggleTheme(searchObj["theme"])
 }
 window.addEventListener('dragover', function(e) {
   e.preventDefault()
