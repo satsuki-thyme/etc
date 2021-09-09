@@ -6,9 +6,6 @@
 ## esc.js
 * エスケープしたりしなかったりするみたい
 
-## favicon.ico
-* ロゴを作るウェブサービスで作ったやつ
-
 ## index.html
 * 表のサイト？の表紙
 * [https://etc.satsuki.me](https://etc.satsuki.me)
@@ -41,3 +38,6 @@
 
 ## random.html
 * 整数をランダムに表示する
+
+## sitemap.xml
+* サイトマップ
