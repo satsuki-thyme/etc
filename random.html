@@ -92,6 +92,8 @@ if (min <= max) {
 }
 update()
 elm_update.addEventListener("click", e => {
+  e.preventDefault()
+  e.stopPropagation()
   exec()
 })
 function exec() {
