@@ -1,0 +1,351 @@
+<title>Markdown から TOC を生成するやつ</title>
+<style>
+/*
+
+  共通
+
+  */
+body {
+  margin: 0;
+  padding: 0;
+}
+html,
+body,
+.container {
+  height: 100%;
+}
+.container {
+  width: 800px;
+  max-width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  box-sizing: border-box;
+}
+.input,
+.output {
+  display: table;
+}
+/*
+
+  入力部
+
+  */
+.input-item {
+  display: table-row;
+}
+.input-item:last-child::before {
+  content: "";
+  display: table-cell;
+}
+.text-box,
+.label,
+.button,
+.textarea {
+  font-size: 14px;
+  letter-spacing: 0.07em;
+  line-height: 1.5;
+}
+.text-box,
+.label,
+.example {
+  display: table-cell;
+  padding: 10px;
+}
+.text-box {
+  width: 200px;
+  max-width: 100%;
+  padding: 2px 6px;
+}
+.label {
+  text-align: right;
+}
+.example {
+  font-size: 80%;
+}
+.button {
+  width: 100%;
+  margin: 10px 0;
+}
+/*
+
+  出力部
+
+*/
+.output {
+  width: 100%;
+  height: calc(100% - 330px);
+  margin-top: 30px;
+}
+.textarea {
+  width: 100%;
+  height: 100%;
+  padding: 12px 12px;
+  box-sizing: border-box;
+}
+.page-header {
+  text-align: center;
+}
+.title {
+  font-size: 26px;
+  letter-spacing: 0.07;
+  line-height: 1;
+}
+.description {
+  font-size: 14px;
+}
+.polite {
+  letter-spacing: 0.07em;
+  word-break: break-all;
+  word-wrap: break-word;
+}
+@media (prefers-color-scheme: dark) {
+  body {
+    color: #ccc;
+    background-color: #000;
+  }
+  input,
+  textarea {
+    color: #ccc;
+    background-color: #111;
+  }
+  button {
+    color: #ccc;
+    background-color: #222;
+  }
+}
+</style>
+<div class="container">
+  <header class="page-header">
+    <p class="description">アドレスバーに <span class="polite">https://.../md-toc.html?url=README.md&indent=\t&mark=*&level=6</span> などとできます。</p>
+    <h1 class="title">Markdown から TOC を生成するやつ</h1>
+  </header>
+  <main class="contents">
+    <div class="input">
+      <div class="input-item">
+        <label class="label">URL</label>
+        <input class="text-box" type="" name="" id="url">
+        <p class="example">ex. https://raw.githubusercontent.com/.../***.md</p>
+      </div>
+      <div class="input-item">
+        <label class="label">インデント文字</label>
+        <input class="text-box" type="" name="" id="indent">
+        <p class="example">ex. \t, \s</p>
+      </div>
+      <div class="input-item">
+        <label class="label">リストのマーク</label>
+        <input class="text-box" type="" name="" id="mark">
+        <p class="example">ex. *, +, - その他</p>
+      </div>
+      <div class="input-item">
+        <label class="label">階層</label>
+        <input class="text-box" type="number" name="" id="level">
+        <p class="example">ex. 1 ～ 6</p>
+      </div>
+      <div class="input-item">
+          <button id="update" class="button">更新</button>
+      </div>
+    </div>
+    <div class="output">
+      <textarea id="output" class="textarea" spellcheck="false"></textarea>
+    </div>
+  </main>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+let paramObj = {"url": "README.md", "indent": String.raw`\t`, "mark": "*", "level": "6"}
+let searchArr = location.search.slice(1).split("&")
+let elm_url = document.querySelector("#url")
+let elm_indent = document.querySelector("#indent")
+let elm_mark = document.querySelector("#mark")
+let elm_level = document.querySelector("#level")
+let elm_update = document.querySelector("#update")
+let elm_output = document.querySelector("#output")
+initialize()
+elm_update.addEventListener("click", function(e) {
+  e.preventDefault()
+  e.stopPropagation()
+  update()
+})
+elm_output.addEventListener("focus", function(e) {
+  e.preventDefault()
+  e.stopPropagation()
+  this.select()
+})
+function initialize() {
+  for (let i in searchArr) {
+    let wArr = searchArr[i].split("=")
+    paramObj[wArr[0]] = decodeURIComponent(wArr[1])
+  }
+  elm_url.value =  paramObj["url"]
+  elm_indent.value = paramObj["indent"]
+  elm_mark.value = paramObj["mark"]
+  elm_level.value = paramObj["level"]
+  generatorTocFromMarkdown(paramObj)
+  .then(function(data) {
+    elm_output.value = data
+  })
+}
+function update() {
+  let paramObj = {"url": "README.md", "indent": "\t", "mark": "*", "level": "6"}
+  paramObj["url"] = elm_url.value
+  paramObj["indent"] = elm_indent.value
+  paramObj["mark"] = elm_mark.value
+  paramObj["level"] = elm_level.value
+  generatorTocFromMarkdown(paramObj)
+  .then(function(data) {
+    $("#toc").text(data)
+  })
+}
+function generatorTocFromMarkdown(paramObj) {
+  let dfr0 = $.Deferred()
+  let toc_string = ""
+  let url = paramObj["url"]
+  let indent = paramObj["indent"].replace(/\\t/, "\t").replace(/\\s/, "  ")
+  let mark = paramObj["mark"]
+  let level = Number(paramObj["level"])
+  let character_to_replace = [
+    [" ", "-"],
+    ["\\!", ""],
+    ['"', ""],
+    ["#", ""],
+    ["\\$", ""],
+    ["%", ""],
+    ["&", ""],
+    ['"', ""],
+    ["\\(", ""],
+    ["\\)", ""],
+    ["-", ""],
+    ["=", ""],
+    ["\\^", ""],
+    ["~", ""],
+    ["\\|", ""],
+    ["\\\\", ""],
+    ["@", ""],
+    ["`", ""],
+    ["\\[", ""],
+    ["\\{", ""],
+    [";", ""],
+    ["\\+", ""],
+    [":", ""],
+    ["\\*", ""],
+    ["\\]", ""],
+    ["\\}", ""],
+    [",", ""],
+    ["<", ""],
+    ["\\.", ""],
+    [">", ""],
+    ["\\/", ""],
+    ["\\?", ""],
+    ["_", ""],
+    ["、", ""],
+    ["。", ""],
+    ["　", ""],
+    ["！", ""],
+    ["”", ""],
+    ["＃", ""],
+    ["＄", ""],
+    ["％", ""],
+    ["＆", ""],
+    ["’", ""],
+    ["（", ""],
+    ["）", ""],
+    ["－", ""],
+    ["＝", ""],
+    ["＾", ""],
+    ["～", ""],
+    ["｜", ""],
+    ["￥", ""],
+    ["＠", ""],
+    ["｀", ""],
+    ["［", ""],
+    ["｛", ""],
+    ["；", ""],
+    ["＋", ""],
+    ["：", ""],
+    ["＊", ""],
+    ["］", ""],
+    ["｝", ""],
+    ["，", ""],
+    ["＜", ""],
+    ["．", ""],
+    ["＞", ""],
+    ["／", ""],
+    ["？", ""],
+    ["＿", ""],
+    ["「", ""],
+    ["」", ""],
+    ["｢", ""],
+    ["｣", ""],
+    ["『", ""],
+    ["』", ""],
+    ["【", ""],
+    ["】", ""],
+    ["［", ""],
+    ["］", ""],
+    ["｛", ""],
+    ["｝", ""],
+    ["《", ""],
+    ["》", ""],
+    ["〔", ""],
+    ["〕", ""],
+    ["・", ""],
+    ["―", ""]
+  ]
+  $.ajax({
+    url: url,
+    type: "GET",
+    dataType: "text",
+    cache: false
+  })
+  .then(function(data) {
+    // toc: 最終的に書き出す値
+    // listArr: toc 生成の中間要素
+    // listArr_pre: 見出し以外の行を削除して配列化する
+    let toc_string = ""
+    let listArr = []
+    let regexp0 = new RegExp("#{" + (level + 1) +",}.*\n", "gm")
+    let listArr_pre = data.replace(/(\r\n|\r(!=\n))/g, "\n").replace(/^[^#\n].*?$/gm, "").replace(/(\n(?=\n)|\n$)/g, "").replace(regexp0, "").split("\n")
+    let character_to_replace_length = character_to_replace.length
+    let listArr_pre_length = listArr_pre.length
+    // heading: 見出し以外の行を削除し、残った見出し行を listArr に格納する
+    // indent: # の数からインデント文字（ \t とか \s\s とか）のセットを生成して listArr に格納する
+    for (let i = listArr_pre_length - 1; i >= 0; i--) {
+      listArr[i] = {}
+      listArr[i]["heading"] = listArr_pre[i].replace(/^#*?\s(.*)/, "$1")
+      listArr[i]["indent"] = listArr_pre[i].replace(/(.*)/, indent.repeat(listArr_pre[i].replace(/^(#*?)\s.*$/, "$1").length - 1))
+      // link: 見出し文字列からリンク文字列を作成し、 link 中にある文字で GitHub において置換されるもの character_to_replace の処理をする
+      let link = listArr[i]["heading"]
+      for (let j = character_to_replace_length - 1; j >= 0; j--) {
+        let regexp1 = new RegExp(character_to_replace[j][0], "g")
+        link = link.replace(regexp1, character_to_replace[j][1])
+      }
+      listArr[i]["link"] = link
+    }
+    // link_post: リンク文字列の重複するものに連番を振る
+    for (let i = listArr_pre_length - 1; i >= 0; i--) {
+      let k = ""
+      for (let j = 0; j <= listArr_pre_length - 1; j++) {
+        if (listArr[i]["link"] === listArr[j]["link"]) {
+          if (i === j) {
+            if (k === "") {
+              listArr[i]["link_post"] = listArr[i]["link"] + k
+            } else {
+              listArr[i]["link_post"] = listArr[i]["link"] + "-" + k
+            }
+          } else {
+            k++
+          }
+        }
+      }
+    }
+    for (let i = 0; i <= listArr_pre_length - 1; i++) {
+      toc_string = toc_string + listArr[i]["indent"] + mark + " [" + listArr[i]["heading"] + "](#" + listArr[i]["link_post"] + ")\n"
+    }
+    dfr0.resolve(toc_string)
+    return toc_string
+  })
+  return dfr0.promise(toc_string)
+}
+</script>
