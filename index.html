@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+body {
+  color: #222;
+  background-color: #fff;
+}
+main {
+  width: 600px;
+  margin: auto;
+  padding: 30px 0;
+}
+h1 {
+  text-align: center;
+}
+h2 {
+  display: inline-block;
+  margin-bottom: 0;
+}
+a {
+  font-size: 12px;
+}
+a,
+a:visited,
+a:hover {
+  color: #33c;
+}
+ul {
+  margin-top: 10px;
+}
+@media (prefers-color-scheme: dark) {
+  body {
+    color: #ccc;
+    background-color: #000;
+  }
+}
+</style>
+<script src="https://etc.satsuki.me/mdparse.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  let elm_main = document.querySelector("main")
+  let elm_head = document.querySelector("head")
+  let currOrigin = location.origin
+  let reqContent = new XMLHttpRequest()
+    reqContent.onreadystatechange = function() {
+      if (reqContent.readyState === 4 && reqContent.status === 200) {
+          writeContent()
+      }
+    }
+    reqContent.open("GET", currOrigin + "/README.md", true)
+    reqContent.send(null)
+  function writeContent() {
+    elm_main.innerHTML = mdParse(reqContent.responseText).replace(/<h2>(.*?)<\/h2>/g, '<h2>$1</h2> <a href="' + currOrigin + '/$1">link</a>')
+  }
+})
+</script>
+</head>
+<body>
+<main>
+</main>
+</body>
+</html>
