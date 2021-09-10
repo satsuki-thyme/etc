@@ -33,60 +33,86 @@ body {
   color: #222;
   background-color: #fff;
 }
-main {
+main,
+header,
+footer {
   width: 600px;
   margin: auto;
-  padding: 30px 0;
 }
+header,
 footer {
   text-align: center;
 }
+header p {
+  display: block;
+  position: absolute;
+  top: 20px;
+  right: 0;
+  text-align: right;
+}
+main {
+  padding: 30px 0;
+}
+header {
+  position: relative;
+  padding-top: 20px;
+}
+footer {
+  margin-top: 20px;
+  margin-bottom: 8px;
+}
 h1 {
+  margin: -30px 0 0 0;
   text-align: center;
+  color: #62a433;
 }
 h2 {
   display: inline-block;
   margin-bottom: 0;
 }
-a {
+a.attach {
   font-size: 12px;
 }
 a,
 a:visited,
 a:hover {
-  color: #33c;
+  color: #62a433;
+}
+a:hover {
+  text-decoration: underline;
 }
 ul {
   margin-top: 10px;
-}
-@media (prefers-color-scheme: dark) {
-  body {
-    color: #ccc;
-    background-color: #000;
-  }
 }
 </style>
 <script src="https://etc.satsuki.me/mdparse.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
+  let elm_h1 = document.querySelector("h1")
   let elm_main = document.querySelector("main")
-  let elm_head = document.querySelector("head")
   let currOrigin = location.origin
   let reqContent = new XMLHttpRequest()
     reqContent.onreadystatechange = function() {
       if (reqContent.readyState === 4 && reqContent.status === 200) {
-          writeContent()
+          writeContent(mdParse(reqContent.responseText))
       }
     }
     reqContent.open("GET", currOrigin + "/README.md", true)
     reqContent.send(null)
-  function writeContent() {
-    elm_main.innerHTML = mdParse(reqContent.responseText).replace(/<h2>(.*?)<\/h2>/g, '<h2>$1</h2> <a href="' + currOrigin + '/$1">link</a>')
+  function writeContent(content) {
+    elm_h1.innerHTML = content.replace(/<h1>(.*?)<\/h1>[\s\S]*/gm, "$1")
+    elm_main.innerHTML = content.replace(/<h1.*?\n+/, "").replace(/<h2>(.*?)<\/h2>/g, '<h2>$1</h2> <a href="' + currOrigin + '/$1" class="attach">link</a>')
   }
 })
 </script>
 </head>
 <body>
+<header>
+<img src="/attachment/common/satsuki-thyme-fg-green-bg-trn.svg">
+<h1></h1>
+<p><a href="https://github.com/satsuki-thyme/etc" class="attach">GitHub</a><br>
+<a href="https://satsuki.me" class="attach">五月タイムのサイト</a></p>
+</header>
 <main>
 </main>
 <footer>
