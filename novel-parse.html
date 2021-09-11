@@ -121,6 +121,17 @@ div {
 #count-select.unselected {
   display: none;
 }
+#input {
+  display: none;
+}
+#input-button {
+  display: inline-block;
+  margin: 0 3px;
+  padding: 3px;
+  line-height: 1;
+  border-width: 1px;
+  border-style: solid;
+}
 @media (prefers-color-scheme: dark) {
   body {
     color: #ccc;
@@ -129,6 +140,13 @@ div {
   #count-full.loaded,
   #count-select.selected {
     background-color: #222;
+  }
+  #input-button {
+    background-color: #444;
+    border-top-color: #888;
+    border-left-color: #888;
+    border-right-color: #222;
+    border-bottom-color: #222;
   }
 }
 body.light {
@@ -147,10 +165,17 @@ body.dark #count-full.loaded,
 body.dark #count-select.selected {
   background-color: #222;
 }
+body.light #input-button {
+  background-color: #aaa;
+  border-top-color: #ccc;
+  border-left-color: #ccc;
+  border-right-color: #666;
+  border-bottom-color: #666;
+}
 </style>
 <div id="text">
   <h1>使い方</h1>
-  <p>表示するテキストファイルをドラッグ & ドロップしてください。</p>
+  <p>表示するテキストファイルを<label id="input-button">ここ<input type="file" id="input"></label>から読み込むか、ドラッグ & ドロップしてください。</p>
 
   <h2>全文の文字数</h2>
   <p>表示される文字数は以下の文字を含みません。</p>
@@ -220,6 +245,7 @@ searchArr.forEach(function(e) {
   searchObj[w[0]] = w[1]
 })
 let trgFile = null
+let elm_input = document.querySelector("#input")
 let elm_formatReading = document.querySelector("#format-reading")
 let elm_formatPost = document.querySelector("#format-post")
 let elm_formatOdt = document.querySelector("#format-odt")
@@ -300,7 +326,15 @@ if (searchObj["format"] !== undefined && formatObj[searchObj["format"]] === unde
 if (searchObj["theme"] !== undefined) {
   toggleTheme(searchObj["theme"])
 }
-window.addEventListener('dragover', function(e) {
+elm_input.addEventListener("change", function(e) {
+  let fr = new FileReader()
+  trgFile = input.files[0]
+  fr.readAsText(trgFile)
+  fr.addEventListener("load", function() {
+    exec(fr.result)
+  })
+})
+window.addEventListener("dragover", function(e) {
   e.preventDefault()
   e.stopPropagation()
   let id = e.target.id
@@ -309,8 +343,8 @@ window.addEventListener('dragover', function(e) {
 window.addEventListener("drop", function(e) {
   e.preventDefault()
   e.stopPropagation()
-  trgFile = e.dataTransfer.files[0]
   let fr = new FileReader()
+  trgFile = e.dataTransfer.files[0]
   fr.readAsText(trgFile)
   fr.addEventListener("load", function() {
     exec(fr.result)
