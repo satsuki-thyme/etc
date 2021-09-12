@@ -1,9 +1,16 @@
+<html class="h">
+<meta charset="utf-8">
 <style>
 /*
 
   一般的な設定
 
 */
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
 h1 {
   margin-top: 0;
   margin-left: 0;
@@ -90,12 +97,35 @@ label + label {
   このページ固有の設定
 
 */
+html.v,
+html.v body {
+  height: 100%
+}
+html.v #frame {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 700px;
+  max-height: 95%;
+  margin: auto;
+  overflow-x: auto;
+}
+html.v #text {
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+}
 body {
   color: #333;
   background-color: #fff;
 }
 div {
   margin: 0;
+}
+#frame::-webkit-scrollbar {
+  display: none;
 }
 #text {
   width: 600px;
@@ -104,6 +134,11 @@ div {
   font-family: "メイリオ", "Meiryo", 'Lucida Grande', "sans-serif";
   font-size: 16px;
   line-height: 28.8px;
+}
+html.v #text {
+  width: unset;
+  margin: 0;
+  padding: 0 35px;
 }
 #count {
   position: fixed;
@@ -149,112 +184,156 @@ div {
     border-bottom-color: #222;
   }
 }
-body.light {
+html.light {
   color: #333;
   background-color: #fff;
 }
-body.light #count-full.loaded,
-body.light #count-select.selected {
+html.light #count-full.loaded,
+html.light #count-select.selected {
   background-color: #ccc;
 }
-body.dark {
+html.dark body{
   color: #ccc;
   background-color: #000;
 }
-body.dark #count-full.loaded,
-body.dark #count-select.selected {
+html.dark #count-full.loaded,
+html.dark #count-select.selected {
   background-color: #222;
 }
-body.light #input-button {
+html.light #input-button {
   background-color: #aaa;
   border-top-color: #ccc;
   border-left-color: #ccc;
   border-right-color: #666;
   border-bottom-color: #666;
 }
+html.dark #input-button {
+  background-color: #333;
+  border-top-color: #666;
+  border-left-color: #666;
+  border-right-color: #222;
+  border-bottom-color: #222;
+}
 </style>
-<div id="text">
-  <h1>使い方</h1>
-  <p>表示するテキストファイルを<label id="input-button">ここ<input type="file" id="input"></label>から読み込むか、ドラッグ & ドロップしてください。</p>
+<body>
+<div id="frame">
+  <div id="text">
+    <h1>使い方</h1>
+    <p>表示するテキストファイルを<label id="input-button">ここ<input type="file" id="input"></label>から読み込むか、ドラッグ & ドロップしてください。</p>
 
-  <h2>全文の文字数</h2>
-  <p>表示される文字数は以下の文字を含みません。</p>
-  <ul>
-    <li>全角スペース</li>
-    <li>半角スペース</li>
-    <li>タブ</li>
-    <li>改行記号</li>
-    <li>ルビ</li>
-  </ul>
+    <h2>全文の文字数</h2>
+    <p>表示される文字数は以下の文字を含みません。</p>
+    <ul>
+      <li>全角スペース</li>
+      <li>半角スペース</li>
+      <li>タブ</li>
+      <li>改行記号</li>
+      <li>ルビ</li>
+    </ul>
 
-  <h2>選択範囲の文字数</h2>
-  <p>表示される文字数は以下の文字を含みません。ルビは数えられます。</p>
-  <ul>
-    <li>全角スペース</li>
-    <li>半角スペース</li>
-    <li>タブ</li>
-    <li>改行記号</li>
-  </ul>
+    <h2>選択範囲の文字数</h2>
+    <p>表示される文字数は以下の文字を含みません。ルビは数えられます。</p>
+    <ul>
+      <li>全角スペース</li>
+      <li>半角スペース</li>
+      <li>タブ</li>
+      <li>改行記号</li>
+    </ul>
 
-  <h2>オプション</h2>
-  <h3>フォーマット</h3>
-  <dl>
-    <label>
-      <input id="format-reading" type="radio" name="format" value="reading" checked>
-      <dt>閲覧</dt>
-      <dd>閲覧用の表示でデフォルトです。指定する必要はありません。</dd>
-    </label>
-    <label>
-      <input id="format-post" type="radio" name="format" value="post">
-      <dt>投稿</dt>
-      <dd>Markdown が非表示になりますが面倒なのでテキトーです。ネット小説記法のルビをそのまま表示し、上付け文字に解釈することしません。</dd>
-    </label>
-    <label>
-      <input id="format-odt" type="radio" name="format" value="odt">
-      <dt>ODT</dt>
-      <dd>ネット小説記法のルビを解釈し、 odt に変換してダウンロードします。 LibreOffice などで開くことができます。ダウンロードに際してブラウザから危険性を示唆されます。自己責任でご利用ください。</dd>
-    </label>
-  </dl>
+    <h2>オプション</h2>
+    <h3>フォーマット</h3>
+    <dl>
+      <label>
+        <input id="format-reading" type="radio" name="format" value="reading" checked>
+        <dt>閲覧</dt>
+        <dd>閲覧用の表示でデフォルトです。</dd>
+      </label>
+      <label>
+        <input id="format-post" type="radio" name="format" value="post">
+        <dt>投稿</dt>
+        <dd>Markdown が非表示になりますが面倒なのでテキトーです。ネット小説記法のルビをそのまま表示し、上付け文字に解釈することしません。</dd>
+      </label>
+      <label>
+        <input id="format-odt" type="radio" name="format" value="odt">
+        <dt>ODT</dt>
+        <dd>ネット小説記法のルビを解釈し、 odt に変換してダウンロードします。 LibreOffice などで開くことができます。ダウンロードに際してブラウザから危険性を示唆されます。自己責任でご利用ください。</dd>
+      </label>
+    </dl>
 
-  <h3>テーマ</h3>
-  <p>テーマはブラウザの設定から自動的に選ばれますが、明示的に指定することも可能です。</p>
-  <dl>
-    <label>
-      <input id="theme-light" type="radio" name="theme" value="light">
-      <dt>ライト</dt>
-      <dd>明るい配色です。</dd>
-    </label>
-    <label>
-      <input id="theme-dark" type="radio" name="theme" value="dark">
-      <dt>ダーク</dt>
-      <dd>暗い配色です。</dd>
-    </label>
-  </dl>
-</div>
+    <h3>書き方向</h3>
+    <p>横書きと縦書きが選べます。</p>
+    <dl>
+      <label>
+        <input id="orient-h" type="radio" name="orient" value="orient-h" checked>
+        <dt>横書き</dt>
+        <dd>横書きです。</dd>
+      </label>
+      <label>
+        <input id="orient-v" type="radio" name="orient" value="orient-v">
+        <dt>縦書き</dt>
+        <dd>縦書きです。</dd>
+      </label>
+    </dl>
+
+    <h3>テーマ</h3>
+    <p>テーマはブラウザの設定から自動的に選ばれますが、明示的に指定することも可能です。</p>
+    <dl>
+      <label>
+        <input id="theme-light" type="radio" name="theme" value="light">
+        <dt>ライト</dt>
+        <dd>明るい配色です。</dd>
+      </label>
+      <label>
+        <input id="theme-dark" type="radio" name="theme" value="dark">
+        <dt>ダーク</dt>
+        <dd>暗い配色です。</dd>
+      </label>
+    </dl>
+  </div><!-- text -->
+</div><!-- frame -->
 <div id="count">
   <div id="count-full" class="unloaded"></div>
   <div id="count-select" class="unselected"></div>
 </div>
+</body>
 <script src="/3rd-party-lib/jszip.min.js"></script>
 <script src="/3rd-party-lib/FileSaver.min.js"></script>
 <script>
+/*
+
+  変数
+
+*/
+// URL の search の処理
+let currOrigin = location.origin
 let searchArr = location.search.slice(1).split("&")
 let searchObj = {}
-searchArr.forEach(function(e) {
-  let w = e.split("=")
+searchArr.forEach(function(mediator) {
+  let w = mediator.split("=")
   searchObj[w[0]] = w[1]
 })
+// FileReader による読み込みファイル
 let trgFile = null
+// DOM
 let elm_input = document.querySelector("#input")
 let elm_formatReading = document.querySelector("#format-reading")
 let elm_formatPost = document.querySelector("#format-post")
 let elm_formatOdt = document.querySelector("#format-odt")
+let elm_orientH = document.querySelector("#orient-h")
+let elm_orientV = document.querySelector("#orient-v")
 let elm_themeLight = document.querySelector("#theme-light")
 let elm_themeDark = document.querySelector("#theme-dark")
-let elm_body = document.querySelector("body")
+let elm_html = document.querySelector("html")
+let elm_frame = document.querySelector("#frame")
 let elm_text = document.querySelector("#text")
 let elm_countFull = document.querySelector("#count-full")
 let elm_countSelect = document.querySelector("#count-select")
+// URL の search で作品が指定されていた場合の作品のホスト
+let backHostObj = {
+  "http://etc.satsuki.c": "http://etc.satsuki.c/novel",
+  "https://etc.satsuki.me": "https://raw.githubusercontent.com"
+}
+// 変換先フォーマット毎の処理
 let formatObj = {
   reading: function(src) {
     elm_countFull.innerHTML = "全文：" + rubyRemove(mdRemove(src)).replace(/[\s　]/g, "").length + "文字"
@@ -281,16 +360,28 @@ let formatObj = {
       }
     }
     zip.generateAsync({type: "blob"}).then(function(content) {
-      let trgFileArr = trgFile.name.split(".")
-      let outputFileName = ""
-      for (let i = 0; i < trgFileArr.length - 1; i++) {
-        outputFileName += trgFileArr[i] + "."
+      if (searchObj["op"] !== undefined) {
+        saveAs(content, makeFileName(searchObj["op"]))
+      } else {
+        saveAs(content, makeFileName(trgFile.name))
       }
-      outputFileName = outputFileName + "odt"
-      saveAs(content, outputFileName)
     })
+    function makeFileName(src) {
+      let w0 = src.split("/")
+      let w1 = w0[w0.length - 1].split(".")
+      let w2 = ""
+      for (let i = 0; i < w1.length - 1; i++) {
+          w2 += w1[i] + "."
+      }
+      return w2 + "odt"
+    }
   }
 }
+/*
+
+  オプション設定の処理
+
+*/
 elm_formatReading.addEventListener("change", function(e) {
   searchObj["format"] = "reading"
 })
@@ -300,6 +391,14 @@ elm_formatPost.addEventListener("change", function(e) {
 elm_formatOdt.addEventListener("change", function(e) {
   searchObj["format"] = "odt"
 })
+elm_orientH.addEventListener("change", function(e) {
+  searchObj["orient"] = "h"
+  toggleOrient(searchObj["orient"])
+})
+elm_orientV.addEventListener("change", function(e) {
+  searchObj["orient"] = "v"
+  toggleOrient(searchObj["orient"])
+})
 elm_themeLight.addEventListener("change", function(e) {
   searchObj["theme"] = "light"
   toggleTheme(searchObj["theme"])
@@ -308,6 +407,11 @@ elm_themeDark.addEventListener("change", function(e) {
   searchObj["theme"] = "dark"
   toggleTheme(searchObj["theme"])
 })
+/*
+
+  URL でオプションが指定されていた場合の処理
+
+*/
 if (searchObj["format"] === "reading") {
   elm_formatReading.checked = true
 } else if (searchObj["format"] === "post") {
@@ -315,9 +419,18 @@ if (searchObj["format"] === "reading") {
 } else if (searchObj["format"] === "odt") {
   elm_formatOdt.checked = true
 }
+if (searchObj["orient"] === "h") {
+  toggleOrient(searchObj["orient"])
+  elm_orientH.checked = true
+} else if (searchObj["orient"] === "v") {
+  toggleOrient(searchObj["orient"])
+  elm_orientV.checked = true
+}
 if (searchObj["theme"] === "light") {
+  toggleTheme(searchObj["theme"])
   elm_themeLight.checked = true
 } else if (searchObj["theme"] === "dark") {
+  toggleTheme(searchObj["theme"])
   elm_themeDark.checked = true
 }
 if (searchObj["format"] !== undefined && formatObj[searchObj["format"]] === undefined) {
@@ -326,6 +439,30 @@ if (searchObj["format"] !== undefined && formatObj[searchObj["format"]] === unde
 if (searchObj["theme"] !== undefined) {
   toggleTheme(searchObj["theme"])
 }
+/*
+
+  URL で作品が指定されていた場合の処理
+
+*/
+if (searchObj["op"] !== undefined) {
+  trgFile
+  let xhr_content = new XMLHttpRequest()
+  xhr_content.onreadystatechange = function() {
+    if (xhr_content.readyState === 4 && xhr_content.status === 200) {
+      exec(xhr_content.responseText)
+    }
+  }
+  let backhost = backHostObj[currOrigin]
+  if (backhost !== undefined) {
+    xhr_content.open("GET", backhost + "/" + searchObj["op"])
+    xhr_content.send()
+  }
+}
+/*
+
+  フォームからファイルが入力されたときの処理
+
+*/
 elm_input.addEventListener("change", function(e) {
   let fr = new FileReader()
   trgFile = input.files[0]
@@ -334,6 +471,11 @@ elm_input.addEventListener("change", function(e) {
     exec(fr.result)
   })
 })
+/*
+
+  ドラッグ & ドロップされたときの処理
+
+*/
 window.addEventListener("dragover", function(e) {
   e.preventDefault()
   e.stopPropagation()
@@ -350,21 +492,34 @@ window.addEventListener("drop", function(e) {
     exec(fr.result)
   })
 })
+/*
+
+  文字列を選択したことで文字数を数えるときの処理
+
+*/
 window.addEventListener('mouseup', function(src) {
   countSelect(src)
 })
 window.addEventListener('touched', function(src) {
   countSelect(src)
 })
+/*
+
+  関数
+
+*/
+// 変換の実行
 function exec(src) {
   if (searchObj["format"] === undefined) {
     elm_text.innerHTML = formatObj["reading"](src)
+    elm_frame.scrollLeft = 100000
   } else if (searchObj["format"] === "odt") {
     formatObj["odt"](src)
   } else if (formatObj[searchObj["format"]] !== undefined) {
     elm_text.innerHTML = formatObj[searchObj["format"]](src)
   }
 }
+// 変換の実処理
 function lbParse(src) {
   return src.replace(/^$/g, '<p><br></p>')
             .replace(/^(.+?)$/gm, '<p>$1</p>')
@@ -389,6 +544,7 @@ function odtParse(src) {
             .replace(/｜(（.*?）)/g, "$1")
             .replace(/([\s\S]*)/m, odtObj["content"]["start"] + "$1" + odtObj["content"]["end"])
 }
+// 文字数を数える処理
 function countSelect(src) {
   setTimeout(() => {
     let selected = document.getSelection()
@@ -402,10 +558,17 @@ function countSelect(src) {
     }
   }, 3)
 }
-function toggleTheme(theme) {
-  elm_body.classList.remove("light", "dark")
-  elm_body.classList.add(theme)
+// 書き方向の変更処理
+function toggleOrient(orient) {
+  elm_html.classList.remove("h", "v")
+  elm_html.classList.add(orient)
 }
+// 色テーマの変更処理
+function toggleTheme(theme) {
+  elm_html.classList.remove("light", "dark")
+  elm_html.classList.add(theme)
+}
+// odt が包含するファイルの中身
 let odtObj = {
   "content": {
     "start": `<?xml version="1.0" encoding="UTF-8"?>
@@ -452,3 +615,4 @@ let odtObj = {
   ]
 }
 </script>
+</html>
