@@ -574,7 +574,6 @@ function odtParse(src) {
             .replace(/｜(（.*?）)/g, "$1")
             .replace(/([\s\S]*)/m, odtObj["content"]["start"] + "$1" + odtObj["content"]["end"])
 }
-}
 // 全体の文字数を数える処理
 function countFull(src) {
   elm_countFull.innerHTML = "全文：" + rubyRemove(mdRemove(src)).replace(/[\s　]/g, "").length + "文字"
