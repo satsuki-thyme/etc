@@ -1,5 +1,6 @@
 <html class="h">
 <meta charset="utf-8">
+<title>小説をパースするやつ</title>
 <style>
 /*
 
@@ -107,13 +108,17 @@ html.v #frame {
   right: 0;
   bottom: 0;
   left: 0;
-  width: 100%;
+  width: 600px;
   height: 700px;
   max-height: 95%;
   margin: auto;
   overflow-x: auto;
 }
 html.v #text {
+  width: unset;
+  margin: 0;
+  padding: 0 35px;
+  letter-spacing: 0.07em;
   writing-mode: vertical-rl;
   text-orientation: upright;
 }
@@ -124,9 +129,6 @@ body {
 div {
   margin: 0;
 }
-#frame::-webkit-scrollbar {
-  display: none;
-}
 #text {
   width: 600px;
   margin: auto;
@@ -135,10 +137,10 @@ div {
   font-size: 16px;
   line-height: 28.8px;
 }
-html.v #text {
-  width: unset;
-  margin: 0;
-  padding: 0 35px;
+#text::after {
+  content: "";
+  display: block;
+  clear: both;
 }
 #count {
   position: fixed;
@@ -166,6 +168,18 @@ html.v #text {
   line-height: 1;
   border-width: 1px;
   border-style: solid;
+}
+.plot-heading {
+  display: block;
+  width: 280px;
+  margin-left: -300px;
+  float: left;
+  clear: both;
+  opacity: 0.5;
+  user-select: none;
+}
+rt {
+  user-select: none;
 }
 @media (prefers-color-scheme: dark) {
   body {
@@ -296,6 +310,7 @@ html.dark #input-button {
   <div id="count-select" class="unselected"></div>
 </div>
 </body>
+<script src="/md-parse.js"></script>
 <script src="/3rd-party-lib/jszip.min.js"></script>
 <script src="/3rd-party-lib/FileSaver.min.js"></script>
 <script>
@@ -307,14 +322,20 @@ html.dark #input-button {
 // URL の search の処理
 let currOrigin = location.origin
 let searchArr = location.search.slice(1).split("&")
-let searchObj = {}
+let searchObj = {
+  "format": "reading",
+  "orient": "h"
+}
 searchArr.forEach(function(mediator) {
   let w = mediator.split("=")
   searchObj[w[0]] = w[1]
 })
+// 改行の種類
+let EOS = "\n"
 // FileReader による読み込みファイル
 let trgFile = null
 // DOM
+let elm_title = document.querySelector("title")
 let elm_input = document.querySelector("#input")
 let elm_formatReading = document.querySelector("#format-reading")
 let elm_formatPost = document.querySelector("#format-post")
@@ -336,10 +357,12 @@ let backHostObj = {
 // 変換先フォーマット毎の処理
 let formatObj = {
   reading: function(src) {
-    elm_countFull.innerHTML = "全文：" + rubyRemove(mdRemove(src)).replace(/[\s　]/g, "").length + "文字"
-    elm_countFull.classList.add("loaded")
-    elm_countFull.classList.remove("unloaded")
+    countFull(src)
     return lbParse(rubyParse(src))
+  },
+  plot: function(src) {
+    countFull(src)
+    return rubyParse(plotParse(src))
   },
   post: function(src) {
     return lbParse(mdRemove(src))
@@ -412,13 +435,17 @@ elm_themeDark.addEventListener("change", function(e) {
   URL でオプションが指定されていた場合の処理
 
 */
+// フォーマット
 if (searchObj["format"] === "reading") {
   elm_formatReading.checked = true
 } else if (searchObj["format"] === "post") {
   elm_formatPost.checked = true
 } else if (searchObj["format"] === "odt") {
   elm_formatOdt.checked = true
+} else if (searchObj["format"] !== undefined && formatObj[searchObj["format"]] === undefined) {
+  alert("指定されたフォーマットには対応していません。")
 }
+// 書き方向
 if (searchObj["orient"] === "h") {
   toggleOrient(searchObj["orient"])
   elm_orientH.checked = true
@@ -426,6 +453,7 @@ if (searchObj["orient"] === "h") {
   toggleOrient(searchObj["orient"])
   elm_orientV.checked = true
 }
+// テーマ
 if (searchObj["theme"] === "light") {
   toggleTheme(searchObj["theme"])
   elm_themeLight.checked = true
@@ -433,19 +461,12 @@ if (searchObj["theme"] === "light") {
   toggleTheme(searchObj["theme"])
   elm_themeDark.checked = true
 }
-if (searchObj["format"] !== undefined && formatObj[searchObj["format"]] === undefined) {
-  alert("指定されたフォーマットには対応していません。")
-}
-if (searchObj["theme"] !== undefined) {
-  toggleTheme(searchObj["theme"])
-}
 /*
 
   URL で作品が指定されていた場合の処理
 
 */
 if (searchObj["op"] !== undefined) {
-  trgFile
   let xhr_content = new XMLHttpRequest()
   xhr_content.onreadystatechange = function() {
     if (xhr_content.readyState === 4 && xhr_content.status === 200) {
@@ -454,7 +475,8 @@ if (searchObj["op"] !== undefined) {
   }
   let backhost = backHostObj[currOrigin]
   if (backhost !== undefined) {
-    xhr_content.open("GET", backhost + "/" + searchObj["op"])
+    let now = Date.now()
+    xhr_content.open("GET", backhost + "/" + searchObj["op"] + "?" + now)
     xhr_content.send()
   }
 }
@@ -508,16 +530,17 @@ window.addEventListener('touched', function(src) {
   関数
 
 */
-// 変換の実行
+// 書き出しの実行
 function exec(src) {
-  if (searchObj["format"] === undefined) {
-    elm_text.innerHTML = formatObj["reading"](src)
-    elm_frame.scrollLeft = 100000
-  } else if (searchObj["format"] === "odt") {
-    formatObj["odt"](src)
-  } else if (formatObj[searchObj["format"]] !== undefined) {
-    elm_text.innerHTML = formatObj[searchObj["format"]](src)
+  let EOS_LF = src.match(/\n/)
+  let EOS_CR = src.match(/\r\n/)
+  if (EOS_LF === null || (EOS_LF !== null && EOS_CR !== null && EOS_LF.length < EOS_CR.length)) {
+    EOS = "\r\n"
   }
+  if (src.match(/^# .*$/m)) {
+    elm_title.innerHTML = src.replace(/^# (.*)\r?\n[\s\S]*/m, '$1')
+  }
+  elm_text.innerHTML = formatObj[searchObj["format"]](src)
 }
 // 変換の実処理
 function lbParse(src) {
@@ -534,8 +557,15 @@ function rubyRemove(src) {
             .replace(/([\u4E00-\u9FFF]+)（(.*?)）/g, "$1")
             .replace(/｜(（.*?）)/g, "$1")
 }
+function plotParse(src) {
+  return src.replace(/^# (.*)$/m, '<h1>$1</h1>\n')
+            .replace(/(^## .*\r?\n|^### .*\r?\n|^#### .*\r?\n|^[*+-_~=`>|] .*\r?\n)/gm, "")
+            .replace(/^(?!#)([\s\S]+?)\n{2}/gm, '<p>$1</p>' + EOS)
+            .replace(/(\r?\n){2,}/gm, '<p><br></p>' + EOS)
+            .replace(/^##### (.*)$/gm, '<p class="plot-heading">$1</p>' + EOS)
+}
 function mdRemove(src) {
-  return src.replace(/^[ \t]*[#*+-_~=`>|].*(\r\n|\r|\n)/gm, "")
+  return src.replace(/^[ \t]*[#*+-_~=`>|].*\r?\n/gm, "")
 }
 function odtParse(src) {
   return src.replace(/^(.*)$/gm, '<text:p>$1</text:p>')
@@ -544,7 +574,13 @@ function odtParse(src) {
             .replace(/｜(（.*?）)/g, "$1")
             .replace(/([\s\S]*)/m, odtObj["content"]["start"] + "$1" + odtObj["content"]["end"])
 }
-// 文字数を数える処理
+// 全体の文字数を数える処理
+function countFull(src) {
+  elm_countFull.innerHTML = "全文：" + rubyRemove(mdRemove(src)).replace(/[\s　]/g, "").length + "文字"
+  elm_countFull.classList.add("loaded")
+  elm_countFull.classList.remove("unloaded")
+}
+// 選択範囲の文字数を数える処理
 function countSelect(src) {
   setTimeout(() => {
     let selected = document.getSelection()
