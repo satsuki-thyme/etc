@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>etc</title>
 <meta charset="utf-8">
+<title>etc</title>
 <meta name="keywords" content="五月タイム, JavaScript">
 <meta name="description" content="自作のプログラムを公開しています。">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -96,14 +96,15 @@ document.addEventListener("DOMContentLoaded", function() {
   let reqContent = new XMLHttpRequest()
     reqContent.onreadystatechange = function() {
       if (reqContent.readyState === 4 && reqContent.status === 200) {
-          writeContent(mdParse(reqContent.responseText))
+          writeContent(reqContent.responseText)
       }
     }
     reqContent.open("GET", currOrigin + "/README.md", true)
     reqContent.send(null)
   function writeContent(content) {
-    elm_h1.innerHTML = content.replace(/<h1>(.*?)<\/h1>[\s\S]*/gm, "$1")
-    elm_main.innerHTML = content.replace(/<h1.*?\n+/, "").replace(/<h2>(.*?)<\/h2>/g, '<h2>$1</h2> <a href="' + currOrigin + '/$1" class="attach">link</a>')
+    let w = mdParse(content)
+    elm_h1.innerHTML = w.replace(/<h1>(.*?)<\/h1>[\s\S]*/gm, "$1")
+    elm_main.innerHTML = w.replace(/<h1.*?\n+/, "").replace(/<h2>(.*?)<\/h2>/g, '<h2>$1</h2> <a href="' + currOrigin + '/$1" class="attach">link</a>')
   }
 })
 </script>
