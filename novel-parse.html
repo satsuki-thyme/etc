@@ -475,8 +475,8 @@ if (searchObj["op"] !== undefined) {
   }
   let backhost = backHostObj[currOrigin]
   if (backhost !== undefined) {
-    let now = Date.now()
-    xhr_content.open("GET", backhost + "/" + searchObj["op"] + "?" + now)
+    console.log(backhost + "/" + searchObj["op"])
+    xhr_content.open("GET", backhost + "/" + searchObj["op"])
     xhr_content.send()
   }
 }
