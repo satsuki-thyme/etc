@@ -350,9 +350,11 @@ let elm_text = document.querySelector("#text")
 let elm_countFull = document.querySelector("#count-full")
 let elm_countSelect = document.querySelector("#count-select")
 // URL の search で作品が指定されていた場合の作品のホスト
+let now = Date.now()
+let repoFile = searchObj["op"].split("/")
 let backHostObj = {
-  "http://etc.satsuki.c": "http://etc.satsuki.c/novel",
-  "https://etc.satsuki.me": "https://raw.githubusercontent.com"
+  "http://etc.satsuki.c": "http://etc.satsuki.c/novel/" + searchObj["op"] + "?" + now,
+  "https://etc.satsuki.me": "https://raw.githubusercontent.com/satsuki-thyme/" + repoFile[0] + "/master/" + repoFile[1]
 }
 // 変換先フォーマット毎の処理
 let formatObj = {
@@ -473,10 +475,8 @@ if (searchObj["op"] !== undefined) {
       exec(xhr_content.responseText)
     }
   }
-  let backhost = backHostObj[currOrigin]
   if (backhost !== undefined) {
-    console.log(backhost + "/" + searchObj["op"])
-    xhr_content.open("GET", backhost + "/" + searchObj["op"])
+    xhr_content.open("GET", backHostObj[currOrigin])
     xhr_content.send()
   }
 }
@@ -573,6 +573,7 @@ function odtParse(src) {
             .replace(/([\u4E00-\u9FFF]+)（(.*?)）/g, '<text:ruby><text:ruby-base>$1</text:ruby-base><text:ruby-text>$2</text:ruby-text></text:ruby>')
             .replace(/｜(（.*?）)/g, "$1")
             .replace(/([\s\S]*)/m, odtObj["content"]["start"] + "$1" + odtObj["content"]["end"])
+}
 }
 // 全体の文字数を数える処理
 function countFull(src) {
