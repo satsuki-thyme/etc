@@ -475,10 +475,8 @@ if (searchObj["op"] !== undefined) {
       exec(xhr_content.responseText)
     }
   }
-  if (backhost !== undefined) {
-    xhr_content.open("GET", backHostObj[currOrigin])
-    xhr_content.send()
-  }
+  xhr_content.open("GET", backHostObj[currOrigin])
+  xhr_content.send()
 }
 /*
 
