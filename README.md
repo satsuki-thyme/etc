@@ -17,12 +17,12 @@
 * EmEditor 用の Markdown のシンタックスハイライト
 * 「現在の設定のプロパティ」の「強調(1)」からインポートする
 
-## md-toc.html
-* Markdown から TOC を生成するやつ
-
-## mdparse.js
+## md-parse.js
 * **作りかけ**
 * Markdown をパースする
+
+## md-toc.html
+* Markdown から TOC を生成するやつ
 
 ## narou-novel-analytics.html
 * **作りかけ**
