@@ -131,6 +131,7 @@ div {
 }
 #text {
   width: 600px;
+  max-width: 95%;
   margin: auto;
   padding: 50px 0 100px 0;
   font-family: "メイリオ", "Meiryo", 'Lucida Grande', "sans-serif";
@@ -158,6 +159,37 @@ div {
 #count-select.unselected {
   display: none;
 }
+.op-link {
+  position: relative;
+  width: 600px;
+  max-width: 95%;
+  margin: auto;
+  text-align: right;
+}
+.op-link:last-of-type {
+  padding-bottom: 20px;
+}
+.op-link a {
+  display: inline-block;
+  padding: 10px 5px 0 5px;
+}
+.op-link a,
+.op-link a:visited,
+.op-link a:hover {
+  color: #62a433;
+}
+.prev + .next {
+  margin-left: 5px;
+}
+.plot-heading {
+  display: block;
+  width: 280px;
+  margin-left: -300px;
+  float: left;
+  clear: both;
+  opacity: 0.5;
+  user-select: none;
+}
 #input {
   display: none;
 }
@@ -168,15 +200,6 @@ div {
   line-height: 1;
   border-width: 1px;
   border-style: solid;
-}
-.plot-heading {
-  display: block;
-  width: 280px;
-  margin-left: -300px;
-  float: left;
-  clear: both;
-  opacity: 0.5;
-  user-select: none;
 }
 rt {
   user-select: none;
@@ -230,7 +253,11 @@ html.dark #input-button {
 }
 </style>
 <body>
-<div id="frame">
+  <div class="op-link">
+    <a class="prev"></a>
+    <a class="next"></a>
+  </div>
+  <div id="frame">
   <div id="text">
     <h1>使い方</h1>
     <p>表示するテキストファイルを<label id="input-button">ここ<input type="file" id="input"></label>から読み込むか、ドラッグ & ドロップしてください。</p>
@@ -309,6 +336,10 @@ html.dark #input-button {
   <div id="count-full" class="unloaded"></div>
   <div id="count-select" class="unselected"></div>
 </div>
+<div class="op-link">
+  <a class="prev"></a>
+  <a class="next"></a>
+</div>
 </body>
 <script src="/md-parse.js"></script>
 <script src="/3rd-party-lib/jszip.min.js"></script>
@@ -349,12 +380,30 @@ let elm_frame = document.querySelector("#frame")
 let elm_text = document.querySelector("#text")
 let elm_countFull = document.querySelector("#count-full")
 let elm_countSelect = document.querySelector("#count-select")
+let elm_prev = document.querySelectorAll(".prev")
+let elm_next = document.querySelectorAll(".next")
 // URL の search で作品が指定されていた場合の作品のホスト
 let now = Date.now()
 let repoFile = searchObj["op"].split("/")
-let backHostObj = {
-  "http://etc.satsuki.c": "http://etc.satsuki.c/novel/" + searchObj["op"] + "?" + now,
-  "https://etc.satsuki.me": "https://raw.githubusercontent.com/satsuki-thyme/" + repoFile[0] + "/master/" + repoFile[1]
+function prev() {
+  return repoFile[1].replace(/(\[\d+\]).+/, "$1") + ("00" + (Number(repoFile[1].replace(/\[\d+\](\d+)\..+/, "$1")) - 1)).slice(-3) + repoFile[1].replace(/\[\d+\]\d+(\..+)/, "$1")
+}
+function next() {
+  return repoFile[1].replace(/(\[\d+\]).+/, "$1") + ("00" + (Number(repoFile[1].replace(/\[\d+\](\d+)\..+/, "$1")) + 1)).slice(-3) + repoFile[1].replace(/\[\d+\]\d+(\..+)/, "$1")
+}
+let urlObj = {
+  "http://etc.satsuki.c": {
+    "content": "http://etc.satsuki.c/novel/" + searchObj["op"] + "?" + now,
+    "readme": "http://etc.satsuki.c/novel/" + repoFile[0] + "/README.md?" + now,
+    "prev": "http://etc.satsuki.c/novel-parse.html?op=" + repoFile[0] + "/" + prev() + "&format=" + searchObj["format"] + "&theme=" + searchObj["theme"] + "&" + now,
+    "next": "http://etc.satsuki.c/novel-parse.html?op=" + repoFile[0] + "/" + next() + "&format=" + searchObj["format"] + "&theme=" + searchObj["theme"] + "&" + now
+  },
+  "https://etc.satsuki.me": {
+    "content": "https://raw.githubusercontent.com/satsuki-thyme/" + repoFile[0] + "/master/" + repoFile[1] + "?" + now,
+    "readme": "https://raw.githubusercontent.com/satsuki-thyme/" + repoFile[0] + "/master/README.md?" + now,
+    "prev": "https://satsuki.me/novel-parse.html?" + repoFile[0] + "/" + prev() + "&format=" + searchObj["format"] + "&theme=" + searchObj["theme"] + "&" + now,
+    "next": "https://satsuki.me/novel-parse.html?" + repoFile[0] + "/" + next() + "&format=" + searchObj["format"] + "&theme=" + searchObj["theme"] + "&" + now
+  }
 }
 // 変換先フォーマット毎の処理
 let formatObj = {
@@ -470,13 +519,21 @@ if (searchObj["theme"] === "light") {
 */
 if (searchObj["op"] !== undefined) {
   let xhr_content = new XMLHttpRequest()
+  let xhr_readme = new XMLHttpRequest()
   xhr_content.onreadystatechange = function() {
     if (xhr_content.readyState === 4 && xhr_content.status === 200) {
       exec(xhr_content.responseText)
     }
   }
-  xhr_content.open("GET", backHostObj[currOrigin])
+  xhr_content.open("GET", urlObj[currOrigin]["content"])
   xhr_content.send()
+  xhr_readme.onreadystatechange = function() {
+    if (xhr_readme.readyState === 4 && xhr_readme.status === 200) {
+      setLink(xhr_readme.responseText)
+    }
+  }
+  xhr_readme.open("GET", urlObj[currOrigin]["readme"])
+  xhr_readme.send()
 }
 /*
 
@@ -591,6 +648,54 @@ function countSelect(src) {
       elm_countSelect.classList.remove("selected")
     }
   }, 3)
+}
+// 前の・次の作品へのリンクを表示する
+function setLink(src) {
+  let tocArr = src.replace(/^[\s\S]*?(#+ 目次.*|#+ TOC.*)\r?\n([\s\S]*?)(#+ [\s\S]*|$)/gm, "$2").split(RegExp("\r?\n")).filter(w => w !== "").map(w => w.replace(/^[*+-]? ?(.*)/g, "$1").split(RegExp(" ?: ?")))
+  let currEpisode = 0
+  let adjacentProcObj = {
+    prev: function() {
+      elm_prev.forEach(function(mediator) {
+        mediator.href = urlObj[currOrigin]["prev"]
+      })
+      elm_prev.forEach(function(mediator) {
+        mediator.innerHTML = "<< " + tocArr[currEpisode - 1][1]
+      })
+    },
+    next: function() {
+      elm_next.forEach(function(mediator) {
+        mediator.href = urlObj[currOrigin]["next"]
+      })
+      elm_next.forEach(function(mediator) {
+        mediator.innerHTML = tocArr[currEpisode + 1][1] + " >>"
+      })
+    }
+  }
+  for (let i = 0; i < tocArr.length; i++) {
+    if (tocArr[i][0] === repoFile[1]) {
+      currEpisode = i
+    }
+  }
+  if (
+    currEpisode !== 0
+    &&
+    currEpisode !== tocArr.length - 1
+  ) {
+    adjacentProcObj["prev"]()
+    adjacentProcObj["next"]()
+  } else if (
+    currEpisode !== 0
+    &&
+    tocArr.length !== 1
+  ) {
+    adjacentProcObj["prev"]()
+  } else if (
+    currEpisode === 0
+    &&
+    tocArr.length >= 2
+  ) {
+    adjacentProcObj["next"]()
+  }
 }
 // 書き方向の変更処理
 function toggleOrient(orient) {
