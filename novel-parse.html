@@ -1,6 +1,10 @@
 <html class="h">
 <meta charset="utf-8">
 <title>小説をパースするやつ</title>
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@SatsukiThyme">
+<meta name="twitter:site" content="@satsuki_thyme">
+<meta name="twitter:image:src" content="https://satsuki.me/images/satsuki-thyme-fg-white-bg-green-1200x630.png">
 <style>
 /*
 
@@ -138,10 +142,9 @@ div {
   font-size: 16px;
   line-height: 28.8px;
 }
-#text::after {
-  content: "";
-  display: block;
-  clear: both;
+#text p:not(.plot-heading) {
+  margin: 0;
+  padding: 0;
 }
 #count {
   position: fixed;
@@ -188,7 +191,6 @@ div {
   float: left;
   clear: both;
   opacity: 0.5;
-  user-select: none;
 }
 #input {
   display: none;
@@ -615,8 +617,8 @@ function rubyRemove(src) {
 function plotParse(src) {
   return src.replace(/^# (.*)$/m, '<h1>$1</h1>\n')
             .replace(/(^## .*\r?\n|^### .*\r?\n|^#### .*\r?\n|^[*+-_~=`>|] .*\r?\n)/gm, "")
-            .replace(/^(?!#)([\s\S]+?)\n{2}/gm, '<p>$1</p>' + EOS)
-            .replace(/(\r?\n){2,}/gm, '<p><br></p>' + EOS)
+            .replace(/((^(?!#).+?(\r?\n))+)/gm, '<p>$1</p>' + EOS)
+            .replace(/^(\r?\n){2}/gm, '<p><br></p>' + EOS)
             .replace(/^##### (.*)$/gm, '<p class="plot-heading">$1</p>' + EOS)
 }
 function mdRemove(src) {
