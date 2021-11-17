@@ -1,6 +1,6 @@
 function mdParse(src, opt) {
   let work0 = src
-  .replace(/(\r?\n|\r)/g, '\n')
+  .replace(/(\r)/g, "")
   .replace(/ {2}$/gm, '<br>')
   .replace(/^#{1} (.*)$/gm, '<h1>$1</h1>')
   .replace(/^#{2} (.*)$/gm, '<h2>$1</h2>')
@@ -22,14 +22,14 @@ function mdParse(src, opt) {
   .replace(/^([ \t]*(\*|\+|-) )\[[xX]\](.*)$/gm, '<label><input type="checkbox" checked>$3</label>')
   .replace(/^[ \t]*(\*[ \t]*){3,}$/gm, '<hr>')
   .replace(/^[ \t]*(-[ \t]*){3,}$/gm, '<hr>')
-  //.replace(//gm, '')
-  //.replace(//gm, '')
-  //.replace(//gm, '')
-  //.replace(//gm, '')
-  let lnArr = work0.split('\n')
+  //.replace(//gm, "")
+  //.replace(//gm, "")
+  //.replace(//gm, "")
+  //.replace(//gm, "")
+  let lnArr = work0.split("\n")
   let lnObj = {}
   let lnLen = lnArr.length
-  let txtMass = ''
+  let txtMass = ""
   let lstTypeArr = []
   /*
 
@@ -39,50 +39,50 @@ function mdParse(src, opt) {
   for (let i = 0; lnLen - 1 >= i; i++) {
     let lnWork0 = lnArr[i]
     lnObj[i] = {}
-    lnObj[i]['txt'] = lnWork0
-    lnObj[i]['procUnit'] = 'p'
-    lnObj[i]['lstLv'] = 0
+    lnObj[i]["txt"] = lnWork0
+    lnObj[i]["unit"] = "p"
+    lnObj[i]["lstLv"] = 0
     /*
      heading
     */
-    if (lnObj[i]['txt'].match(/^<h\d>/)) {
-      lnObj[i]['procUnit'] = 'h'
+    if (lnObj[i]["txt"].match(/^<h\d>/)) {
+      lnObj[i]["unit"] = "h"
     }
     /*
       horizontal rule
     */
-    else if (lnObj[i]['txt'] === '<hr>') {
-      lnObj[i]['procUnit'] = 'hr'
+    else if (lnObj[i]["txt"] === '<hr>') {
+      lnObj[i]["unit"] = "hr"
     }
     /*
       list
     */
     else if (lnWork0.match(/^[ \t]*(\*|\+|-|\d+\.) /)) {
-      lnObj[i]['procUnit'] = 'lst'
-      lnObj[i]['lstLv'] = lnWork0.replace(/^([ \t]*).*/, '$1').length + 1
+      lnObj[i]["unit"] = "lst"
+      lnObj[i]["lstLv"] = lnWork0.replace(/^([ \t]*).*/, "$1").length + 1
       if (!lnWork0.match(/^[ \t]*(\*|\+|-) /) === false) {
-        lnObj[i]['lstType'] = 'm'
+        lnObj[i]["lstType"] = "m"
       } else if (!lnWork0.match(/^[ \t]*\d+\. /) === false) {
-        lnObj[i]['lstType'] = 'd'
+        lnObj[i]["lstType"] = "d"
       }
     }
     /*
       table
     */
     else if (lnWork0.match(/^\|.*\|$/)) {
-      lnObj[i]['procUnit'] = 'tbl'
+      lnObj[i]["unit"] = "tbl"
     }
     /*
       blockquotes
     */
     else if (lnWork0.match(/^>+ /)) {
-      lnObj[i]['procUnit'] = 'bq'
+      lnObj[i]["unit"] = "bq"
     }
     /*
       pre
     */
     else if (lnWork0.match(/^ {3,}/)) {
-      lnObj[i]['procUnit'] = 'pre'
+      lnObj[i]["unit"] = "pre"
     }
   }
   /*
@@ -94,107 +94,107 @@ function mdParse(src, opt) {
     /*
       paragraph
     */
-    if (lnObj[i]['procUnit'] === 'p') {
+    if (lnObj[i]["unit"] === "p") {
       if (
         i !== 0
         &&
         i !== lnLen - 1
       ) {
         if (
-          lnObj[i]['txt'] !== ''
+          lnObj[i]["txt"] !== ""
           &&
           (
-            lnObj[i - 1]['procUnit'] !== 'p'
+            lnObj[i - 1]["unit"] !== "p"
             ||
-            lnObj[i - 1]['txt'] === ''
+            lnObj[i - 1]["txt"] === ""
             ||
-            lnObj[i - 1]['txt'] === '<p><\/p>'
+            lnObj[i - 1]["txt"] === '<p><\/p>'
           )
           &&
           (
-            lnObj[i + 1]['procUnit'] === 'p'
+            lnObj[i + 1]["unit"] === "p"
             &&
-            lnObj[i + 1]['txt'] !== ''
+            lnObj[i + 1]["txt"] !== ""
           )
         ) {
-          lnObj[i]['txt'] = '<p>' + lnObj[i]['txt']
+          lnObj[i]["txt"] = '<p>' + lnObj[i]["txt"]
         } else if (
-          lnObj[i]['txt'] !== ''
+          lnObj[i]["txt"] !== ""
           &&
           (
-            lnObj[i - 1]['procUnit'] === 'p'
+            lnObj[i - 1]["unit"] === "p"
             &&
-            lnObj[i - 1]['txt'] !== ''
+            lnObj[i - 1]["txt"] !== ""
           )
           &&
           (
-            lnObj[i + 1]['procUnit'] !== 'p'
+            lnObj[i + 1]["unit"] !== "p"
             ||
-            lnObj[i + 1]['txt'] === ''
+            lnObj[i + 1]["txt"] === ""
           )
         ) {
-          lnObj[i]['txt'] = lnObj[i]['txt'] + '<\/p>'
+          lnObj[i]["txt"] = lnObj[i]["txt"] + '<\/p>'
         } else if (
           (
-            lnObj[i]['txt'] !== ''
+            lnObj[i]["txt"] !== ""
             &&
             (
               (
-                lnObj[i - 1]['procUnit'] !== 'p'
+                lnObj[i - 1]["unit"] !== "p"
                 ||
-                lnObj[i - 1]['txt'] === ''
+                lnObj[i - 1]["txt"] === ""
               )
               &&
               (
-                lnObj[i + 1]['procUnit'] !== 'p'
+                lnObj[i + 1]["unit"] !== "p"
                 ||
-                lnObj[i + 1]['txt'] === ''
+                lnObj[i + 1]["txt"] === ""
               )
             )
           )
           ||
           (
-            lnObj[i]['txt'] === ''
+            lnObj[i]["txt"] === ""
             &&
             (
-              lnObj[i - 1]['txt'] === ''
+              lnObj[i - 1]["txt"] === ""
               ||
-              lnObj[i - 1]['txt'] === '<p><\/p>'
+              lnObj[i - 1]["txt"] === '<p><\/p>'
             )
           )
         ) {
-          lnObj[i]['txt'] = '<p>' + lnObj[i]['txt'] + '<\/p>'
+          lnObj[i]["txt"] = '<p>' + lnObj[i]["txt"] + '<\/p>'
         }
       } else if (
         i === 0
         &&
         i !== lnLen - 1
       ) {
-        lnObj[i]['txt'] = '<p>' + lnObj[i]['txt']
+        lnObj[i]["txt"] = '<p>' + lnObj[i]["txt"]
       } else if (
         i === lnLen - 1
       ) {
-        lnObj[i]['txt'] = '<p>' + lnObj[i]['txt'] + '<\/p>'
+        lnObj[i]["txt"] = '<p>' + lnObj[i]["txt"] + '<\/p>'
       }
     }
     /*
       list
     */
-    else if (lnObj[i]['procUnit'] === 'lst') {
-      let lstLvCrr = lnObj[i]['lstLv']
-      let lstPre = ''
+    else if (lnObj[i]["unit"] === "lst") {
+      let lstLvCrr = lnObj[i]["lstLv"]
+      let lstPre = ""
       let lstLvPre = -1
-      let lstPst = ''
+      let lstPst = ""
       let lstLvPst = -1
       if (i !== 0) {
-        lstPre = lnObj[i - 1]['procUnit']
-        lstLvPre = lnObj[i - 1]['lstLv']
+        lstPre = lnObj[i - 1]["unit"]
+        lstLvPre = lnObj[i - 1]["lstLv"]
       }
       if (i !== lnLen - 1) {
-        lstPst = lnObj[i + 1]['procUnit']
-        lstLvPst = lnObj[i + 1]['lstLv']
+        lstPst = lnObj[i + 1]["unit"]
+        lstLvPst = lnObj[i + 1]["lstLv"]
       }
-      lnWork1 = lnObj[i]['txt']
+      lnWork1 = lnObj[i]["txt"]
       if (
       /* listが始まる */
         (
@@ -208,9 +208,9 @@ function mdParse(src, opt) {
           &&
           i !== lnLen - 1
           &&
-          lstPre !== 'lst'
+          lstPre !== "lst"
           &&
-          lstPst === 'lst'
+          lstPst === "lst"
         )
         ||
         (
@@ -223,7 +223,7 @@ function mdParse(src, opt) {
           lstLvCrr <= lstLvPst
         )
       ) {
-        lnObj[i]['txt'] = lstStart(lnWork1, i) // <= 処理部分
+        lnObj[i]["txt"] = lstStart(lnWork1, i) // <= 処理部分
       } else if (
       /* listが続く */
         i !== 0
@@ -234,7 +234,7 @@ function mdParse(src, opt) {
         &&
         lstLvCrr <= lstLvPst
       ) {
-        lnObj[i]['txt'] = lstContinue(lnWork1) // <= 処理部分
+        lnObj[i]["txt"] = lstContinue(lnWork1) // <= 処理部分
       } else if (
       /* listが終わる */
         (
@@ -244,9 +244,9 @@ function mdParse(src, opt) {
         )
         ||
         (
-          lstPre === 'lst'
+          lstPre === "lst"
           &&
-          lstPst !== 'lst'
+          lstPst !== "lst"
         )
         ||
         (
@@ -259,7 +259,7 @@ function mdParse(src, opt) {
           lstLvCrr > lstLvPst
         )
       ) {
-        lnObj[i]['txt'] = lstEnd(lnWork1, lstPst, lstLvCrr, lstLvPst) // <= 処理部分
+        lnObj[i]["txt"] = lstEnd(lnWork1, lstPst, lstLvCrr, lstLvPst) // <= 処理部分
       } else if (
       /* 始まりかつ終わりの行 */
         (
@@ -267,10 +267,10 @@ function mdParse(src, opt) {
           &&
           i !== lnLen - 1
           &&
-          lstPre !== 'lst'
+          lstPre !== "lst"
           &&
           (
-            lstPst !== 'lst'
+            lstPst !== "lst"
             ||
             lstLvCrr > lstLvPre
           )
@@ -286,38 +286,38 @@ function mdParse(src, opt) {
           (
             lstLvCrr > lstLvPst
             ||
-            lstPst !== 'lst'
+            lstPst !== "lst"
           )
         )
       ) {
-        lnObj[i]['txt'] = lstEnd(lstStart(lnWork1, i), lstPst, lstLvCrr, lstLvPst) // <= 処理部分
+        lnObj[i]["txt"] = lstEnd(lstStart(lnWork1, i), lstPst, lstLvCrr, lstLvPst) // <= 処理部分
       }
     }
     /*
       table
     */
-    else if (lnObj[i]['procUnit'] === 'tbl') {
-      let vBar = lnObj[i]['vBar']
+    else if (lnObj[i]["unit"] === "tbl") {
+      let vBar = lnObj[i]["vBar"]
       if (
           (
             i === 0
             ||
-            lnObj[i - 1]['vBar'] === 0
+            lnObj[i - 1]["vBar"] === 0
           )
         &&
         i !== lnLen + 1
         &&
-        lnObj[i]['vBar'] >= 1
+        lnObj[i]["vBar"] >= 1
         &&
-        lnObj[i + 1]['vBar'] >= 1
+        lnObj[i + 1]["vBar"] >= 1
       ) {
-        lnObj[i]['txt'] = tblStart()
+        lnObj[i]["txt"] = tblStart()
       }
     }
     /*
       連想配列に入っている各行をつなげる
     */
-    txtMass += lnObj[i]['txt'] + '\n'
+    txtMass += lnObj[i]["txt"] + "\n"
   }
   return txtMass
   /*
@@ -326,11 +326,11 @@ function mdParse(src, opt) {
 
   */
   function lstStart(txt, i) {
-    if (lnObj[i]['lstType'] === 'm') {
-      lstTypeArr.push('m')
+    if (lnObj[i]["lstType"] === "m") {
+      lstTypeArr.push("m")
       return txt.replace(/^[ \t]*(\*|\+|-) (.*)$/, '<ul><li>$2<\/li>')
-    } else if (lnObj[i]['lstType'] === 'd') {
-      lstTypeArr.push('d')
+    } else if (lnObj[i]["lstType"] === "d") {
+      lstTypeArr.push("d")
       return txt.replace(/^[ \t]*(\d+\.) (.*)$/, '<ol><li>$2<\/li>')
     }
   }
@@ -340,16 +340,16 @@ function mdParse(src, opt) {
   function lstEnd(txt, lstPst, lstLvCrr, lstLvPst) {
     let lnWork2 = txt.replace(/^[ \t]*(\*|\+|-|\d+\.) (.*)$/, '<li>$2<\/li>')
     let lstLvDiff = 0
-    if (lstPst === 'lst') {
+    if (lstPst === "lst") {
       lstLvDiff = lstLvCrr - lstLvPst
     } else {
       lstLvDiff = lstLvCrr
     }
     for (let j = 0; lstLvDiff > j; j++) {
       lstTypeArrWork = lstTypeArr.pop()
-      if (lstTypeArrWork === 'm') {
+      if (lstTypeArrWork === "m") {
         lnWork2 = lnWork2 + '<\/ul>'
-      } else if (lstTypeArrWork === 'd') {
+      } else if (lstTypeArrWork === "d") {
         lnWork2 = lnWork2 + '<\/ol>'
       }
     }
