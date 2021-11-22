@@ -431,7 +431,7 @@ html.dark #input-button {
   <a class="next"></a>
 </div>
 </body>
-<script src="https://etc.satsuki.me/md-parse.js"></script>
+<script src="https://etc.satsuki.me/mdparse.js"></script>
 <script src="https://etc.satsuki.me/3rd-party-lib/jszip.min.js"></script>
 <script src="https://etc.satsuki.me/3rd-party-lib/FileSaver.min.js"></script>
 <script>
@@ -907,7 +907,8 @@ function exec(src) {
 }
 // ファイルの読み込み
 async function loadContent(url) {
-  let w = await fetch(url)
+  let now = new Date.now()
+  let w = await fetch(url + "?" + now)
   return w.text()
 }
 // 変換の実処理
