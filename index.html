@@ -87,21 +87,25 @@ ul {
   margin-top: 10px;
 }
 </style>
-<script src="http://etc.satsuki.c/md-parse.js"></script>
+<script src="https://etc.satsuki.me/md-parse.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
   let elm_h1 = document.querySelector("h1")
   let elm_main = document.querySelector("main")
   let currOrigin = location.origin
+  loadContent(currOrigin + "/README.md").then((data) => {
+    writeContenet(data)
+  })
   async function loadContent(url) {
     let w = await fetch(url)
     return w.text()
   }
-  loadContent(currOrigin + "/README.md").then((data) => {
-    let w = mdParse(data)
+  async function writeContenet(data) {
+    let w = await mdParse(data)
     elm_h1.innerHTML = w.replace(/<h1>(.*?)<\/h1>[\s\S]*/gm, "$1")
     elm_main.innerHTML = w.replace(/<h1.*?\n+/, "").replace(/<h2>(.*?)<\/h2>/g, '<h2>$1</h2> <a href="' + currOrigin + '/$1" class="attach">link</a>')
-  })
+    return w
+  }
 })
 </script>
 </head>
