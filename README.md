@@ -26,6 +26,9 @@
 
 ## md-toc.html
 * Markdown から TOC を生成するやつ
+* **更新履歴**  
+2021-11-23 ちょっと現代的に修正してみた
+2021-09-09 初稿
 
 ## mdparse.js
 * Markdown を HTML に変換するライブラリ
