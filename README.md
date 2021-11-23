@@ -27,6 +27,8 @@
 ## mdparse.js
 * Markdown を HTML に変換するライブラリ
 * 関数 mdparse(*[Markdown]*) で利用する
+* **更新記録**  
+2021-11-23 刷新、改名
 
 ## narou-novel-analytics.html
 * **作りかけ**
