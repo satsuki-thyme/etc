@@ -153,7 +153,6 @@ body,
     </div>
   </main>
 </div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script>
 let paramObj = {"url": "README.md", "indent": String.raw`\t`, "mark": "*", "level": "6"}
 let searchArr = location.search.slice(1).split("&")
@@ -164,12 +163,12 @@ let elm_level = document.querySelector("#level")
 let elm_update = document.querySelector("#update")
 let elm_output = document.querySelector("#output")
 initialize()
-elm_update.addEventListener("click", function(e) {
+elm_update.addEventListener("click", (e) => {
   e.preventDefault()
   e.stopPropagation()
   update()
 })
-elm_output.addEventListener("focus", function(e) {
+elm_output.addEventListener("focus", (e) => {
   e.preventDefault()
   e.stopPropagation()
   this.select()
@@ -184,9 +183,6 @@ function initialize() {
   elm_mark.value = paramObj["mark"]
   elm_level.value = paramObj["level"]
   generatorTocFromMarkdown(paramObj)
-  .then(function(data) {
-    elm_output.value = data
-  })
 }
 function update() {
   let paramObj = {"url": "README.md", "indent": "\t", "mark": "*", "level": "6"}
@@ -195,12 +191,8 @@ function update() {
   paramObj["mark"] = elm_mark.value
   paramObj["level"] = elm_level.value
   generatorTocFromMarkdown(paramObj)
-  .then(function(data) {
-    $("#toc").text(data)
-  })
 }
-function generatorTocFromMarkdown(paramObj) {
-  let dfr0 = $.Deferred()
+async function generatorTocFromMarkdown(paramObj) {
   let toc_string = ""
   let url = paramObj["url"]
   let indent = paramObj["indent"].replace(/\\t/, "\t").replace(/\\s/, "  ")
@@ -294,13 +286,9 @@ function generatorTocFromMarkdown(paramObj) {
     ["・", ""],
     ["―", ""]
   ]
-  $.ajax({
-    url: url,
-    type: "GET",
-    dataType: "text",
-    cache: false
-  })
-  .then(function(data) {
+  let data = await loadData()
+  procData(data)
+  async function procData(data) {
     // toc: 最終的に書き出す値
     // listArr: toc 生成の中間要素
     // listArr_pre: 見出し以外の行を削除して配列化する
@@ -344,9 +332,11 @@ function generatorTocFromMarkdown(paramObj) {
     for (let i = 0; i <= listArr_pre_length - 1; i++) {
       toc_string = toc_string + listArr[i]["indent"] + mark + " [" + listArr[i]["heading"] + "](#" + listArr[i]["link_post"] + ")\n"
     }
-    dfr0.resolve(toc_string)
-    return toc_string
-  })
-  return dfr0.promise(toc_string)
+    elm_output.value = toc_string
+  }
+  async function loadData() {
+    w = await fetch(url)
+    return w.text()
+  }
 }
 </script>
