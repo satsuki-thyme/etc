@@ -21,12 +21,12 @@
 * EmEditor 用の Markdown のシンタックスハイライト
 * 「現在の設定のプロパティ」の「強調(1)」からインポートする
 
-## md-parse.js
-* **作りかけ**
-* Markdown をパースする
-
 ## md-toc.html
 * Markdown から TOC を生成するやつ
+
+## mdparse.js
+* Markdown を HTML に変換するライブラリ
+* 関数 mdparse(\[Markdown\]) で利用する
 
 ## narou-novel-analytics.html
 * **作りかけ**
