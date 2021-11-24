@@ -521,7 +521,7 @@ let arr_option = {
 let arr_optionDefault = {
   "format": "reading",
   "orient": "h",
-  "theme": "light",
+  "theme": "auto",
   "mode": "normal"
 }
 let arr_optionUrl = {}
@@ -534,7 +534,7 @@ arr_search.forEach(r => {
 if (arr_optionUrl["op"] !== undefined) {
   arr_option["op"] = arr_optionUrl["op"]
 }
-let arr_optionStorage = JSON.parse(localStorage.getItem("option"))
+let arr_optionStorage = localStorage.getItem("option")
 let keys_arr_option = Object.keys(arr_option)
 for (let i = 0; i < keys_arr_option.length; i++) {
   if (arr_optionUrl[keys_arr_option[i]] !== undefined) {
@@ -640,8 +640,8 @@ let arr_bracketItself = [
 // タグの定義（タグと中身を処理の対象にする）
 let arr_bracketInclude = [
   {
-    "before": "＜",
-    "after": "＞",
+    "before": "[",
+    "after": "]",
     "replaceBefore": '<span style="color: #d00">',
     "replaceAfter": '</span>'
   }
@@ -680,7 +680,7 @@ let arr_format = {
     })
   },
   plot: src => {
-    procBracket(src)
+    procBracket(src, 1)
     .then(r => {
       return parseRuby(r)
     }).then(r => {
@@ -1048,7 +1048,7 @@ async function procBracket(src, type) {
     let w = ""
     let h = 0
     for (let i = 0; i < arr_bracketItself.length; i++) {
-      w += arr_bracketItself[i]["before"] + arr_bracketItself[i]["after"]
+      w += esc(arr_bracketItself[i]["before"]) + esc(arr_bracketItself[i]["after"])
       h++
       if (h === arr_bracketItself.length) {
         return RegExp("[" + w + "]", "g")
@@ -1059,7 +1059,7 @@ async function procBracket(src, type) {
     let w = ""
     let h = 0
     for (let i = 0; i < arr_bracketInclude.length; i++) {
-      w += arr_bracketInclude[i]["before"] + ".*?" + arr_bracketInclude[i]["after"] + "|"
+      w += esc(arr_bracketInclude[i]["before"]) + ".*?" + esc(arr_bracketInclude[i]["after"]) + "|"
       h++
       if (h === arr_bracketInclude.length) {
         return RegExp("(" + w + ")", "g")
@@ -1068,9 +1068,9 @@ async function procBracket(src, type) {
   }
   function markupItself(r) {
     let g = 0
-    let RE_bracketBefore = RegExp(arr_bracketItself[g]["before"], "g")
-    let RE_bracketAfter = RegExp(arr_bracketItself[g]["after"], "g")
-    let w =r.replace(RE_bracketBefore, arr_bracketItself[g]["replaceBefore"] + arr_bracketItself[g]["before"] + arr_bracketItself[g]["replaceAfter"]).replace(RE_bracketAfter, arr_bracketItself[g]["replaceBefore"] + arr_bracketItself[g]["after"] + arr_bracketItself[g]["replaceAfter"])
+    let RE_bracketBefore = RegExp(esc(arr_bracketItself[g]["before"]), "g")
+    let RE_bracketAfter = RegExp(esc(arr_bracketItself[g]["after"]), "g")
+    let w = unEsc(r.replace(RE_bracketBefore, arr_bracketItself[g]["replaceBefore"] + esc(arr_bracketItself[g]["before"]) + arr_bracketItself[g]["replaceAfter"]).replace(RE_bracketAfter, arr_bracketItself[g]["replaceBefore"] + esc(arr_bracketItself[g]["after"]) + arr_bracketItself[g]["replaceAfter"]))
     g++
     if (g < arr_bracketItself.length) {
       markupItself(w)
@@ -1080,8 +1080,8 @@ async function procBracket(src, type) {
   }
   function markupInclude(r) {
     let f = 0
-    let RE_bracket = RegExp(arr_bracketInclude[f]["before"] + "(.*?)" + arr_bracketInclude[f]["after"], "g")
-    let w =r.replace(RE_bracket, arr_bracketInclude[f]["replaceBefore"] + arr_bracketInclude[f]["before"] + "$1" + arr_bracketInclude[f]["after"] + arr_bracketInclude[f]["replaceAfter"])
+    let RE_bracket = RegExp(esc(arr_bracketInclude[f]["before"]) + "(.*?)" + esc(arr_bracketInclude[f]["after"]), "g")
+    let w = unEsc(r.replace(RE_bracket, arr_bracketInclude[f]["replaceBefore"] + esc(arr_bracketInclude[f]["before"]) + "$1" + esc(arr_bracketInclude[f]["after"]) + arr_bracketInclude[f]["replaceAfter"]))
     f++
     if (f < arr_bracketInclude.length) {
       markupInclude(w)
@@ -1217,6 +1217,32 @@ function toggleOrient(orient) {
 function toggleTheme(theme) {
   elm_html.classList.remove("light", "dark" ,"auto")
   elm_html.classList.add(theme)
+}
+function esc(data) {
+  return data
+  .replace(/\//g, "\\/")
+  .replace(/\\/g, "\\\\")
+  .replace(/\^/g, "\\^")
+  .replace(/\$/g, "\\$")
+  .replace(/\*/g, "\\*")
+  .replace(/\+/g, "\\+")
+  .replace(/\?/g, "\\?")
+  .replace(/\./g, "\\.")
+  .replace(/\(/g, "\\(")
+  .replace(/\[/g, "\\[")
+}
+function unEsc(data) {
+  return data
+  .replace(/\\\//g, "/")
+  .replace(/\\\\/g, "\\")
+  .replace(/\\\^/g, "^")
+  .replace(/\\\$/g, "$")
+  .replace(/\\\*/g, "*")
+  .replace(/\\\+/g, "+")
+  .replace(/\\\?/g, "?")
+  .replace(/\\\./g, ".")
+  .replace(/\\\(/g, "(")
+  .replace(/\\\[/g, "[")
 }
 // odt が包含するファイルの中身
 let arr_odt = {
