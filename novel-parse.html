@@ -970,7 +970,7 @@ function removeMd(src) {
 function parseOdt(src) {
   let w = src.replace(/^(?!<.*>)(.*)$/gm, '<text:p>$1</text:p>')
              .replace(/｜([^｜]*?)《(.*?)》/g, '<text:ruby><text:ruby-base>$1</text:ruby-base><text:ruby-text>$2</text:ruby-text></text:ruby>')
-             .replace(/([\u4E00-\u9FFF]+)（(.*?)）/g, '<text:ruby><text:ruby-base>$1</text:ruby-base><text:ruby-text>$2</text:ruby-text></ text:ruby>')
+             .replace(/([\u4E00-\u9FFF]+)（(.*?)）/g, '<text:ruby><text:ruby-base>$1</text:ruby-base><text:ruby-text>$2</text:ruby-text></text:ruby>')
              .replace(/｜(（.*?）)/g, "$1")
   let titleOdt = ""
   if (title.length >= 1) {
