@@ -1,24 +1,26 @@
-function esc(data) {
-  return data.replace(/\//g, "\\/")
-             .replace(/\\/g, "\\\\")
-             .replace(/\^/g, "\\^")
-             .replace(/\$/g, "\\$")
-             .replace(/\*/g, "\\*")
-             .replace(/\+/g, "\\+")
-             .replace(/\?/g, "\\?")
-             .replace(/\./g, "\\.")
-             .replace(/\(/g, "\\(")
-             .replace(/\[/g, "\\[")
+function esc(r) {
+  return r
+  .replace(/\//g, "\\/")
+  .replace(/\\/g, "\\\\")
+  .replace(/\^/g, "\\^")
+  .replace(/\$/g, "\\$")
+  .replace(/\*/g, "\\*")
+  .replace(/\+/g, "\\+")
+  .replace(/\?/g, "\\?")
+  .replace(/\./g, "\\.")
+  .replace(/\(/g, "\\(")
+  .replace(/\[/g, "\\[")
 }
-function unEsc(data) {
-  return data.replace(/\\\//g, "/")
-             .replace(/\\\\/g, "\\")
-             .replace(/\\\^/g, "^")
-             .replace(/\\\$/g, "$")
-             .replace(/\\\*/g, "*")
-             .replace(/\\\+/g, "+")
-             .replace(/\\\?/g, "?")
-             .replace(/\\\./g, ".")
-             .replace(/\\\(/g, "(")
-             .replace(/\\\[/g, "[")
+function unEsc(r) {
+  return r
+  .replace(/\\\//g, "/")
+  .replace(/\\\\/g, "\\")
+  .replace(/\\\^/g, "^")
+  .replace(/\\\$/g, "$")
+  .replace(/\\\*/g, "*")
+  .replace(/\\\+/g, "+")
+  .replace(/\\\?/g, "?")
+  .replace(/\\\./g, ".")
+  .replace(/\\\(/g, "(")
+  .replace(/\\\[/g, "[")
 }
