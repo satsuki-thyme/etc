@@ -18,11 +18,17 @@ h1 {
   font-size: 40px;
   font-weight: bold;
 }
+html.v h1 {
+  margin: 0;
+}
 h2 {
   margin-top: 50px;
   margin-left: 15px;
   font-size: 30px;
   font-weight: bold;
+}
+html.v h2 {
+  margin: 15px 50px 0 0;
 }
 h3 {
   margin-top: 40px;
@@ -30,11 +36,17 @@ h3 {
   font-size: 20px;
   font-weight: bold;
 }
+html.v h3 {
+  margin: 30px 40px 0 0;
+}
 h4 {
   margin-top: 30px;
   margin-left: 45px;
   font-size: 20px;
   font-weight: bold;
+}
+html.v h4 {
+  margin: 45px 30px 0 0;
 }
 h5 {
   margin-top: 20px;
@@ -42,11 +54,17 @@ h5 {
   font-size: 20px;
   font-weight: normal;
 }
+html.v h5 {
+  margin: 60px 20px 0 0;
+}
 h6 {
   margin-top: 10px;
   margin-left: 75px;
   font-size: 20px;
   font-weight: normal;
+}
+html.v h6 {
+  margin: 75px 10px 0 0;
 }
 h1 ~ p,
 h1 ~ ol,
@@ -54,11 +72,25 @@ h1 ~ ul,
 h1 ~ dl {
   margin-left: 10px;
 }
+html.v h1 ~ p,
+html.v h1 ~ ol,
+html.v h1 ~ ul,
+html.v h1 ~ dl {
+  margin-left: 0;
+  margin-top: 10px;
+}
 h2 ~ p,
 h2 ~ ol,
 h2 ~ ul,
 h2 ~ dl {
   margin-left: 25px;
+}
+html.v h2 ~ p,
+html.v h2 ~ ol,
+html.v h2 ~ ul,
+html.v h2 ~ dl {
+  margin-left: 0;
+  margin-top: 25px;
 }
 h3 ~ p,
 h3 ~ ol,
@@ -66,11 +98,25 @@ h3 ~ ul,
 h3 ~ dl {
   margin-left: 40px;
 }
+html.v h3 ~ p,
+html.v h3 ~ ol,
+html.v h3 ~ ul,
+html.v h3 ~ dl {
+  margin-left: 0;
+  margin-top: 40px;
+}
 h4 ~ p,
 h4 ~ ol,
 h4 ~ ul,
 h4 ~ dl {
   margin-left: 65px;
+}
+html.v h4 ~ p,
+html.v h4 ~ ol,
+html.v h4 ~ ul,
+html.v h4 ~ dl {
+  margin-left: 0;
+  margin-top: 65px;
 }
 h5 ~ p,
 h5 ~ ol,
@@ -78,11 +124,25 @@ h5 ~ ul,
 h5 ~ dl {
   margin-left: 80px;
 }
+html.v h5 ~ p,
+html.v h5 ~ ol,
+html.v h5 ~ ul,
+html.v h5 ~ dl {
+  margin-left: 0;
+  margin-top: 80px;
+}
 h6 ~ p,
 h6 ~ ol,
 h6 ~ ul,
 h6 ~ dl {
   margin-left: 15px;
+}
+html.v h6 ~ p,
+html.v h6 ~ ol,
+html.v h6 ~ ul,
+html.v h6 ~ dl {
+  margin-left: 0;
+  margin-top: 15px;
 }
 label {
   display: block;
@@ -93,6 +153,11 @@ dt {
 dd + dt,
 label + label {
   margin-top: 15px;
+}
+html.v dd + dt,
+html.v label + label {
+  margin-top: 0;
+  margin-right: 15px;
 }
 code {
   font-family: Arial, Helvetica, sans-serif;
@@ -116,7 +181,6 @@ html.v #frame {
   height: 700px;
   max-height: 95%;
   margin: auto;
-  overflow-x: auto;
 }
 html.v #text {
   width: unset;
@@ -125,6 +189,7 @@ html.v #text {
   letter-spacing: 0.07em;
   writing-mode: vertical-rl;
   text-orientation: upright;
+  overflow-x: auto;
 }
 body {
   color: #333;
@@ -148,6 +213,10 @@ div {
 }
 #text.loaded h1 + p {
   margin-top: 80px;
+}
+html.v #text.loaded h1 + p {
+  margin-top: 0;
+  margin-right: 80px;
 }
 #left-chip {
   position: fixed;
@@ -443,16 +512,41 @@ html.dark #input-button {
 // URL の search の処理
 let currOrigin = location.origin
 let arr_search = location.search.slice(1).split("&")
-let arr_param = {
+let arr_option = {
+  "format": "",
+  "orient": "",
+  "theme": "",
+  "mode": ""
+}
+let arr_optionDefault = {
   "format": "reading",
   "orient": "h",
-  "theme": "auto",
+  "theme": "light",
   "mode": "normal"
 }
+let arr_optionUrl = {}
 arr_search.forEach(r => {
-  let w = r.split("=")
-  arr_param[w[0]] = w[1]
+  if (r !== "") {
+    let w = r.split("=")
+    arr_optionUrl[w[0]] = w[1]
+  }
 })
+if (arr_optionUrl["op"] !== undefined) {
+  arr_option["op"] = arr_optionUrl["op"]
+}
+let arr_optionStorage = JSON.parse(localStorage.getItem("option"))
+let keys_arr_option = Object.keys(arr_option)
+for (let i = 0; i < keys_arr_option.length; i++) {
+  if (arr_optionUrl[keys_arr_option[i]] !== undefined) {
+    arr_option[keys_arr_option[i]] = arr_optionUrl[keys_arr_option[i]]
+  }
+  else if (arr_optionStorage[keys_arr_option[i]] !== undefined) {
+    arr_option[keys_arr_option[i]] = arr_optionStorage[keys_arr_option[i]]
+  }
+  else {
+    arr_option[keys_arr_option[i]] = arr_optionDefault[keys_arr_option[i]]
+  }
+}
 // DOM
 let elm_title = document.querySelector("title")
 let elm_input = document.querySelector("#input")
@@ -503,35 +597,35 @@ let now = Date()
 let arr_repoFile = []
 let prevFile = ""
 let nextFile = ""
-if (arr_param["op"] !== undefined) {
-  arr_repoFile = arr_param["op"].split("/")
+if (arr_option["op"] !== undefined) {
+  arr_repoFile = arr_option["op"].split("/")
   prevFile = arr_repoFile[1].replace(/(\[\d+\]).+/, "$1") + ("00" + (Number(arr_repoFile[1].replace(/\[\d+\](\d+)\..+/, "$1")) - 1)).slice(-3) + arr_repoFile[1].replace(/\[\d+\]\d+(\..+)/, "$1")
   nextFile = arr_repoFile[1].replace(/(\[\d+\]).+/, "$1") + ("00" + (Number(arr_repoFile[1].replace(/\[\d+\](\d+)\..+/, "$1")) + 1)).slice(-3) + arr_repoFile[1].replace(/\[\d+\]\d+(\..+)/, "$1")
 }
 let arr_url = {
   "http://etc.satsuki.c": {
     "backhost": "http://etc.satsuki.c/novel/" + arr_repoFile[0] + "/",
-    "content":  "http://etc.satsuki.c/novel/" + arr_param["op"] + "?" + now,
+    "content":  "http://etc.satsuki.c/novel/" + arr_option["op"] + "?" + now,
     "readme":   "http://etc.satsuki.c/novel/" + arr_repoFile[0] + "/README.md?" + now,
     "linkBase": "http://etc.satsuki.c/novel-parse.html?op=" + arr_repoFile[0] + "/",
-    "prev":     "http://etc.satsuki.c/novel-parse.html?op=" + arr_repoFile[0] + "/" + prevFile + "&format=" + arr_param["format"] + "&orient=" + arr_param["orient"] + "&theme=" + arr_param["theme"] + "&mode=" +  arr_param["mode"],
-    "next":     "http://etc.satsuki.c/novel-parse.html?op=" + arr_repoFile[0] + "/" + nextFile + "&format=" + arr_param["format"] + "&orient=" + arr_param["orient"] + "&theme=" + arr_param["theme"] + "&mode=" +  arr_param["mode"]
+    "prev":     "http://etc.satsuki.c/novel-parse.html?op=" + arr_repoFile[0] + "/" + prevFile + "&format=" + arr_option["format"] + "&orient=" + arr_option["orient"] + "&theme=" + arr_option["theme"] + "&mode=" +  arr_option["mode"],
+    "next":     "http://etc.satsuki.c/novel-parse.html?op=" + arr_repoFile[0] + "/" + nextFile + "&format=" + arr_option["format"] + "&orient=" + arr_option["orient"] + "&theme=" + arr_option["theme"] + "&mode=" +  arr_option["mode"]
   },
   "https://etc.satsuki.me": {
     "backhost": "https://raw.githubusercontent.com/satsuki-thyme/" + arr_repoFile[0] + "/master/",
     "content":  "https://raw.githubusercontent.com/satsuki-thyme/" + arr_repoFile[0] + "/master/" + arr_repoFile[1] + "?" + now,
     "readme":   "https://raw.githubusercontent.com/satsuki-thyme/" + arr_repoFile[0] + "/master/README.md?" + now,
     "linkBase": "https://etc.satsuki.me/novel-parse.html?op=" + arr_repoFile[0] + "/",
-    "prev":     "https://etc.satsuki.me/novel-parse.html?op=" + arr_repoFile[0] + "/" + prevFile + "&format=" + arr_param["format"] + "&orient=" + arr_param["orient"] + "&theme=" + arr_param["theme"] + "&mode=" +  arr_param["mode"],
-    "next":     "https://etc.satsuki.me/novel-parse.html?op=" + arr_repoFile[0] + "/" + nextFile + "&format=" + arr_param["format"] + "&orient=" + arr_param["orient"] + "&theme=" + arr_param["theme"] + "&mode=" +  arr_param["mode"]
+    "prev":     "https://etc.satsuki.me/novel-parse.html?op=" + arr_repoFile[0] + "/" + prevFile + "&format=" + arr_option["format"] + "&orient=" + arr_option["orient"] + "&theme=" + arr_option["theme"] + "&mode=" +  arr_option["mode"],
+    "next":     "https://etc.satsuki.me/novel-parse.html?op=" + arr_repoFile[0] + "/" + nextFile + "&format=" + arr_option["format"] + "&orient=" + arr_option["orient"] + "&theme=" + arr_option["theme"] + "&mode=" +  arr_option["mode"]
   },
   "https://satsuki.me": {
     "backhost": "https://raw.githubusercontent.com/satsuki-thyme/" + arr_repoFile[0] + "/master/",
     "content":  "https://raw.githubusercontent.com/satsuki-thyme/" + arr_repoFile[0] + "/master/" + arr_repoFile[1] + "?" + now,
     "readme":   "https://raw.githubusercontent.com/satsuki-thyme/" + arr_repoFile[0] + "/master/README.md?" + now,
     "linkBase": "https://satsuki.me/novel-parse.html?op=" + arr_repoFile[0] + "/",
-    "prev":     "https://satsuki.me/novel-parse.html?op=" + arr_repoFile[0] + "/" + prevFile + "&format=" + arr_param["format"] + "&orient=" + arr_param["orient"] + "&theme=" + arr_param["theme"] + "&mode=" +  arr_param["mode"],
-    "next":     "https://satsuki.me/novel-parse.html?op=" + arr_repoFile[0] + "/" + nextFile + "&format=" + arr_param["format"] + "&orient=" + arr_param["orient"] + "&theme=" + arr_param["theme"] + "&mode=" +  arr_param["mode"]
+    "prev":     "https://satsuki.me/novel-parse.html?op=" + arr_repoFile[0] + "/" + prevFile + "&format=" + arr_option["format"] + "&orient=" + arr_option["orient"] + "&theme=" + arr_option["theme"] + "&mode=" +  arr_option["mode"],
+    "next":     "https://satsuki.me/novel-parse.html?op=" + arr_repoFile[0] + "/" + nextFile + "&format=" + arr_option["format"] + "&orient=" + arr_option["orient"] + "&theme=" + arr_option["theme"] + "&mode=" +  arr_option["mode"]
   }
 }
 // タグの定義（タグ自身を処理の対象にする）
@@ -563,7 +657,7 @@ let arr_format = {
     }).then(r => {
       return removeMd(r)
     }).then(r => {
-      return arr_mode[arr_param["mode"]](r)
+      return arr_mode[arr_option["mode"]](r)
     }).then(r => {
       return parseNewline(r)
     }).then(r => {
@@ -578,7 +672,7 @@ let arr_format = {
     .then(r => {
       return removeMd(r)
     }).then(r => {
-      return arr_mode[arr_param["mode"]](r)
+      return arr_mode[arr_option["mode"]](r)
     }).then(r => {
       return parseNewline(r)
     }).then(r => {
@@ -592,7 +686,7 @@ let arr_format = {
     }).then(r => {
       return removeMd(r)
     }).then(r => {
-      return arr_mode[arr_param["mode"]](r)
+      return arr_mode[arr_option["mode"]](r)
     }).then(r => {
       return parseNewline(r)
     }).then(r => {
@@ -635,7 +729,7 @@ let arr_format = {
     }).then(r => {
       return removeMd(r)
     }).then(r => {
-      return arr_mode[arr_param["mode"]](r)
+      return arr_mode[arr_option["mode"]](r)
     }).then(r => {
       zip.file("content.xml", parseOdt(r))
     }).then(() => {
@@ -652,7 +746,7 @@ let arr_format = {
       }
       zip.generateAsync({type: "blob"})
       .then(r => {
-        if (arr_param["op"] !== undefined) {
+        if (arr_option["op"] !== undefined) {
           saveAs(r, arr_makeFileName(search["op"]))
         } else {
           saveAs(r, makeFileName(trgFile.name))
@@ -680,7 +774,7 @@ let arr_format = {
       .then(r0 => {
         let partLength = removeRuby(removeMd(r0)).replace(/[\s　]/g, "").length
         fullLength += partLength
-        return "* [" + arr_toc[h][1] + "](" + arr_url[currOrigin]["linkBase"] + arr_toc[h][0] + "&format=" + arr_param["format"] + "&theme=" + arr_param["theme"] + "&mode=" +  arr_param["mode"] + ") : " + partLength + "文字" + EOS
+        return "* [" + arr_toc[h][1] + "](" + arr_url[currOrigin]["linkBase"] + arr_toc[h][0] + "&format=" + arr_option["format"] + "&theme=" + arr_option["theme"] + "&mode=" +  arr_option["mode"] + ") : " + partLength + "文字" + EOS
       })
       .then(r1 => {
         toc += r1
@@ -697,6 +791,7 @@ let arr_format = {
     }
   }
 }
+applyOption()
 /*
 
   括弧を書き出す
@@ -718,105 +813,60 @@ for (let i = 0; i < arr_bracketItself.length; i++) {
 
 */
 elm_formatReading.onchange = () => {
-  arr_param["format"] = "reading"
+  arr_option["format"] = "reading"
 }
 elm_formatPost.onchange = () => {
-  arr_param["format"] = "post"
+  arr_option["format"] = "post"
 }
 elm_formatPlot.onchange = () => {
-  arr_param["format"] = "plot"
+  arr_option["format"] = "plot"
 }
 elm_formatPickup.onchange = () => {
-  arr_param["format"] = "pickup"
+  arr_option["format"] = "pickup"
 }
 elm_formatOdt.onchange = () => {
-  arr_param["format"] = "odt"
+  arr_option["format"] = "odt"
 }
 elm_formatSelector.onchange = () => {
-  arr_param["format"] = elm_formatSelector.options[elm_formatSelector.selectedIndex].value
-  location.href = arr_url[currOrigin]["linkBase"] + arr_repoFile[1] + "&format=" + arr_param["format"] + "&orient=" + arr_param["orient"] + "&theme=" + arr_param["theme"] + "&mode=" +  arr_param["mode"]
+  arr_option["format"] = elm_formatSelector.options[elm_formatSelector.selectedIndex].value
+  location.href = arr_url[currOrigin]["linkBase"] + arr_repoFile[1] + "&format=" + arr_option["format"] + "&orient=" + arr_option["orient"] + "&theme=" + arr_option["theme"] + "&mode=" +  arr_option["mode"]
 }
 elm_orientH.onchange = () => {
-  arr_param["orient"] = "h"
-  toggleOrient(arr_param["orient"])
+  arr_option["orient"] = "h"
+  toggleOrient(arr_option["orient"])
 }
 elm_orientV.onchange = () => {
-  arr_param["orient"] = "v"
-  toggleOrient(arr_param["orient"])
+  arr_option["orient"] = "v"
+  toggleOrient(arr_option["orient"])
 }
 elm_themeLight.onchange = () => {
-  arr_param["theme"] = "light"
-  toggleTheme(arr_param["theme"])
+  arr_option["theme"] = "light"
+  toggleTheme(arr_option["theme"])
 }
 elm_themeDark.onchange = () => {
-  arr_param["theme"] = "dark"
-  toggleTheme(arr_param["theme"])
+  arr_option["theme"] = "dark"
+  toggleTheme(arr_option["theme"])
 }
 elm_modeNormal.onchange = () => {
-  arr_param["mode"] = "nomal"
+  arr_option["mode"] = "normal"
 }
 elm_modeHalf.onchange = () => {
-  arr_param["mode"] = "half"
+  arr_option["mode"] = "half"
 }
 elm_modeChipNormal.onchange = () => {
-  arr_param["mode"] = elm_modeChipNormal.value
-  location.href = arr_url[currOrigin]["linkBase"] + arr_repoFile[1] + "&format=" + arr_param["format"] + "&orient=" + arr_param["orient"] + "&theme=" + arr_param["theme"] + "&mode=" +  arr_param["mode"]
+  arr_option["mode"] = elm_modeChipNormal.value
+  location.href = arr_url[currOrigin]["linkBase"] + arr_repoFile[1] + "&format=" + arr_option["format"] + "&orient=" + arr_option["orient"] + "&theme=" + arr_option["theme"] + "&mode=" +  arr_option["mode"]
 }
 elm_modeChipHalf.onchange = () => {
-  arr_param["mode"] = elm_modeChipHalf.value
-  location.href = arr_url[currOrigin]["linkBase"] + arr_repoFile[1] + "&format=" + arr_param["format"] + "&orient=" + arr_param["orient"] + "&theme=" + arr_param["theme"] + "&mode=" +  arr_param["mode"]
-}
-/*
-
-  URL でオプションが指定されていた場合の処理
-
-*/
-// フォーマット
-if (arr_param["format"] === "reading") {
-  elm_formatReading.checked = true
-  elm_formatSelector.options[0].selected = true
-} else if (arr_param["format"] === "post") {
-  elm_formatPost.checked = true
-  elm_formatSelector.options[1].selected = true
-} else if (arr_param["format"] === "plot") {
-  elm_formatPlot.checked = true
-  elm_formatSelector.options[2].selected = true
-} else if (arr_param["format"] === "pickup") {
-  elm_formatPickup.checked = true
-  elm_formatSelector.options[3].selected = true
-} else if (arr_param["format"] === "odt") {
-  elm_formatOdt.checked = true
-  elm_formatSelector.options[4].selected = true
-}
-// 書き方向
-toggleOrient(arr_param["orient"])
-if (arr_param["orient"] === "h") {
-  elm_orientH.checked = true
-} else if (arr_param["orient"] === "v") {
-  elm_orientV.checked = true
-}
-// テーマ
-toggleTheme(arr_param["theme"])
-if (arr_param["theme"] === "light") {
-  elm_themeLight.checked = true
-} else if (arr_param["theme"] === "dark") {
-  elm_themeDark.checked = true
-}
-// モード
-if (arr_param["mode"] !== "half") {
-  arr_param["mode"] = "normal"
-  elm_modeNormal.checked = true
-  elm_modeChipNormal.checked = true
-} else {
-  elm_modeHalf.checked = true
-  elm_modeChipHalf.checked = true
+  arr_option["mode"] = elm_modeChipHalf.value
+  location.href = arr_url[currOrigin]["linkBase"] + arr_repoFile[1] + "&format=" + arr_option["format"] + "&orient=" + arr_option["orient"] + "&theme=" + arr_option["theme"] + "&mode=" +  arr_option["mode"]
 }
 /*
 
   URL で作品が指定されていた場合の処理
 
 */
-if (arr_param["op"] !== undefined && arr_repoFile[1] !== "README.md") {
+if (arr_option["op"] !== undefined && arr_repoFile[1] !== "README.md") {
   loadContent(arr_url[currOrigin]["content"]).then(src => {
     exec(src)
     elm_formatChip.classList.remove("unloaded")
@@ -825,8 +875,8 @@ if (arr_param["op"] !== undefined && arr_repoFile[1] !== "README.md") {
     elm_modeChip.classList.add("loaded")
   })
 } else if (arr_repoFile[1] === "README.md") {
-  arr_param["format"] = "plot"
-  arr_param["mode"] = "c"
+  arr_option["format"] = "plot"
+  arr_option["mode"] = "c"
   loadContent(arr_url[currOrigin]["content"]).then(src => {
     if (src.match(/^# .*$/m)) {
       elm_title.innerHTML = src.replace(/^# (.*)\r?\n[\s\S]*/m, '$1')
@@ -903,12 +953,13 @@ window.addEventListener('touched', src => {
 window.onunload = () => {
   localStorage.setItem("scroll", document.body.scrollTop)
   localStorage.setItem("file", arr_repoFile[1])
+  localStorage.setItem("option", JSON.stringify(arr_option))
 }
-window.onload = () => {
+window.addEventListener("load", () => {
   if (localStorage.getItem("file") === arr_repoFile[1]) {
     document.body.scrollTop = localStorage.getItem("scroll")
   }
-}
+})
 /*
 
   関数
@@ -928,7 +979,7 @@ function exec(src) {
     elm_title.textContent = title
   }
   // フォーマットどおりの処理
-  arr_format[arr_param["format"]](src)
+  arr_format[arr_option["format"]](src)
   // README.md を取得してきてリンクを設定する
   if(arr_repoFile[0] !== undefined) {
     loadContent(arr_url[currOrigin]["readme"]).then(r => {
@@ -984,7 +1035,7 @@ function parseOdt(src) {
 function writeText(src) {
   elm_text.innerHTML = src
   elm_html.classList.remove("reading", "post", "plot", "pickup", "odt")
-  elm_html.classList.add(arr_param["format"])
+  elm_html.classList.add(arr_option["format"])
 }
 // タグを処理する type=0 消去、tyep=1 色づけ
 async function procBracket(src, type) {
@@ -1106,6 +1157,49 @@ function setLink(src) {
     arr_toc.length >= 2
   ) {
     arr_adjacentProc["next"]()
+  }
+}
+// arr_option の内容を画面に反映
+function applyOption() {
+  // フォーマット
+  if (arr_option["format"] === "reading") {
+    elm_formatReading.checked = true
+    elm_formatSelector.options[0].selected = true
+  } else if (arr_option["format"] === "post") {
+    elm_formatPost.checked = true
+    elm_formatSelector.options[1].selected = true
+  } else if (arr_option["format"] === "plot") {
+    elm_formatPlot.checked = true
+    elm_formatSelector.options[2].selected = true
+  } else if (arr_option["format"] === "pickup") {
+    elm_formatPickup.checked = true
+    elm_formatSelector.options[3].selected = true
+  } else if (arr_option["format"] === "odt") {
+    elm_formatOdt.checked = true
+    elm_formatSelector.options[4].selected = true
+  }
+  // 書き方向
+  toggleOrient(arr_option["orient"])
+  if (arr_option["orient"] === "h") {
+    elm_orientH.checked = true
+  } else if (arr_option["orient"] === "v") {
+    elm_orientV.checked = true
+  }
+  // テーマ
+  toggleTheme(arr_option["theme"])
+  if (arr_option["theme"] === "light") {
+    elm_themeLight.checked = true
+  } else if (arr_option["theme"] === "dark") {
+    elm_themeDark.checked = true
+  }
+  // モード
+  if (arr_option["mode"] !== "half") {
+    arr_option["mode"] = "normal"
+    elm_modeNormal.checked = true
+    elm_modeChipNormal.checked = true
+  } else {
+    elm_modeHalf.checked = true
+    elm_modeChipHalf.checked = true
   }
 }
 // 目次の作成
