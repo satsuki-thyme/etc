@@ -9,11 +9,11 @@ async function mdParse(src) {
     "pre": RegExp(/^ {3}/)
   }
   let deliverables = ""
-    await procBr()          // read arr_im1, write arr_im2
+  procBr()                  // read arr_im1, write arr_im2
     .then(async () => {
     await classify()        // read arr_im2, write arr_status
   }).then(async () => {
-    await listLv()          // read arr_im2, write arr_status
+    await setListLv()       // read arr_im2, write arr_status
   }).then(async () => {
     await markupBlock()     // read arr_im2, write arr_im2
   }).then(async () => {
@@ -152,7 +152,7 @@ async function mdParse(src) {
   //
   // listLv を arr_status に書き込む
   //
-  async function listLv() {
+  async function setListLv() {
     for (let i = 0; i < len; i++) {
       if (arr_status[i]["class"] === "list") {
         arr_status[i]["listLv"] = arr_im2[i].match(/^[ \t]*/)[0].length + 1
