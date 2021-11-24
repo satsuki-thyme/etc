@@ -612,10 +612,10 @@ let arr_format = {
       let match = monoLine.match(RE_w)
       if (match) {
         procBracket(match.join(EOS).replace(/^(.*)$/gm, '<li>$1</li>'), 1)
-        .then(async m => {
+        .then(async r => {
           return parseRuby(r)
-        }).then(async m => {
-          w += m
+        }).then(async r => {
+          w += r
           h++
           if (h < arr_bracketItself) {
             pick(w)
