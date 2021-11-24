@@ -702,10 +702,13 @@ let arr_format = {
     pick("")
     function pick(w0) {
       let w = w0
-      let RE_w = RegExp(".{0,30}" + arr_bracketItself[h]["before"] + ".*?" + arr_bracketItself[h]["after"] + ".{0,30}" + "(.{0,30}" + arr_bracketItself[h]["after"] + ")?", "g")
-      let match = monoLine.match(RE_w)
-      if (match) {
-        procBracket(match.join(EOS).replace(/^(.*)$/gm, '<li>$1</li>'), 1)
+      let RE_w0 = RegExp(".{0,30}" + esc(arr_bracketItself[h]["before"]) + ".*?" + esc(arr_bracketItself[h]["after"]) + ".{0,30}" + "(.{0,30}" + esc(arr_bracketItself[h]["after"]) + ")?", "g")
+      let RE_w1 = RegExp(".{0,30}" + esc(arr_bracketInclude[h]["before"]) + ".*?" + esc(arr_bracketInclude[h]["after"]) + ".{0,30}" + "(.{0,30}" + esc(arr_bracketInclude[h]["after"]) + ")?", "g")
+      let arr_pickup0 = monoLine.match(RE_w0)
+      let arr_pickup1 = monoLine.match(RE_w1)
+      if (arr_pickup0 !== null || match1 !== null) {
+        let arr_pickupAll = arr_pickup0.concat(arr_pickup1)
+        procBracket(arr_pickupAll.join(EOS).replace(/^(.*)$/gm, '<li>$1</li>'), 1)
         .then(async r => {
           return parseRuby(r)
         }).then(async r => {
