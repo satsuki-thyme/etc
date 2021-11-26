@@ -1,6 +1,7 @@
 <html class="h">
 <meta charset="utf-8">
 <title>小説をパースするやつ</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <style>
 /*
 
@@ -173,7 +174,7 @@ html.v body {
 }
 html.v #frame {
   position: fixed;
-  top: 0;
+  top: 80px;
   right: 0;
   bottom: 0;
   left: 0;
@@ -222,16 +223,36 @@ html.v #text.loaded h1 + p {
   position: fixed;
   top: 0;
   left: 0;
+  background-color: #ccc;
+}
+#left-chip > div {
+  margin-left: 15px;
 }
 #count-full,
 #count-select {
-  padding: 8px;
-  float: left;
+  display: inline-block;
   line-height: 1em;
-  background-color: #ccc;
 }
 #pickup-list li + li {
   margin-top: 30px;
+}
+#count-chip,
+#format-chip,
+#orient-chip,
+#mode-chip {
+  display: inline-block;
+}
+#mode-chip label,
+#orient-chip label {
+  display: inline-block;
+  margin-top: 0;
+}
+#count-select {
+  margin-left: 15px;
+}
+#mode-chip label + label,
+#orient-chip label + label {
+  margin-left: 4px;
 }
 .link-chip {
   position: relative;
@@ -245,13 +266,6 @@ html.v #text.loaded h1 + p {
   display: inline-block;
   padding: 10px 5px 0 5px;
 }
-#mode-chip label {
-  display: inline-block;
-  margin-top: 0;
-}
-#mode-chip label + label {
-  margin-left: 10px;
-}
 a,
 a:visited,
 a:hover {
@@ -259,10 +273,8 @@ a:hover {
 }
 html.post #left-chip,
 html.post .link-chip,
-#count-full.unloaded,
-#count-select.unselected,
-#format-chip.unloaded,
-#mode-chip.unloaded {
+#left-chip.unloaded,
+#count-select.unselected {
   display: none;
 }
 .prev + .next {
@@ -288,10 +300,8 @@ html.post .link-chip,
   #mode-chip {
     color: #ccc;
   }
-  #count-full,
-  #count-select,
-  #format-selector,
-  #mode-chip {
+  #left-chip,
+  #format-selector {
     background-color: #222;
   }
   #input-button {
@@ -307,13 +317,15 @@ html.light body {
 }
 html.light body,
 html.light #format-selecotr,
-html.light #mode-chip {
+html.light #mode-chip,
+html.light #orient-chip {
   color: #333;
 }
 html.light #count-full,
 html.light #count-select,
 html.light #format-selector,
-html.light #mode-chip {
+html.light #mode-chip,
+html.light #orient-chip {
   background-color: #ccc;
 }
 html.dark body {
@@ -321,13 +333,15 @@ html.dark body {
 }
 html.dark body,
 html.dark #format-selector,
-html.dark #mode-chip {
+html.dark #mode-chip,
+html.dark #orient-chip {
   color: #ccc;
 }
 html.dark #count-full,
 html.dark #count-select,
 html.dark #format-selector,
-html.dark #mode-chip {
+html.dark #mode-chip,
+html.dark #orient-chip {
   background-color: #222;
 }
 html.light #input-button {
@@ -491,8 +505,12 @@ html.dark #input-button {
     </select>
   </div>
   <div id="mode-chip" class="unloaded">
-    <label>normal<input id="mode-chip-normal" type="radio" name="mode-chip" value="normal"></label>
-    <label>half<input id="mode-chip-half" type="radio" name="mode-chip" value="half"></label>
+    <label>ノーマル<input id="mode-chip-normal" type="radio" name="mode-chip" value="normal"></label>
+    <label>ハーフ<input id="mode-chip-half" type="radio" name="mode-chip" value="half"></label>
+  </div>
+  <div id="orient-chip">
+    <label>横<input id="orient-chip-h" type="radio" name="orient-chip" value="h"></label>
+    <label>縦<input id="orient-chip-v" type="radio" name="orient-chip" value="v"></label>
   </div>
 </div>
 <div class="link-chip">
@@ -574,6 +592,8 @@ let elm_modeNormal = document.querySelector("#mode-normal")
 let elm_modeHalf = document.querySelector("#mode-half")
 let elm_modeChipNormal = document.querySelector("#mode-chip-normal")
 let elm_modeChipHalf = document.querySelector("#mode-chip-half")
+let elm_orientChipH = document.querySelector("#orient-chip-h")
+let elm_orientChipV = document.querySelector("#orient-chip-v")
 // 改行の種類
 let EOS = "\n"
 // モード = 同一行の処理と、改行の読み取り
@@ -863,6 +883,16 @@ elm_modeChipNormal.onchange = () => {
 elm_modeChipHalf.onchange = () => {
   arr_option["mode"] = elm_modeChipHalf.value
   location.href = arr_url[currOrigin]["linkBase"] + arr_repoFile[1] + "&format=" + arr_option["format"] + "&orient=" + arr_option["orient"] + "&theme=" + arr_option["theme"] + "&mode=" +  arr_option["mode"]
+}
+elm_orientChipH.onchange = () => {
+  arr_option["orient"] = elm_orientChipH.value
+  location.href = arr_url[currOrigin]["linkBase"] + arr_repoFile[1] + "&format=" + arr_option["format"] + "&orient=" + arr_option["orient"] + "&theme=" + arr_option["theme"] + "&mode=" +  arr_option["mode"]
+  toggleOrient(arr_option["orient"])
+}
+elm_orientChipV.onchange = () => {
+  arr_option["orient"] = elm_orientChipV.value
+  location.href = arr_url[currOrigin]["linkBase"] + arr_repoFile[1] + "&format=" + arr_option["format"] + "&orient=" + arr_option["orient"] + "&theme=" + arr_option["theme"] + "&mode=" +  arr_option["mode"]
+  toggleOrient(arr_option["orient"])
 }
 /*
 
@@ -1185,8 +1215,10 @@ function applyOption() {
   toggleOrient(arr_option["orient"])
   if (arr_option["orient"] === "h") {
     elm_orientH.checked = true
+    elm_orientChipH.checked = true
   } else if (arr_option["orient"] === "v") {
     elm_orientV.checked = true
+    elm_orientChipV.checked = true
   }
   // テーマ
   toggleTheme(arr_option["theme"])
