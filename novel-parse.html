@@ -491,6 +491,12 @@ html.dark #input-button {
       <dt>mode=half</dt>
       <dd>原文の改行 2 個で 1 行の改行</dd>
     </dl>
+    <h3>URL</h3>
+    <dl>
+      <dt>url=作品のテキストファイルの URL</dt>
+      <dd>作品のテキストファイルの URL を指定して読み込ませる<br>
+      GitHub の場合は <code>https://raw.githubusercontent.com/ユーザ名/ファイル名</code> とする</dd>
+    </dl>
   </main><!-- text -->
 </div><!-- frame -->
 <div id="left-chip">
@@ -537,7 +543,8 @@ let arr_option = {
   "format": "",
   "orient": "",
   "theme": "",
-  "mode": ""
+  "mode": "",
+  "url": ""
 }
 let arr_optionDefault = {
   "format": "reading",
@@ -913,8 +920,8 @@ elm_orientChipV.onchange = () => {
 
 */
 if (arr_option["op"] !== undefined && arr_repoFile[1] !== "README.md") {
-  loadContent(arr_url[currOrigin]["content"]).then(src => {
-    exec(src)
+  loadContent(arr_url[currOrigin]["content"]).then(r => {
+    exec(r)
     elm_formatChip.classList.remove("unloaded")
     elm_formatChip.classList.add("loaded")
     elm_modeChip.classList.remove("unloaded")
@@ -923,11 +930,16 @@ if (arr_option["op"] !== undefined && arr_repoFile[1] !== "README.md") {
 } else if (arr_repoFile[1] === "README.md") {
   arr_option["format"] = "plot"
   arr_option["mode"] = "c"
-  loadContent(arr_url[currOrigin]["content"]).then(src => {
-    if (src.match(/^# .*$/m)) {
-      elm_title.innerHTML = src.replace(/^# (.*)\r?\n[\s\S]*/m, '$1')
+  loadContent(arr_url[currOrigin]["content"]).then(r => {
+    if (r.match(/^# .*$/m)) {
+      elm_title.innerHTML = r.replace(/^# (.*)\r?\n[\s\S]*/m, '$1')
     }
-    arr_format["readme"](src)
+    arr_format["readme"](r)
+  })
+}
+if (arr_option["url"] !== undefined && arr_option["op"] === undefined) {
+  loadContent(arr_option["url"]).then(r => {
+    execUrl(r)
   })
 }
 /*
@@ -1012,27 +1024,35 @@ function rescroll() {
 
 */
 // キーになる処理
-function exec(src) {
-  let EOS_LF = src.match(/\n/)
-  let EOS_CR = src.match(/\r\n/)
-  if (EOS_LF === null || (EOS_LF !== null && EOS_CR !== null && EOS_LF.length < EOS_CR.length)) {
-    EOS = "\r\n"
-  }
+function exec(r) {
+  setEos(r)
   // 文章内のタイトル表記に使う変数 title に値を代入し、 <title> にタイトルを代入
-  let arr_title = src.match(/^# .*/m)
+  let arr_title = r.match(/^# .*/m)
   if (arr_title) {
     title = arr_title[0].replace(/# /, "")
     elm_title.textContent = title
   }
   // フォーマットどおりの処理
-  arr_format[arr_option["format"]](src)
+  arr_format[arr_option["format"]](r)
   // README.md を取得してきてリンクを設定する
   if(arr_repoFile[0] !== undefined) {
-    loadContent(arr_url[currOrigin]["readme"]).then(r => {
-      setLink(r)
+    loadContent(arr_url[currOrigin]["readme"]).then(r1 => {
+      setLink(r1)
     })
   }
   elm_text.classList.add("loaded")
+}
+function execUrl(r) {
+  setEos(r)
+  arr_format[arr_option["format"]](r)
+}
+// EOS の決定
+function setEos(r) {
+  let EOS_LF = r.match(/\n/)
+  let EOS_CR = r.match(/\r\n/)
+  if (EOS_LF === null || (EOS_LF !== null && EOS_CR !== null && EOS_LF.length < EOS_CR.length)) {
+    EOS = "\r\n"
+  }
 }
 // ファイルの読み込み
 async function loadContent(url) {
