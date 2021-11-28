@@ -748,6 +748,8 @@ let arr_format = {
           } else {
             writeText(w.replace(/((.*(\r?\n)?)+)/gm, '<ul id="pickup-list">$1</ul>'))
           }
+        }).then(() => {
+          rescroll()
         })
       }
     }
@@ -803,13 +805,13 @@ let arr_format = {
     writeReadme(toc)
     function writeReadme() {
       loadContent(arr_url[currOrigin]["backhost"] + arr_toc[h][0])
-      .then(r0 => {
-        let partLength = removeRuby(removeMd(r0)).replace(/[\s　]/g, "").length
+      .then(r => {
+        let partLength = removeRuby(removeMd(r)).replace(/[\s　]/g, "").length
         fullLength += partLength
         return "* [" + arr_toc[h][1] + "](" + arr_url[currOrigin]["linkBase"] + arr_toc[h][0] + "&format=" + arr_option["format"] + "&theme=" + arr_option["theme"] + "&mode=" +  arr_option["mode"] + ") : " + partLength + "文字" + EOS
       })
-      .then(r1 => {
-        toc += r1
+      .then(r => {
+        toc += r
         h++
         if (h < arr_toc.length) {
           writeReadme(toc)
@@ -819,6 +821,8 @@ let arr_format = {
           elm_countFull.classList.remove("unloaded")
           writeText(mdParse(src.replace(/((.*\r?\n)*)(#+ 目次.*\r?\n)((.*\r?\n)*)((#|$)(.*(\r?\n)*)*)/gm, "$1" + toc + "$6")))
         }
+      }).then(() => {
+        rescroll()
       })
     }
   }
