@@ -686,7 +686,9 @@ let arr_format = {
     }).then(r => {
       return addTitle(r)
     }).then(r => {
-      writeText(r)
+      return writeText(r)
+    }).then(() => {
+      rescroll()
     })
     countFull(src)
   },
@@ -699,7 +701,9 @@ let arr_format = {
     }).then(r => {
       return parseNewline(r)
     }).then(r => {
-      writeText(r)
+      return writeText(r)
+    }).then(() => {
+      rescroll()
     })
   },
   plot: src => {
@@ -715,7 +719,9 @@ let arr_format = {
     }).then(r => {
       return addTitle(r)
     }).then(r => {
-      writeText(r)
+      return writeText(r)
+    }).then(() => {
+      rescroll()
     })
     countFull(src)
   },
@@ -991,11 +997,11 @@ window.onunload = () => {
   localStorage.setItem("file", arr_repoFile[1])
   localStorage.setItem("option", JSON.stringify(arr_option))
 }
-window.addEventListener("load", () => {
+function rescroll() {
   if (localStorage.getItem("file") === arr_repoFile[1]) {
     document.body.scrollTop = localStorage.getItem("scroll")
   }
-})
+}
 /*
 
   関数
@@ -1072,6 +1078,7 @@ function writeText(src) {
   elm_text.innerHTML = src
   elm_html.classList.remove("reading", "post", "plot", "pickup", "odt")
   elm_html.classList.add(arr_option["format"])
+  return true
 }
 // タグを処理する type=0 消去、tyep=1 色づけ
 async function procBracket(src, type) {
