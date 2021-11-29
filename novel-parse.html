@@ -16,6 +16,7 @@ body {
 h1 {
   margin-top: 0;
   margin-left: 0;
+  margin-bottom: 0;
   font-size: 40px;
   font-weight: bold;
 }
@@ -168,6 +169,13 @@ code {
   このページ固有の設定
 
 */
+body {
+  color: #333;
+  background-color: #fff;
+}
+div {
+  margin: 0;
+}
 html.v,
 html.v body {
   height: 100%
@@ -179,57 +187,64 @@ html.v body {
 }
 html.v #frame {
   position: fixed;
-  top: 80px;
+  top: 0;
   right: 0;
   bottom: 0;
   left: 0;
   width: 600px;
   height: 700px;
-  max-height: 95%;
+  max-height: 90%;
   margin: auto;
+  padding-top: 30px;
+}
+#text {
+  width: 600px;
+  max-width: 95%;
+  margin-left: -300px;
+  padding: 50px 35px 50px 300px;
+  font-family: "メイリオ", "Meiryo", 'Lucida Grande', "sans-serif";
+}
+#text p {
+  font-size: 16px;
+  line-height: 28.8px;
 }
 html.v #text {
-  width: unset;
   margin: 0;
-  padding: 0 35px;
+  padding: 0 35px 0 0;
   letter-spacing: 0.07em;
   writing-mode: vertical-rl;
   text-orientation: upright;
   overflow-x: auto;
 }
-body {
-  color: #333;
-  background-color: #fff;
-}
-div {
-  margin: 0;
-}
-#text {
-  margin-left: -300px;
-  padding: 50px 0 400px 300px;
-  font-family: "メイリオ", "Meiryo", 'Lucida Grande', "sans-serif";
-  font-size: 16px;
-  line-height: 28.8px;
-}
 #text.loaded p {
   margin: 0;
   padding: 0;
 }
-#text.loaded h1 + p {
-  margin-top: 80px;
+#text.loaded h1 + p,
+#text.loaded h1 + div.plot-heading-block,
+#text.loaded h1 + div.plot-heading-block + p {
+  margin-top: 50px;
 }
-html.v #text.loaded h1 + p {
+html.v #text.loaded h1 + p,
+html.v #text.loaded h1 + div.plot-heading-block + p {
   margin-top: 0;
   margin-right: 80px;
+}
+html.v #text.loaded div.plot-heading-block {
+  display: none;
 }
 #text h1 {
   text-align: center;
 }
 #left-chip {
+  display: none;
   position: fixed;
   top: 0;
   left: 0;
   background-color: #ccc;
+}
+#left-chip.loaded {
+  display: block;
 }
 #left-chip > div {
   margin-left: 15px;
@@ -261,7 +276,8 @@ html.v #text.loaded h1 + p {
   margin-left: 4px;
 }
 .link-chip {
-  position: relative;
+  position: absolute;
+  top: 25px;
   right: 0;
   text-align: right;
 }
@@ -316,6 +332,18 @@ html.post .link-chip,
 }
 .square-bracketss {
   color: #0ae;
+}
+@media (max-width: 586px) {
+  #frame {
+    padding-top: 30px;
+  }
+  html.v #frame {
+    padding-top: 60px;
+    box-sizing: border-box;
+  }
+  .link-chip {
+    top: 50px;
+  }
 }
 @media (prefers-color-scheme: dark) {
   body {
@@ -601,7 +629,7 @@ for (let i = 0; i < keys_arr_option.length; i++) {
   if (arr_optionUrl[keys_arr_option[i]] !== undefined) {
     arr_option[keys_arr_option[i]] = arr_optionUrl[keys_arr_option[i]]
   }
-  else if (arr_optionStorage[keys_arr_option[i]] !== undefined) {
+  else if (arr_optionStorage !== null && arr_optionStorage[keys_arr_option[i]] !== undefined) {
     arr_option[keys_arr_option[i]] = arr_optionStorage[keys_arr_option[i]]
   }
   else {
@@ -630,6 +658,7 @@ let elm_next = document.querySelectorAll(".next")
 let elmArr_brackets = document.querySelectorAll(".brackets")
 let elmArr_bracketsInclude = document.querySelectorAll(".brackets-include")
 let elmArr_bracketsItself = document.querySelectorAll(".brackets-itself")
+let elm_leftChip = document.querySelector("#left-chip")
 let elm_formatChip = document.querySelector("#format-chip")
 let elm_formatSelector = document.querySelector("#format-selector")
 let elm_modeChip = document.querySelector("#mode-chip")
@@ -730,7 +759,7 @@ let arr_format = {
     }).then(r => {
       return writeText(r)
     }).then(() => {
-      rescroll()
+      afterLoading()
     })
     countFull(src)
   },
@@ -745,7 +774,7 @@ let arr_format = {
     }).then(r => {
       return writeText(r)
     }).then(() => {
-      rescroll()
+      afterLoading()
     })
   },
   plot: src => {
@@ -760,10 +789,11 @@ let arr_format = {
       return parseNewline(r)
     }).then(r => {
       return addTitle(r)
-    }).then(r => {
-      return writeText(r)
+    }).then(async r => {
+      let r1 = await r.replace(/<p><div/g, '<div').replace(/\/div><\/p>/g, '/div>')
+      return writeText(r1)
     }).then(() => {
-      rescroll()
+      afterLoading()
     })
     countFull(src)
   },
@@ -791,7 +821,7 @@ let arr_format = {
             writeText(w.replace(/((.*(\r?\n)?)+)/gm, '<ul id="pickup-list">$1</ul>'))
           }
         }).then(() => {
-          rescroll()
+          afterLoading()
         })
       }
     }
@@ -864,36 +894,39 @@ let arr_format = {
           writeText(mdParse(src.replace(/((.*\r?\n)*)(#+ 目次.*\r?\n)((.*\r?\n)*)((#|$)(.*(\r?\n)*)*)/gm, "$1" + toc + "$6")))
         }
       }).then(() => {
-        rescroll()
+        afterLoading()
       })
     }
   }
 }
-applyOption()
 /*
 
-  括弧を書き出す
+  ロード時の動作
 
 */
-let arr_brackets0 = []
-let arr_brackets1 = []
-for (let i = 0; i < arr_bracketsItself.length; i++) {
-  arr_brackets0.push(arr_bracketsItself[i]["before"] + arr_bracketsItself[i]["after"])
+window.onunload = () => {
+  // リロード前のスクロールをリロード後に再現する
+  localStorage.setItem("scroll_top", document.body.scrollTop)
+  localStorage.setItem("scroll_left", document.body.scrollLeft)
+  localStorage.setItem("file", arr_repoFile[1])
+  localStorage.setItem("option", JSON.stringify(arr_option))
+  // レイアウト調整
+  layoutAdjustment()
 }
-for (let i = 0; i < arr_bracketsInclude.length; i++) {
-  arr_brackets1.push(arr_bracketsInclude[i]["before"] + arr_bracketsInclude[i]["after"])
-}
-let brackets0Joined = arr_brackets0.join(", ")
-let brackets1Joined = arr_brackets1.join(", ")
-let bracketsJoined = brackets0Joined + ", " + brackets1Joined
-for (let i = 0; i < elmArr_brackets.length; i++) {
-  elmArr_brackets[i].innerHTML = bracketsJoined
-}
-for (let i = 0; i < elmArr_bracketsInclude.length; i++) {
-  elmArr_bracketsInclude[i].innerHTML = brackets1Joined
-}
-for (let i = 0; i < elmArr_bracketsItself.length; i++) {
-  elmArr_bracketsItself[i].innerHTML = brackets0Joined
+window.addEventListener("DOMContentLoaded", () => {
+  // オプション設定を反映させる
+  applyOption()
+  // 括弧を書き出す
+  writeBrackets()
+})
+/*
+
+  ウィンドウのリサイズ時の動作
+
+*/
+window.onresize = () => {
+  // レイアウト調整
+  layoutAdjustment()
 }
 /*
 
@@ -967,10 +1000,8 @@ elm_orientChipV.onchange = () => {
 if (arr_option["op"] !== undefined && arr_repoFile[1] !== "README.md") {
   loadContent(arr_url[currOrigin]["content"]).then(r => {
     exec(r)
-    elm_formatChip.classList.remove("unloaded")
-    elm_formatChip.classList.add("loaded")
-    elm_modeChip.classList.remove("unloaded")
-    elm_modeChip.classList.add("loaded")
+    elm_leftChip.classList.remove("unloaded")
+    elm_leftChip.classList.add("loaded")
   })
 } else if (arr_repoFile[1] === "README.md") {
   arr_option["format"] = "plot"
@@ -1050,21 +1081,6 @@ window.addEventListener('touched', src => {
 })
 /*
 
-  リロード前のスクロールをリロード後に再現する
-
-*/
-window.onunload = () => {
-  localStorage.setItem("scroll", document.body.scrollTop)
-  localStorage.setItem("file", arr_repoFile[1])
-  localStorage.setItem("option", JSON.stringify(arr_option))
-}
-function rescroll() {
-  if (localStorage.getItem("file") === arr_repoFile[1]) {
-    document.body.scrollTop = localStorage.getItem("scroll")
-  }
-}
-/*
-
   関数
 
 */
@@ -1130,8 +1146,8 @@ function removeMd(src) {
   return src.replace(/^[ \t]*[#*+\-_~=`>|].*\r?\n/gm, "")
 }
 function procMd(src) {
-  return src.replace(/(^#{2,6} .*)/gm, `<h2 class="plot-heading">$1</h2>`)
-            .replace(/((<h2 class="plot-heading">.*?<\/h2>\r?\n)+)/gm, `<div class="plot-heading-block">$1</div>`)
+  return src.replace(/^(#{2,6} .*)/gm, `<h2 class="plot-heading">$1</h2>`)
+            .replace(/((<h2 class="plot-heading">.*?<\/h2>\r?\n)+)/gm, `<div class="plot-heading-block">$1</div>${EOS}${EOS}`)
             .replace(/^# .*\n/, "")
 }
 function parseOdt(src) {
@@ -1336,6 +1352,42 @@ function toggleOrient(orient) {
 function toggleTheme(theme) {
   elm_html.classList.remove("light", "dark" ,"auto")
   elm_html.classList.add(theme)
+}
+// レイアウトの調整
+function layoutAdjustment() {
+  
+}
+//  リロード前のスクロールをリロード後に再現する
+function afterLoading() {
+  if (localStorage.getItem("file") === arr_repoFile[1]) {
+    document.body.scrollTop = localStorage.getItem("scroll_top")
+    document.body.scrollLeft = localStorage.getItem("scroll_left")
+  } else {
+    document.body.scrollLeft = 10000
+  }
+}
+//  括弧を書き出す
+function writeBrackets() {
+  let arr_brackets0 = []
+  let arr_brackets1 = []
+  for (let i = 0; i < arr_bracketsItself.length; i++) {
+    arr_brackets0.push(arr_bracketsItself[i]["before"] + arr_bracketsItself[i]["after"])
+  }
+  for (let i = 0; i < arr_bracketsInclude.length; i++) {
+    arr_brackets1.push(arr_bracketsInclude[i]["before"] + arr_bracketsInclude[i]["after"])
+  }
+  let brackets0Joined = arr_brackets0.join(", ")
+  let brackets1Joined = arr_brackets1.join(", ")
+  let bracketsJoined = brackets0Joined + ", " + brackets1Joined
+  for (let i = 0; i < elmArr_brackets.length; i++) {
+    elmArr_brackets[i].innerHTML = bracketsJoined
+  }
+  for (let i = 0; i < elmArr_bracketsInclude.length; i++) {
+    elmArr_bracketsInclude[i].innerHTML = brackets1Joined
+  }
+  for (let i = 0; i < elmArr_bracketsItself.length; i++) {
+    elmArr_bracketsItself[i].innerHTML = brackets0Joined
+  }
 }
 function esc(data) {
   return data
