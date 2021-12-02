@@ -186,20 +186,15 @@ html.v body {
   margin: auto;
 }
 html.v #frame {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
   width: 600px;
   height: 700px;
   max-height: 90%;
   margin: auto;
-  padding-top: 30px;
+  padding-top: 45px;
 }
 #text {
   margin-left: -300px;
-  padding: 50px 35px 50px 335px;
+  padding: 50px 0 50px 300px;
   font-family: "メイリオ", "Meiryo", 'Lucida Grande', "sans-serif";
 }
 #text p {
@@ -212,7 +207,6 @@ html.v #text {
   letter-spacing: 0.07em;
   writing-mode: vertical-rl;
   text-orientation: upright;
-  overflow-x: auto;
 }
 #text.loaded p {
   margin: 0;
@@ -622,8 +616,15 @@ html.dark #input-button {
 
 */
 // URL の search の処理
+let srcText = ""
 let currOrigin = location.origin
 let arr_search = location.search.slice(1).split("&")
+let arr_searchItem = {}
+for (let i = 0; i < arr_search.length; i++) {
+  let w = arr_search[i].split("=")
+  arr_searchItem[w[0]] = w[1]
+}
+let op = arr_searchItem["op"]
 let arr_option = {
   "format": "",
   "orient": "",
@@ -637,29 +638,12 @@ let arr_optionDefault = {
   "theme": "auto",
   "mode": "normal"
 }
-let arr_optionUrl = {}
-arr_search.forEach(r => {
-  if (r !== "") {
-    let w = r.split("=")
-    arr_optionUrl[w[0]] = w[1]
-  }
-})
-if (arr_optionUrl["op"] !== undefined) {
-  arr_option["op"] = arr_optionUrl["op"]
-}
-let arr_optionStorage = localStorage.getItem("option")
-let keys_arr_option = Object.keys(arr_option)
-for (let i = 0; i < keys_arr_option.length; i++) {
-  if (arr_optionUrl[keys_arr_option[i]] !== undefined) {
-    arr_option[keys_arr_option[i]] = arr_optionUrl[keys_arr_option[i]]
-  }
-  else if (arr_optionStorage !== null && arr_optionStorage[keys_arr_option[i]] !== undefined) {
-    arr_option[keys_arr_option[i]] = arr_optionStorage[keys_arr_option[i]]
-  }
-  else {
-    arr_option[keys_arr_option[i]] = arr_optionDefault[keys_arr_option[i]]
-  }
-}
+let arr_repoFile = []
+let prevFile = ""
+let nextFile = ""
+let arr_url = {}
+let arr_optionStorage = []
+let keys_arr_option = []
 // DOM
 let elm_title = document.querySelector("title")
 let elm_input = document.querySelector("#input")
@@ -712,40 +696,6 @@ let title = ""
 let trgFile = null
 // URL の search で作品が指定されていた場合の作品のホスト
 let now = Date()
-let arr_repoFile = []
-let prevFile = ""
-let nextFile = ""
-if (arr_option["op"] !== undefined) {
-  arr_repoFile = arr_option["op"].split("/")
-  prevFile = arr_repoFile[1].replace(/(\[\d+\]).+/, "$1") + ("00" + (Number(arr_repoFile[1].replace(/\[\d+\](\d+)\..+/, "$1")) - 1)).slice(-3) + arr_repoFile[1].replace(/\[\d+\]\d+(\..+)/, "$1")
-  nextFile = arr_repoFile[1].replace(/(\[\d+\]).+/, "$1") + ("00" + (Number(arr_repoFile[1].replace(/\[\d+\](\d+)\..+/, "$1")) + 1)).slice(-3) + arr_repoFile[1].replace(/\[\d+\]\d+(\..+)/, "$1")
-}
-let arr_url = {
-  "http://etc.satsuki.c": {
-    "backhost": "http://etc.satsuki.c/novel/" + arr_repoFile[0] + "/",
-    "content":  "http://etc.satsuki.c/novel/" + arr_option["op"] + "?" + now,
-    "readme":   "http://etc.satsuki.c/novel/" + arr_repoFile[0] + "/README.md?" + now,
-    "linkBase": "http://etc.satsuki.c/novel-parse.html?op=" + arr_repoFile[0] + "/",
-    "prev":     "http://etc.satsuki.c/novel-parse.html?op=" + arr_repoFile[0] + "/" + prevFile + "&format=" + arr_option["format"] + "&orient=" + arr_option["orient"] + "&theme=" + arr_option["theme"] + "&mode=" +  arr_option["mode"],
-    "next":     "http://etc.satsuki.c/novel-parse.html?op=" + arr_repoFile[0] + "/" + nextFile + "&format=" + arr_option["format"] + "&orient=" + arr_option["orient"] + "&theme=" + arr_option["theme"] + "&mode=" +  arr_option["mode"]
-  },
-  "https://etc.satsuki.me": {
-    "backhost": "https://raw.githubusercontent.com/satsuki-thyme/" + arr_repoFile[0] + "/master/",
-    "content":  "https://raw.githubusercontent.com/satsuki-thyme/" + arr_repoFile[0] + "/master/" + arr_repoFile[1] + "?" + now,
-    "readme":   "https://raw.githubusercontent.com/satsuki-thyme/" + arr_repoFile[0] + "/master/README.md?" + now,
-    "linkBase": "https://etc.satsuki.me/novel-parse.html?op=" + arr_repoFile[0] + "/",
-    "prev":     "https://etc.satsuki.me/novel-parse.html?op=" + arr_repoFile[0] + "/" + prevFile + "&format=" + arr_option["format"] + "&orient=" + arr_option["orient"] + "&theme=" + arr_option["theme"] + "&mode=" +  arr_option["mode"],
-    "next":     "https://etc.satsuki.me/novel-parse.html?op=" + arr_repoFile[0] + "/" + nextFile + "&format=" + arr_option["format"] + "&orient=" + arr_option["orient"] + "&theme=" + arr_option["theme"] + "&mode=" +  arr_option["mode"]
-  },
-  "https://satsuki.me": {
-    "backhost": "https://raw.githubusercontent.com/satsuki-thyme/" + arr_repoFile[0] + "/master/",
-    "content":  "https://raw.githubusercontent.com/satsuki-thyme/" + arr_repoFile[0] + "/master/" + arr_repoFile[1] + "?" + now,
-    "readme":   "https://raw.githubusercontent.com/satsuki-thyme/" + arr_repoFile[0] + "/master/README.md?" + now,
-    "linkBase": "https://satsuki.me/novel-parse.html?op=" + arr_repoFile[0] + "/",
-    "prev":     "https://satsuki.me/novel-parse.html?op=" + arr_repoFile[0] + "/" + prevFile + "&format=" + arr_option["format"] + "&orient=" + arr_option["orient"] + "&theme=" + arr_option["theme"] + "&mode=" +  arr_option["mode"],
-    "next":     "https://satsuki.me/novel-parse.html?op=" + arr_repoFile[0] + "/" + nextFile + "&format=" + arr_option["format"] + "&orient=" + arr_option["orient"] + "&theme=" + arr_option["theme"] + "&mode=" +  arr_option["mode"]
-  }
-}
 // タグの定義（タグ自身を処理の対象にする）
 let arr_bracketsItself = [
   {
@@ -876,7 +826,7 @@ let arr_format = {
       }
       zip.generateAsync({type: "blob"})
       .then(r => {
-        if (arr_option["op"] !== undefined) {
+        if (op!== undefined) {
           saveAs(r, arr_makeFileName(search["op"]))
         } else {
           saveAs(r, makeFileName(trgFile.name))
@@ -925,7 +875,7 @@ let arr_format = {
 }
 /*
 
-  ロード時の動作
+  アンロード時の動作
 
 */
 window.onunload = () => {
@@ -934,15 +884,92 @@ window.onunload = () => {
   localStorage.setItem("scroll_left", document.body.scrollLeft)
   localStorage.setItem("file", arr_repoFile[1])
   localStorage.setItem("option", JSON.stringify(arr_option))
-  // レイアウト調整
-  layoutAdjustment()
 }
+/*
+
+  ロード時の動作（早い）
+
+*/
 window.addEventListener("DOMContentLoaded", () => {
+  let arr_optionStorage = JSON.parse(localStorage.getItem("option"))
+  let keys_arr_option = Object.keys(arr_option)
+  for (let i = 0; i < keys_arr_option.length; i++) {
+    if (arr_optionStorage !== null && arr_optionStorage[keys_arr_option[i]] !== undefined) {
+      arr_option[keys_arr_option[i]] = arr_optionStorage[keys_arr_option[i]]
+    }
+    else {
+      arr_option[keys_arr_option[i]] = arr_optionDefault[keys_arr_option[i]]
+    }
+  }
+  // URL で作品が指定されていた場合の定義
+  if (op !== "") {
+    arr_repoFile = op.split("/")
+    prevFile = arr_repoFile[1].replace(/(\[\d+\]).+/, "$1") + ("00" + (Number(arr_repoFile[1].replace(/\[\d+\](\d+)\..+/, "$1")) - 1)).slice(-3) + arr_repoFile[1].replace(/\[\d+\]\d+(\..+)/, "$1")
+    nextFile = arr_repoFile[1].replace(/(\[\d+\]).+/, "$1") + ("00" + (Number(arr_repoFile[1].replace(/\[\d+\](\d+)\..+/, "$1")) + 1)).slice(-3) + arr_repoFile[1].replace(/\[\d+\]\d+(\..+)/, "$1")
+  }
+  arr_url = {
+    "http://etc.satsuki.c": {
+      "backhost": "http://etc.satsuki.c/novel/" + arr_repoFile[0] + "/",
+      "content":  "http://etc.satsuki.c/novel/" + op,
+      "readme":   "http://etc.satsuki.c/novel/" + arr_repoFile[0] + "/README.md",
+      "linkBase": "http://etc.satsuki.c/novel-parse.html?op=" + arr_repoFile[0] + "/",
+      "prev":     "http://etc.satsuki.c/novel-parse.html?op=" + arr_repoFile[0] + "/" + prevFile + "&format=" + arr_option["format"] + "&orient=" + arr_option["orient"] + "&theme=" + arr_option["theme"] + "&mode=" +  arr_option["mode"],
+      "next":     "http://etc.satsuki.c/novel-parse.html?op=" + arr_repoFile[0] + "/" + nextFile + "&format=" + arr_option["format"] + "&orient=" + arr_option["orient"] + "&theme=" + arr_option["theme"] + "&mode=" +  arr_option["mode"]
+    },
+    "https://etc.satsuki.me": {
+      "backhost": "https://raw.githubusercontent.com/satsuki-thyme/" + arr_repoFile[0] + "/master/",
+      "content":  "https://raw.githubusercontent.com/satsuki-thyme/" + arr_repoFile[0] + "/master/" + arr_repoFile[1],
+      "readme":   "https://raw.githubusercontent.com/satsuki-thyme/" + arr_repoFile[0] + "/master/README.md",
+      "linkBase": "https://etc.satsuki.me/novel-parse.html?op=" + arr_repoFile[0] + "/",
+      "prev":     "https://etc.satsuki.me/novel-parse.html?op=" + arr_repoFile[0] + "/" + prevFile + "&format=" + arr_option["format"] + "&orient=" + arr_option["orient"] + "&theme=" + arr_option["theme"] + "&mode=" +  arr_option["mode"],
+      "next":     "https://etc.satsuki.me/novel-parse.html?op=" + arr_repoFile[0] + "/" + nextFile + "&format=" + arr_option["format"] + "&orient=" + arr_option["orient"] + "&theme=" + arr_option["theme"] + "&mode=" +  arr_option["mode"]
+    },
+    "https://satsuki.me": {
+      "backhost": "https://raw.githubusercontent.com/satsuki-thyme/" + arr_repoFile[0] + "/master/",
+      "content":  "https://raw.githubusercontent.com/satsuki-thyme/" + arr_repoFile[0] + "/master/" + arr_repoFile[1],
+      "readme":   "https://raw.githubusercontent.com/satsuki-thyme/" + arr_repoFile[0] + "/master/README.md",
+      "linkBase": "https://satsuki.me/novel-parse.html?op=" + arr_repoFile[0] + "/",
+      "prev":     "https://satsuki.me/novel-parse.html?op=" + arr_repoFile[0] + "/" + prevFile + "&format=" + arr_option["format"] + "&orient=" + arr_option["orient"] + "&theme=" + arr_option["theme"] + "&mode=" +  arr_option["mode"],
+      "next":     "https://satsuki.me/novel-parse.html?op=" + arr_repoFile[0] + "/" + nextFile + "&format=" + arr_option["format"] + "&orient=" + arr_option["orient"] + "&theme=" + arr_option["theme"] + "&mode=" +  arr_option["mode"]
+    }
+  }
+  // URL で作品が指定されていた場合の処理
+  if (arr_repoFile[1] !== "README.md") {
+    loadContent(arr_url[currOrigin]["content"]).then(r => {
+      exec(r)
+      srcText = r
+      elm_leftChip.classList.remove("unloaded")
+      elm_leftChip.classList.add("loaded")
+    })
+  } else if (arr_repoFile[1] === "README.md") {
+    arr_option["format"] = "plot"
+    arr_option["mode"] = "normal"
+    loadContent(arr_url[currOrigin]["content"]).then(r => {
+      if (r.match(/^# .*$/m)) {
+        elm_title.innerHTML = r.replace(/^# (.*)\r?\n[\s\S]*/m, '$1')
+      }
+      arr_format["readme"](r)
+    })
+  }
+  if (arr_option["url"] !== undefined && op=== undefined) {
+    loadContent(arr_option["url"]).then(r => {
+      execUrl(r)
+    })
+  }
   // オプション設定を反映させる
   applyOption()
   // 括弧を書き出す
   writeBrackets()
 })
+/*
+
+  ロード時の動作（遅い）
+
+*/
+window.onload = () => {
+  // レイアウト調整
+  layoutAdjustment()
+}
 /*
 
   ウィンドウのリサイズ時の動作
@@ -957,6 +984,7 @@ window.onresize = () => {
   オプション設定の処理
 
 */
+// デフォルト画面の変更
 elm_formatReading.onchange = () => {
   arr_option["format"] = "reading"
 }
@@ -971,10 +999,6 @@ elm_formatPickup.onchange = () => {
 }
 elm_formatOdt.onchange = () => {
   arr_option["format"] = "odt"
-}
-elm_formatSelector.onchange = () => {
-  arr_option["format"] = elm_formatSelector.options[elm_formatSelector.selectedIndex].value
-  location.href = arr_url[currOrigin]["linkBase"] + arr_repoFile[1] + "&format=" + arr_option["format"] + "&orient=" + arr_option["orient"] + "&theme=" + arr_option["theme"] + "&mode=" +  arr_option["mode"]
 }
 elm_orientH.onchange = () => {
   arr_option["orient"] = "h"
@@ -998,49 +1022,28 @@ elm_modeNormal.onchange = () => {
 elm_modeHalf.onchange = () => {
   arr_option["mode"] = "half"
 }
+// left-chip の中の変更
+elm_formatSelector.onchange = () => {
+  arr_option["format"] = elm_formatSelector.options[elm_formatSelector.selectedIndex].value
+}
 elm_modeChipNormal.onchange = () => {
   arr_option["mode"] = elm_modeChipNormal.value
-  location.href = arr_url[currOrigin]["linkBase"] + arr_repoFile[1] + "&format=" + arr_option["format"] + "&orient=" + arr_option["orient"] + "&theme=" + arr_option["theme"] + "&mode=" +  arr_option["mode"]
+  toggleMode(arr_option["mode"])
 }
 elm_modeChipHalf.onchange = () => {
   arr_option["mode"] = elm_modeChipHalf.value
-  location.href = arr_url[currOrigin]["linkBase"] + arr_repoFile[1] + "&format=" + arr_option["format"] + "&orient=" + arr_option["orient"] + "&theme=" + arr_option["theme"] + "&mode=" +  arr_option["mode"]
+  toggleMode(arr_option["mode"])
 }
 elm_orientChipH.onchange = () => {
   arr_option["orient"] = elm_orientChipH.value
-  location.href = arr_url[currOrigin]["linkBase"] + arr_repoFile[1] + "&format=" + arr_option["format"] + "&orient=" + arr_option["orient"] + "&theme=" + arr_option["theme"] + "&mode=" +  arr_option["mode"]
   toggleOrient(arr_option["orient"])
 }
 elm_orientChipV.onchange = () => {
   arr_option["orient"] = elm_orientChipV.value
-  location.href = arr_url[currOrigin]["linkBase"] + arr_repoFile[1] + "&format=" + arr_option["format"] + "&orient=" + arr_option["orient"] + "&theme=" + arr_option["theme"] + "&mode=" +  arr_option["mode"]
   toggleOrient(arr_option["orient"])
-}
-/*
-
-  URL で作品が指定されていた場合の処理
-
-*/
-if (arr_option["op"] !== undefined && arr_repoFile[1] !== "README.md") {
-  loadContent(arr_url[currOrigin]["content"]).then(r => {
-    exec(r)
-    elm_leftChip.classList.remove("unloaded")
-    elm_leftChip.classList.add("loaded")
-  })
-} else if (arr_repoFile[1] === "README.md") {
-  arr_option["format"] = "plot"
-  arr_option["mode"] = "c"
-  loadContent(arr_url[currOrigin]["content"]).then(r => {
-    if (r.match(/^# .*$/m)) {
-      elm_title.innerHTML = r.replace(/^# (.*)\r?\n[\s\S]*/m, '$1')
+  if (localStorage.getItem("scroll_left") === null) {
+      document.body.scrollLeft = 100000
     }
-    arr_format["readme"](r)
-  })
-}
-if (arr_option["url"] !== undefined && arr_option["op"] === undefined) {
-  loadContent(arr_option["url"]).then(r => {
-    execUrl(r)
-  })
 }
 /*
 
@@ -1377,6 +1380,10 @@ function toggleTheme(theme) {
   elm_html.classList.remove("light", "dark" ,"auto")
   elm_html.classList.add(theme)
 }
+// モードの変更処理
+function toggleMode(mode) {
+  exec(srcText)
+}
 // レイアウトの調整
 function layoutAdjustment() {
   
@@ -1385,9 +1392,9 @@ function layoutAdjustment() {
 function afterLoading() {
   if (localStorage.getItem("file") === arr_repoFile[1]) {
     document.body.scrollTop = localStorage.getItem("scroll_top")
-    document.body.scrollLeft = localStorage.getItem("scroll_left")
-  } else {
-    document.body.scrollLeft = 10000
+    if (localStorage.getItem("scroll_left") === null) {
+      document.body.scrollLeft = 100000
+    }
   }
 }
 //  括弧を書き出す
