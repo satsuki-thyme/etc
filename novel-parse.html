@@ -486,7 +486,7 @@ html.dark #input-button {
       フォーマット「 ODT 」には影響がありません。</p>
     <dl>
       <label>
-        <input id="orient-h" type="radio" name="orient" value="orient-h" checked>
+        <input id="orient-h" type="radio" name="orient" value="orient-h">
         <dt>横書き</dt>
         <dd>横書きです。</dd>
       </label>
@@ -526,35 +526,6 @@ html.dark #input-button {
     </dl>
     <h2>URL オプション</h2>
     <p>URL で ? に続けてオプションを指定することができます。</p>
-    <p>& でつなげて複数指定することができます。</p>
-    <p>例：<code>novel-parse?format=plot&theme=light&mode=c</code></p>
-    <h3>フォーマット</h3>
-    <dl>
-      <dt>format=reading</dt>
-      <dd>標準</dd>
-      <dt>format=plot</dt>
-      <dd>プロット</dd>
-      <dt>format=post</dt>
-      <dd>投稿</dd>
-      <dt>format=odt</dt>
-      <dd>ODT</dd>
-      <dt>format=pickup</dt>
-      <dd>ピックアップ</dd>
-    </dl>
-    <h3>テーマ</h3>
-    <dl>
-      <dt>theme=light</dt>
-      <dd>ライト</dd>
-      <dt>theme=dark</dt>
-      <dd>ダーク</dd>
-    </dl>
-    <h3>モード</h3>
-    <dl>
-      <dt>mode=normal</dt>
-      <dd>原文の改行をそのまま反映</dd>
-      <dt>mode=half</dt>
-      <dd>原文の改行 2 個で 1 行の改行</dd>
-    </dl>
     <h3>URL</h3>
     <dl>
       <dt>url=作品のテキストファイルの URL</dt>
@@ -656,9 +627,7 @@ let elmArr_brackets = document.querySelectorAll(".brackets")
 let elmArr_bracketsInclude = document.querySelectorAll(".brackets-include")
 let elmArr_bracketsItself = document.querySelectorAll(".brackets-itself")
 let elm_leftChip = document.querySelector("#left-chip")
-let elm_formatChip = document.querySelector("#format-chip")
 let elm_formatSelector = document.querySelector("#format-selector")
-let elm_modeChip = document.querySelector("#mode-chip")
 let elm_modeNormal = document.querySelector("#mode-normal")
 let elm_modeHalf = document.querySelector("#mode-half")
 let elm_orientChipH = document.querySelector("#orient-chip-h")
