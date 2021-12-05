@@ -47,7 +47,7 @@ async function mdParse(src) {
         arr_im2[j] = arr_im1[i].replace(/ {2}$/g, '<br>')
         j++
       }
-      // br を処理し、 br を受けていない（ br の始まり＝ j に加算しない）
+      // br があり、 br を受けていない（ br の始まり＝ j に加算しない）
       else if (
         arr_im1[i].match(/ {2}$/) !== null
         &&
@@ -59,7 +59,7 @@ async function mdParse(src) {
     ) {
         arr_im2[j] = arr_im1[i].replace(/ {2}$/, '<br>')
       }
-      // br を処理し、 br を受けている（ br が続く＝ j に加算しない）
+      // br があり、 br を受けている（ br が続く＝ j に加算しない）
       else if (
         i !== 0
         &&
