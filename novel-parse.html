@@ -310,10 +310,10 @@ a:hover {
   text-align: right;
   opacity: 0.5;
 }
-.curly-bracketss {
+.curly-brks {
   color: #d00;
 }
-.square-bracketss {
+.square-brks {
   color: #0ae;
 }
 @media (max-width: 586px) {
@@ -449,33 +449,33 @@ html.dark #input-button {
         <dd>閲覧用の表示でデフォルトです。<br>
           ウェブ小説記法のルビを解釈します。<br>
           Markdown を非表示にします。<br>
-          <span class="brackets-itself"></span> の括弧自体を非表示にし、 <span class="brackets-include"></span> の括弧と中身を非表示にします。</dd>
+          <span class="brk-itself"></span> の括弧自体を非表示にし、 <span class="brk-include"></span> の括弧と中身を非表示にします。</dd>
       </label>
       <label>
         <input id="format-post" type="radio" name="format" value="post">
         <dt>投稿</dt>
         <dd>ウェブ小説記法のルビをそのまま表示し、解釈することしません。<br>
           Markdown を非表示にします。<br>
-          <span class="brackets-itself"></span> の括弧自体を非表示にし、 <span class="brackets-include"></span> の括弧と中身を非表示にします。</dd>
+          <span class="brk-itself"></span> の括弧自体を非表示にし、 <span class="brk-include"></span> の括弧と中身を非表示にします。</dd>
       </label>
       <label>
         <input id="format-plot" type="radio" name="format" value="plot">
         <dt>プロット</dt>
         <dd>プロットを確認する際の表示です。<br>
           Markdown を解釈しますが、見出しは本文左に表示します。<br>
-          閲覧、投稿では表示されない <span class="brackets"></span> をそのままハイライトして表示します。</dd>
+          閲覧、投稿では表示されない <span class="brk"></span> をそのままハイライトして表示します。</dd>
       </label>
       <label>
         <input id="format-pickup" type="radio" name="format" value="pickup">
         <dt>ピックアップ</dt>
-        <dd><span class="brackets"></span> で囲った部分をピックアップして表示します。</dd>
+        <dd><span class="brk"></span> で囲った部分をピックアップして表示します。</dd>
       </label>
       <label>
         <input id="format-odt" type="radio" name="format" value="odt">
         <dt>ODT</dt>
         <dd>ウェブ小説記法のルビを解釈し、 odt に変換してダウンロードします。<br>
           LibreOffice などで開くことができます。<br>
-          <span class="brackets-itself"></span> の括弧自体を非表示にし、 <span class="brackets-include"></span> の括弧と中身を非表示にします。<br>
+          <span class="brk-itself"></span> の括弧自体を非表示にし、 <span class="brk-include"></span> の括弧と中身を非表示にします。<br>
           ダウンロードに際してブラウザから危険性を示唆されます。自己責任でご利用ください。</dd>
       </label>
     </dl>
@@ -621,9 +621,9 @@ let elm_countFull = document.querySelector("#count-full")
 let elm_countSelect = document.querySelector("#count-select")
 let elm_prev = document.querySelectorAll(".prev")
 let elm_next = document.querySelectorAll(".next")
-let elmArr_brackets = document.querySelectorAll(".brackets")
-let elmArr_bracketsInclude = document.querySelectorAll(".brackets-include")
-let elmArr_bracketsItself = document.querySelectorAll(".brackets-itself")
+let elmArr_brk = document.querySelectorAll(".brk")
+let elmArr_brkInc = document.querySelectorAll(".brk-include")
+let elmArr_brkSlf = document.querySelectorAll(".brk-itself")
 let elm_leftChip = document.querySelector("#left-chip")
 let elm_formatSelector = document.querySelector("#format-selector")
 let elm_modeNormal = document.querySelector("#mode-normal")
@@ -655,20 +655,20 @@ let trgFile = null
 // URL の search で作品が指定されていた場合の作品のホスト
 let now = Date()
 // タグの定義（タグ自身を処理の対象にする）
-let arr_bracketsItself = [
+let arr_brkSlf = [
   {
     "before": "{",
     "after": "}",
-    "replaceBefore": '<span class="curly-bracketss">',
+    "replaceBefore": '<span class="curly-brks">',
     "replaceAfter": '</span>'
   }
 ]
 // タグの定義（タグと中身を処理の対象にする）
-let arr_bracketsInclude = [
+let arr_brkInc = [
   {
     "before": "[",
     "after": "]",
-    "replaceBefore": '<span class="square-bracketss">',
+    "replaceBefore": '<span class="square-brks">',
     "replaceAfter": '</span>'
   }
 ]
@@ -677,7 +677,7 @@ let arr_toc = []
 // 変換先フォーマット毎の処理
 let arr_format = {
   reading: src => {
-    procbrackets(src)
+    procbrk(src)
     .then(r => {
       return parseRuby(r)
     }).then(r => {
@@ -696,7 +696,7 @@ let arr_format = {
     countFull(src)
   },
   post: src => {
-    procbrackets(src)
+    procbrk(src)
     .then(r => {
       return removeMd(r)
     }).then(r => {
@@ -712,7 +712,7 @@ let arr_format = {
     })
   },
   plot: src => {
-    procbrackets(src, 1)
+    procbrk(src, 1)
     .then(r => {
       return parseRuby(r)
     }).then(r => {
@@ -737,19 +737,19 @@ let arr_format = {
     pick("")
     function pick(w0) {
       let w = w0
-      let RE_w0 = RegExp(".{0,30}" + esc(arr_bracketsItself[h]["before"]) + ".*?" + esc(arr_bracketsItself[h]["after"]) + ".{0,30}" + "(.{0,30}" + esc(arr_bracketsItself[h]["after"]) + ")?", "g")
-      let RE_w1 = RegExp(".{0,30}" + esc(arr_bracketsInclude[h]["before"]) + ".*?" + esc(arr_bracketsInclude[h]["after"]) + ".{0,30}" + "(.{0,30}" + esc(arr_bracketsInclude[h]["after"]) + ")?", "g")
+      let RE_w0 = RegExp(".{0,30}" + esc(arr_brkSlf[h]["before"]) + ".*?" + esc(arr_brkSlf[h]["after"]) + ".{0,30}" + "(.{0,30}" + esc(arr_brkSlf[h]["after"]) + ")?", "g")
+      let RE_w1 = RegExp(".{0,30}" + esc(arr_brkInc[h]["before"]) + ".*?" + esc(arr_brkInc[h]["after"]) + ".{0,30}" + "(.{0,30}" + esc(arr_brkInc[h]["after"]) + ")?", "g")
       let arr_pickup0 = monoLine.match(RE_w0)
       let arr_pickup1 = monoLine.match(RE_w1)
       if (arr_pickup0 !== null || match1 !== null) {
         let arr_pickupAll = arr_pickup0.concat(arr_pickup1)
-        procbrackets(arr_pickupAll.join(EOL).replace(/^(.*)$/gm, '<li>$1</li>'), 1)
+        procbrk(arr_pickupAll.join(EOL).replace(/^(.*)$/gm, '<li>$1</li>'), 1)
         .then(async r => {
           return parseRuby(r)
         }).then(async r => {
           w += r
           h++
-          if (h < arr_bracketsItself) {
+          if (h < arr_brkSlf) {
             pick(w)
           } else {
             writeText(w.replace(/((.*(\r?\n)?)+)/gm, '<ul id="pickup-list">$1</ul>'))
@@ -763,7 +763,7 @@ let arr_format = {
   odt: src => {
     let zip = new JSZip()
     let folder = null
-    procbrackets(src)
+    procbrk(src)
     .then(r => {
       return parseRuby(r)
     }).then(r => {
@@ -862,54 +862,54 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   }
   // URL で作品が指定されていた場合の定義
-  if (op !== "") {
+  if (op !== undefined) {
     arr_repoFile = op.split("/")
     prevFile = arr_repoFile[1].replace(/(\[\d+\]).+/, "$1") + ("00" + (Number(arr_repoFile[1].replace(/\[\d+\](\d+)\..+/, "$1")) - 1)).slice(-3) + arr_repoFile[1].replace(/\[\d+\]\d+(\..+)/, "$1")
     nextFile = arr_repoFile[1].replace(/(\[\d+\]).+/, "$1") + ("00" + (Number(arr_repoFile[1].replace(/\[\d+\](\d+)\..+/, "$1")) + 1)).slice(-3) + arr_repoFile[1].replace(/\[\d+\]\d+(\..+)/, "$1")
-  }
-  arr_url = {
-    "http://etc.satsuki.c": {
-      "backhost": "http://etc.satsuki.c/novel/" + arr_repoFile[0] + "/",
-      "content":  "http://etc.satsuki.c/novel/" + op,
-      "readme":   "http://etc.satsuki.c/novel/" + arr_repoFile[0] + "/README.md",
-      "linkBase": "http://etc.satsuki.c/novel-parse.html?op=" + arr_repoFile[0] + "/",
-      "prev":     "http://etc.satsuki.c/novel-parse.html?op=" + arr_repoFile[0] + "/" + prevFile + "&format=" + arr_option["format"] + "&orient=" + arr_option["orient"] + "&theme=" + arr_option["theme"] + "&mode=" +  arr_option["mode"],
-      "next":     "http://etc.satsuki.c/novel-parse.html?op=" + arr_repoFile[0] + "/" + nextFile + "&format=" + arr_option["format"] + "&orient=" + arr_option["orient"] + "&theme=" + arr_option["theme"] + "&mode=" +  arr_option["mode"]
-    },
-    "https://etc.satsuki.me": {
-      "backhost": "https://raw.githubusercontent.com/satsuki-thyme/" + arr_repoFile[0] + "/master/",
-      "content":  "https://raw.githubusercontent.com/satsuki-thyme/" + arr_repoFile[0] + "/master/" + arr_repoFile[1],
-      "readme":   "https://raw.githubusercontent.com/satsuki-thyme/" + arr_repoFile[0] + "/master/README.md",
-      "linkBase": "https://etc.satsuki.me/novel-parse.html?op=" + arr_repoFile[0] + "/",
-      "prev":     "https://etc.satsuki.me/novel-parse.html?op=" + arr_repoFile[0] + "/" + prevFile + "&format=" + arr_option["format"] + "&orient=" + arr_option["orient"] + "&theme=" + arr_option["theme"] + "&mode=" +  arr_option["mode"],
-      "next":     "https://etc.satsuki.me/novel-parse.html?op=" + arr_repoFile[0] + "/" + nextFile + "&format=" + arr_option["format"] + "&orient=" + arr_option["orient"] + "&theme=" + arr_option["theme"] + "&mode=" +  arr_option["mode"]
-    },
-    "https://satsuki.me": {
-      "backhost": "https://raw.githubusercontent.com/satsuki-thyme/" + arr_repoFile[0] + "/master/",
-      "content":  "https://raw.githubusercontent.com/satsuki-thyme/" + arr_repoFile[0] + "/master/" + arr_repoFile[1],
-      "readme":   "https://raw.githubusercontent.com/satsuki-thyme/" + arr_repoFile[0] + "/master/README.md",
-      "linkBase": "https://satsuki.me/novel-parse.html?op=" + arr_repoFile[0] + "/",
-      "prev":     "https://satsuki.me/novel-parse.html?op=" + arr_repoFile[0] + "/" + prevFile + "&format=" + arr_option["format"] + "&orient=" + arr_option["orient"] + "&theme=" + arr_option["theme"] + "&mode=" +  arr_option["mode"],
-      "next":     "https://satsuki.me/novel-parse.html?op=" + arr_repoFile[0] + "/" + nextFile + "&format=" + arr_option["format"] + "&orient=" + arr_option["orient"] + "&theme=" + arr_option["theme"] + "&mode=" +  arr_option["mode"]
-    }
-  }
-  // URL で作品が指定されていた場合の処理
-  if (arr_repoFile[1] !== "README.md") {
-    loadContent(arr_url[currOrigin]["content"]).then(r => {
-      exec(r)
-      srcText = r
-      elm_leftChip.classList.remove("unloaded")
-      elm_leftChip.classList.add("loaded")
-    })
-  } else if (arr_repoFile[1] === "README.md") {
-    arr_option["format"] = "plot"
-    arr_option["mode"] = "normal"
-    loadContent(arr_url[currOrigin]["content"]).then(r => {
-      if (r.match(/^# .*$/m)) {
-        elm_title.innerHTML = r.replace(/^# (.*)\r?\n[\s\S]*/m, '$1')
+    arr_url = {
+      "http://etc.satsuki.c": {
+        "backhost": "http://etc.satsuki.c/novel/" + arr_repoFile[0] + "/",
+        "content":  "http://etc.satsuki.c/novel/" + op,
+        "readme":   "http://etc.satsuki.c/novel/" + arr_repoFile[0] + "/README.md",
+        "linkBase": "http://etc.satsuki.c/novel-parse.html?op=" + arr_repoFile[0] + "/",
+        "prev":     "http://etc.satsuki.c/novel-parse.html?op=" + arr_repoFile[0] + "/" + prevFile + "&format=" + arr_option["format"] + "&orient=" + arr_option["orient"] + "&theme=" + arr_option["theme"] + "&mode=" +  arr_option["mode"],
+        "next":     "http://etc.satsuki.c/novel-parse.html?op=" + arr_repoFile[0] + "/" + nextFile + "&format=" + arr_option["format"] + "&orient=" + arr_option["orient"] + "&theme=" + arr_option["theme"] + "&mode=" +  arr_option["mode"]
+      },
+      "https://etc.satsuki.me": {
+        "backhost": "https://raw.githubusercontent.com/satsuki-thyme/" + arr_repoFile[0] + "/master/",
+        "content":  "https://raw.githubusercontent.com/satsuki-thyme/" + arr_repoFile[0] + "/master/" + arr_repoFile[1],
+        "readme":   "https://raw.githubusercontent.com/satsuki-thyme/" + arr_repoFile[0] + "/master/README.md",
+        "linkBase": "https://etc.satsuki.me/novel-parse.html?op=" + arr_repoFile[0] + "/",
+        "prev":     "https://etc.satsuki.me/novel-parse.html?op=" + arr_repoFile[0] + "/" + prevFile + "&format=" + arr_option["format"] + "&orient=" + arr_option["orient"] + "&theme=" + arr_option["theme"] + "&mode=" +  arr_option["mode"],
+        "next":     "https://etc.satsuki.me/novel-parse.html?op=" + arr_repoFile[0] + "/" + nextFile + "&format=" + arr_option["format"] + "&orient=" + arr_option["orient"] + "&theme=" + arr_option["theme"] + "&mode=" +  arr_option["mode"]
+      },
+      "https://satsuki.me": {
+        "backhost": "https://raw.githubusercontent.com/satsuki-thyme/" + arr_repoFile[0] + "/master/",
+        "content":  "https://raw.githubusercontent.com/satsuki-thyme/" + arr_repoFile[0] + "/master/" + arr_repoFile[1],
+        "readme":   "https://raw.githubusercontent.com/satsuki-thyme/" + arr_repoFile[0] + "/master/README.md",
+        "linkBase": "https://satsuki.me/novel-parse.html?op=" + arr_repoFile[0] + "/",
+        "prev":     "https://satsuki.me/novel-parse.html?op=" + arr_repoFile[0] + "/" + prevFile + "&format=" + arr_option["format"] + "&orient=" + arr_option["orient"] + "&theme=" + arr_option["theme"] + "&mode=" +  arr_option["mode"],
+        "next":     "https://satsuki.me/novel-parse.html?op=" + arr_repoFile[0] + "/" + nextFile + "&format=" + arr_option["format"] + "&orient=" + arr_option["orient"] + "&theme=" + arr_option["theme"] + "&mode=" +  arr_option["mode"]
       }
-      arr_format["readme"](r)
-    })
+    }
+    // URL で作品が指定されていた場合の処理
+    if (arr_repoFile[1] !== "README.md") {
+      loadContent(arr_url[currOrigin]["content"]).then(r => {
+        exec(r)
+        srcText = r
+        elm_leftChip.classList.remove("unloaded")
+        elm_leftChip.classList.add("loaded")
+      })
+    } else if (arr_repoFile[1] === "README.md") {
+      arr_option["format"] = "plot"
+      arr_option["mode"] = "normal"
+      loadContent(arr_url[currOrigin]["content"]).then(r => {
+        if (r.match(/^# .*$/m)) {
+          elm_title.innerHTML = r.replace(/^# (.*)\r?\n[\s\S]*/m, '$1')
+        }
+        arr_format["readme"](r)
+      })
+    }
   }
   if (arr_option["url"] !== undefined && op=== undefined) {
     loadContent(arr_option["url"]).then(r => {
@@ -1171,53 +1171,53 @@ function writeText(src) {
   return true
 }
 // タグを処理する type=0 消去、tyep=1 色づけ
-async function procbrackets(src, type) {
+async function procbrk(src, type) {
   if (type === 1) {
-    return markupInclude(markupItself(src))
+    return markupInc(markupslf(src))
   } else {
-    return src.replace(RE_deleteItself(), "").replace(RE_deleteInclude(), "")
+    return src.replace(RE_deleteslf(), "").replace(RE_deleteInc(), "")
   }
-  function RE_deleteItself() {
+  function RE_deleteslf() {
     let w = ""
     let h = 0
-    for (let i = 0; i < arr_bracketsItself.length; i++) {
-      w += esc(arr_bracketsItself[i]["before"]) + esc(arr_bracketsItself[i]["after"])
+    for (let i = 0; i < arr_brkSlf.length; i++) {
+      w += esc(arr_brkSlf[i]["before"]) + esc(arr_brkSlf[i]["after"])
       h++
-      if (h === arr_bracketsItself.length) {
+      if (h === arr_brkSlf.length) {
         return RegExp("[" + w + "]", "g")
       }
     }
   }
-  function RE_deleteInclude() {
+  function RE_deleteInc() {
     let w = ""
     let h = 0
-    for (let i = 0; i < arr_bracketsInclude.length; i++) {
-      w += esc(arr_bracketsInclude[i]["before"]) + ".*?" + esc(arr_bracketsInclude[i]["after"]) + "|"
+    for (let i = 0; i < arr_brkInc.length; i++) {
+      w += esc(arr_brkInc[i]["before"]) + ".*?" + esc(arr_brkInc[i]["after"]) + "|"
       h++
-      if (h === arr_bracketsInclude.length) {
+      if (h === arr_brkInc.length) {
         return RegExp("(" + w + ")", "g")
       }
     }
   }
-  function markupItself(r) {
+  function markupslf(r) {
     let g = 0
-    let RE_bracketsBefore = RegExp(esc(arr_bracketsItself[g]["before"]), "g")
-    let RE_bracketsAfter = RegExp(esc(arr_bracketsItself[g]["after"]), "g")
-    let w = unEsc(r.replace(RE_bracketsBefore, arr_bracketsItself[g]["replaceBefore"] + esc(arr_bracketsItself[g]["before"]) + arr_bracketsItself[g]["replaceAfter"]).replace(RE_bracketsAfter, arr_bracketsItself[g]["replaceBefore"] + esc(arr_bracketsItself[g]["after"]) + arr_bracketsItself[g]["replaceAfter"]))
+    let RE_brkBefore = RegExp(esc(arr_brkSlf[g]["before"]), "g")
+    let RE_brkAfter = RegExp(esc(arr_brkSlf[g]["after"]), "g")
+    let w = unEsc(r.replace(RE_brkBefore, arr_brkSlf[g]["replaceBefore"] + esc(arr_brkSlf[g]["before"]) + arr_brkSlf[g]["replaceAfter"]).replace(RE_brkAfter, arr_brkSlf[g]["replaceBefore"] + esc(arr_brkSlf[g]["after"]) + arr_brkSlf[g]["replaceAfter"]))
     g++
-    if (g < arr_bracketsItself.length) {
-      markupItself(w)
+    if (g < arr_brkSlf.length) {
+      markupslf(w)
     } else {
       return w
     }
   }
-  function markupInclude(r) {
+  function markupInc(r) {
     let f = 0
-    let RE_brackets = RegExp(esc(arr_bracketsInclude[f]["before"]) + "(.*?)" + esc(arr_bracketsInclude[f]["after"]), "g")
-    let w = unEsc(r.replace(RE_brackets, arr_bracketsInclude[f]["replaceBefore"] + esc(arr_bracketsInclude[f]["before"]) + "$1" + esc(arr_bracketsInclude[f]["after"]) + arr_bracketsInclude[f]["replaceAfter"]))
+    let RE_brk = RegExp(esc(arr_brkInc[f]["before"]) + "(.*?)" + esc(arr_brkInc[f]["after"]), "g")
+    let w = unEsc(r.replace(RE_brk, arr_brkInc[f]["replaceBefore"] + esc(arr_brkInc[f]["before"]) + "$1" + esc(arr_brkInc[f]["after"]) + arr_brkInc[f]["replaceAfter"]))
     f++
-    if (f < arr_bracketsInclude.length) {
-      markupInclude(w)
+    if (f < arr_brkInc.length) {
+      markupInc(w)
     } else {
       return w
     }
@@ -1362,28 +1362,51 @@ function afterLoading() {
       document.body.scrollLeft = 100000
     }
   }
+  if (arr_option["format"] === "post") {
+    let sel = document.getSelection()
+    let cpArea = document.createRange()
+    sel.removeAllRanges()
+    let pIndexStart = () => {
+      for (let i = 0; i < elm_text.childNodes.length; i++) {
+        if (elm_text.childNodes[i].localName === "p") {
+          return i
+        }
+      }
+    }
+    let pIndexEnd = () => {
+      for (let i = elm_text.childNodes.length - 1; i >= 0 ; i--) {
+        if (elm_text.childNodes[i].localName === "p") {
+          return i
+        }
+      }
+    }
+    cpArea.setStart(elm_text, pIndexStart())
+    cpArea.setEnd(elm_text, pIndexEnd())
+    sel.addRange(cpArea)
+    console.log(cpArea)
+  }
 }
 //  括弧を書き出す
 function writeBrackets() {
-  let arr_brackets0 = []
-  let arr_brackets1 = []
-  for (let i = 0; i < arr_bracketsItself.length; i++) {
-    arr_brackets0.push(arr_bracketsItself[i]["before"] + arr_bracketsItself[i]["after"])
+  let arr_brk0 = []
+  let arr_brk1 = []
+  for (let i = 0; i < arr_brkSlf.length; i++) {
+    arr_brk0.push(arr_brkSlf[i]["before"] + arr_brkSlf[i]["after"])
   }
-  for (let i = 0; i < arr_bracketsInclude.length; i++) {
-    arr_brackets1.push(arr_bracketsInclude[i]["before"] + arr_bracketsInclude[i]["after"])
+  for (let i = 0; i < arr_brkInc.length; i++) {
+    arr_brk1.push(arr_brkInc[i]["before"] + arr_brkInc[i]["after"])
   }
-  let brackets0Joined = arr_brackets0.join(", ")
-  let brackets1Joined = arr_brackets1.join(", ")
-  let bracketsJoined = brackets0Joined + ", " + brackets1Joined
-  for (let i = 0; i < elmArr_brackets.length; i++) {
-    elmArr_brackets[i].innerHTML = bracketsJoined
+  let brk0Joined = arr_brk0.join(", ")
+  let brk1Joined = arr_brk1.join(", ")
+  let brkJoined = brk0Joined + ", " + brk1Joined
+  for (let i = 0; i < elmArr_brk.length; i++) {
+    elmArr_brk[i].innerHTML = brkJoined
   }
-  for (let i = 0; i < elmArr_bracketsInclude.length; i++) {
-    elmArr_bracketsInclude[i].innerHTML = brackets1Joined
+  for (let i = 0; i < elmArr_brkInc.length; i++) {
+    elmArr_brkInc[i].innerHTML = brk1Joined
   }
-  for (let i = 0; i < elmArr_bracketsItself.length; i++) {
-    elmArr_bracketsItself[i].innerHTML = brackets0Joined
+  for (let i = 0; i < elmArr_brkSlf.length; i++) {
+    elmArr_brkSlf[i].innerHTML = brk0Joined
   }
 }
 function esc(data) {
