@@ -194,7 +194,7 @@ html.v #frame {
 }
 #text {
   margin-left: -300px;
-  padding: 50px 0 50px 300px;
+  padding: 70px 0 50px 300px;
   font-family: "メイリオ", "Meiryo", 'Lucida Grande', "sans-serif";
 }
 #text p {
@@ -278,8 +278,6 @@ a:visited,
 a:hover {
   color: #62a433;
 }
-html.post #left-chip,
-html.post .link-chip,
 #left-chip.unloaded,
 #count-select.unselected {
   display: none;
@@ -579,12 +577,12 @@ html.dark #input-button {
 let srcText = ""
 let currOrigin = location.origin
 let arr_search = location.search.slice(1).split("&")
-let arr_searchItem = {}
+let arr_param = {}
 for (let i = 0; i < arr_search.length; i++) {
   let w = arr_search[i].split("=")
-  arr_searchItem[w[0]] = w[1]
+  arr_param[w[0]] = w[1]
 }
-let op = arr_searchItem["op"]
+let op = arr_param["op"]
 let arr_option = {
   "format": "",
   "orient": "",
@@ -637,17 +635,17 @@ let elm_themeChipLight = document.querySelector("#theme-chip-light")
 let elm_modeChipNormal = document.querySelector("#mode-chip-normal")
 let elm_modeChipHalf = document.querySelector("#mode-chip-half")
 // 改行の種類
-let EOS = "\n"
+let EOL = "\n"
 // モード = 同一行の処理と、改行の読み取り
 let arr_mode = {
   "normal": src => {
-    return src.replace(/\r?\n/g, EOS)
+    return src.replace(/\r?\n/g, EOL)
               .replace(/(\r?\n){5,}(?<![^\r\n])/g, "")
   },
   "half": src => {
     return src.replace(/(.+)\r?\n/g, "$1")
               .replace(/(\r?\n){5,}(?<![^\r\n])/g, "")
-              .replace(/\r?\n/g, EOS)
+              .replace(/\r?\n/g, EOL)
   }
 }
 // タイトル
@@ -704,7 +702,9 @@ let arr_format = {
     }).then(r => {
       return arr_mode[arr_option["mode"]](r)
     }).then(r => {
-      return parseNewline(r)
+      return parseNewline(r, 1)
+    }).then(r => {
+      return addTitle(r)
     }).then(r => {
       return writeText(r)
     }).then(() => {
@@ -743,7 +743,7 @@ let arr_format = {
       let arr_pickup1 = monoLine.match(RE_w1)
       if (arr_pickup0 !== null || match1 !== null) {
         let arr_pickupAll = arr_pickup0.concat(arr_pickup1)
-        procbrackets(arr_pickupAll.join(EOS).replace(/^(.*)$/gm, '<li>$1</li>'), 1)
+        procbrackets(arr_pickupAll.join(EOL).replace(/^(.*)$/gm, '<li>$1</li>'), 1)
         .then(async r => {
           return parseRuby(r)
         }).then(async r => {
@@ -814,7 +814,7 @@ let arr_format = {
       .then(r => {
         let partLength = removeRuby(removeMd(r)).replace(/[\s　]/g, "").length
         fullLength += partLength
-        return "* [" + arr_toc[h][1] + "](" + arr_url[currOrigin]["linkBase"] + arr_toc[h][0] + "&format=" + arr_option["format"] + "&theme=" + arr_option["theme"] + "&mode=" +  arr_option["mode"] + ") : " + partLength + "文字" + EOS
+        return "* [" + arr_toc[h][1] + "](" + arr_url[currOrigin]["linkBase"] + arr_toc[h][0] + "&format=" + arr_option["format"] + "&theme=" + arr_option["theme"] + "&mode=" +  arr_option["mode"] + ") : " + partLength + "文字" + EOL
       })
       .then(r => {
         toc += r
@@ -985,6 +985,7 @@ elm_modeHalf.onchange = () => {
 // left-chip の中の変更
 elm_formatSelector.onchange = () => {
   arr_option["format"] = elm_formatSelector.options[elm_formatSelector.selectedIndex].value
+  exec(srcText)
 }
 elm_orientChipH.onchange = () => {
   arr_option["orient"] = elm_orientChipH.value
@@ -1102,12 +1103,12 @@ function execUrl(r) {
   setEos(r)
   arr_format[arr_option["format"]](r)
 }
-// EOS の決定
+// EOL の決定
 function setEos(r) {
-  let EOS_LF = r.match(/\n/)
-  let EOS_CR = r.match(/\r\n/)
-  if (EOS_LF === null || (EOS_LF !== null && EOS_CR !== null && EOS_LF.length < EOS_CR.length)) {
-    EOS = "\r\n"
+  let EOL_LF = r.match(/\n/)
+  let EOL_CR = r.match(/\r\n/)
+  if (EOL_LF === null || (EOL_LF !== null && EOL_CR !== null && EOL_LF.length < EOL_CR.length)) {
+    EOL = "\r\n"
   }
 }
 // ファイルの読み込み
@@ -1119,13 +1120,17 @@ async function loadContent(url) {
 function addTitle(src) {
   let titleHtml = ""
   if (title.length >= 1) {
-    titleHtml = '<h1>' + title + '</h1>' + EOS
+    titleHtml = '<h1>' + title + '</h1>' + EOL
   }
   return titleHtml + src
 }
-function parseNewline(src) {
-  return src.replace(/^(.*)$/gm, '<p>$1</p>')
-            .replace(/<p><\/p>/g, '<p><br></p>')
+function parseNewline(src, type) {
+  if (type !== 1) {
+    return src.replace(/^(.*)$/gm, '<p>$1</p>')
+              .replace(/<p><\/p>/g, '<p><br></p>')
+  } else {
+    return src.replace(/^(.*)$/gm, '<p>$1</p>')
+  }
 }
 function parseRuby(src) {
   return src.replace(/｜([^｜]*?)《(.*?)》/g, '<ruby>$1<rt>$2</rt></ruby>')
@@ -1142,7 +1147,7 @@ function removeMd(src) {
 }
 function procMd(src) {
   return src.replace(/^(#{2,6} .*)/gm, `<h2 class="plot-heading">$1</h2>`)
-            .replace(/((<h2 class="plot-heading">.*?<\/h2>\r?\n)+)/gm, `<div class="plot-heading-block">$1</div>${EOS}${EOS}`)
+            .replace(/((<h2 class="plot-heading">.*?<\/h2>\r?\n)+)/gm, `<div class="plot-heading-block">$1</div>${EOL}${EOL}`)
             .replace(/^# .*\n/, "")
 }
 function parseOdt(src) {
@@ -1243,44 +1248,35 @@ function setLink(src) {
   arr_toc = makeToc(src)
   let currrEEpisode = 0
   let arr_adjacentProc = {
-    prev: function() {
-      elm_prev.forEach(function(r) {
-       r.href = arr_url[currOrigin]["prev"]
-      })
-      elm_prev.forEach(function(r) {
-       r.innerHTML = "<< " + arr_toc[currEpisode - 1][1]
+    prev: () => {
+      elm_prev.forEach((r) => {
+        r.href = arr_url[currOrigin]["prev"]
+        r.innerHTML = "<< " + arr_toc[currEpisode - 2][1]
       })
     },
-    next: function() {
-      elm_next.forEach(function(r) {
-       r.href = arr_url[currOrigin]["next"]
-      })
-      elm_next.forEach(function(r) {
-       r.innerHTML = arr_toc[currEpisode + 1][1] + " >>"
+    next: () => {
+      elm_next.forEach((r) => {
+        r.href = arr_url[currOrigin]["next"]
+        r.innerHTML = arr_toc[currEpisode][1] + " >>"
       })
     }
   }
-  let currEpisode = 0
-  for (let i = 0; i < arr_toc.length; i++) {
-    if (arr_toc[i][0] === arr_repoFile[1]) {
-      currEpisode = i
-    }
-  }
+  let currEpisode = Number(arr_repoFile[1].match(/\d+\..*$/)[0].replace(/(\d+).*/, "$1"))
   if (
-    currEpisode !== 0
+    currEpisode !== 1
     &&
-    currEpisode !== arr_toc.length - 1
+    currEpisode !== arr_toc.length
   ) {
     arr_adjacentProc["prev"]()
     arr_adjacentProc["next"]()
   } else if (
-    currEpisode !== 0
+    currEpisode !== 1
     &&
     arr_toc.length !== 1
   ) {
     arr_adjacentProc["prev"]()
   } else if (
-    currEpisode === 0
+    currEpisode === 1
     &&
     arr_toc.length >= 2
   ) {
