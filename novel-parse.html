@@ -261,10 +261,9 @@ html.v #text.loaded div.plot-heading-block {
   margin-left: 15px;
 }
 .link-chip {
-  position: absolute;
-  top: 25px;
-  right: 0;
-  text-align: right;
+  width: 100%;
+  margin-top: 20px;
+  text-align: center;
 }
 .link-chip:last-of-type {
   padding-bottom: 20px;
@@ -316,6 +315,14 @@ a:hover {
 .square-brks {
   color: #0ae;
 }
+#input-button,
+#copy-button {
+  border-style: outset;
+}
+#input-button:active,
+#copy-button:active {
+  border-style: inset;
+}
 @media (max-width: 586px) {
   #frame {
     padding-top: 30px;
@@ -334,19 +341,18 @@ a:hover {
   }
   body,
   #left-chip,
-  #format-selector {
+  #format-selector,
+  #copy-button {
     color: #ccc;
   }
   #left-chip,
   #format-selector {
     background-color: #222;
   }
-  #input-button {
-    background-color: #444;
-    border-top-color: #888;
-    border-left-color: #888;
-    border-right-color: #222;
-    border-bottom-color: #222;
+  #input-button,
+  #copy-button {
+    border-width: 1px;
+    background-color: #333;
   }
 }
 html.light body {
@@ -354,7 +360,8 @@ html.light body {
 }
 html.light body,
 html.light #left-chip,
-html.light #format-selector {
+html.light #format-selector,
+html.light #copy-button {
   color: #333;
 }
 html.light #left-chip,
@@ -366,26 +373,23 @@ html.dark body {
 }
 html.dark body,
 html.dark #left-chip,
-html.dark #format-selector {
+html.dark #format-selector,
+html.dark #copy-button {
   color: #ccc;
 }
 html.dark #left-chip,
 html.dark #format-selector {
   background-color: #222;
 }
-html.light #input-button {
+html.light #input-button,
+html.light #copy-button {
+  border-width: 2px;
   background-color: #aaa;
-  border-top-color: #ccc;
-  border-left-color: #ccc;
-  border-right-color: #666;
-  border-bottom-color: #666;
 }
-html.dark #input-button {
+html.dark #input-button,
+html.dark #copy-button {
+  border-width: 1px;
   background-color: #333;
-  border-top-color: #666;
-  border-left-color: #666;
-  border-right-color: #222;
-  border-bottom-color: #222;
 }
 @media print {
   html body,
@@ -554,9 +558,12 @@ html.dark #input-button {
     <label>ダーク<input id="theme-chip-dark" type="radio" name="theme-chip" value="dark"></label>
     <label>ライト<input id="theme-chip-light" type="radio" name="theme-chip" value="light"></label>
   </div>
-  <div id="mode-chip" class="unloaded">
+  <div id="mode-chip">
     <label>ノーマル<input id="mode-chip-normal" type="radio" name="mode-chip" value="normal"></label>
     <label>ハーフ<input id="mode-chip-half" type="radio" name="mode-chip" value="half"></label>
+  </div>
+  <div id="copy-chip">
+    <input id="copy-button" type="button" name="copy-button" value="本文コピー">
   </div>
 </div>
 <div class="link-chip">
@@ -583,6 +590,7 @@ for (let i = 0; i < arr_search.length; i++) {
   arr_param[w[0]] = w[1]
 }
 let op = arr_param["op"]
+delete arr_param["op"]
 let arr_option = {
   "format": "",
   "orient": "",
@@ -634,6 +642,7 @@ let elm_themeChipDark = document.querySelector("#theme-chip-dark")
 let elm_themeChipLight = document.querySelector("#theme-chip-light")
 let elm_modeChipNormal = document.querySelector("#mode-chip-normal")
 let elm_modeChipHalf = document.querySelector("#mode-chip-half")
+let elm_copyButton = document.querySelector("#copy-button")
 // 改行の種類
 let EOL = "\n"
 // モード = 同一行の処理と、改行の読み取り
@@ -694,22 +703,6 @@ let arr_format = {
       afterLoading()
     })
     countFull(src)
-  },
-  post: src => {
-    procbrk(src)
-    .then(r => {
-      return removeMd(r)
-    }).then(r => {
-      return arr_mode[arr_option["mode"]](r)
-    }).then(r => {
-      return parseNewline(r, 1)
-    }).then(r => {
-      return addTitle(r)
-    }).then(r => {
-      return writeText(r)
-    }).then(() => {
-      afterLoading()
-    })
   },
   plot: src => {
     procbrk(src, 1)
@@ -854,7 +847,10 @@ window.addEventListener("DOMContentLoaded", () => {
   let arr_optionStorage = JSON.parse(localStorage.getItem("option"))
   let keys_arr_option = Object.keys(arr_option)
   for (let i = 0; i < keys_arr_option.length; i++) {
-    if (arr_optionStorage !== null && arr_optionStorage[keys_arr_option[i]] !== undefined) {
+    if (arr_param[keys_arr_option[i]] !== null && arr_param[keys_arr_option[i]] !== undefined) {
+      arr_option[keys_arr_option[i]] = arr_param[keys_arr_option[i]]
+    }
+    else if (arr_optionStorage !== null && arr_optionStorage[keys_arr_option[i]] !== undefined) {
       arr_option[keys_arr_option[i]] = arr_optionStorage[keys_arr_option[i]]
     }
     else {
@@ -892,7 +888,6 @@ window.addEventListener("DOMContentLoaded", () => {
         "next":     "https://satsuki.me/novel-parse.html?op=" + arr_repoFile[0] + "/" + nextFile + "&format=" + arr_option["format"] + "&orient=" + arr_option["orient"] + "&theme=" + arr_option["theme"] + "&mode=" +  arr_option["mode"]
       }
     }
-    // URL で作品が指定されていた場合の処理
     if (arr_repoFile[1] !== "README.md") {
       loadContent(arr_url[currOrigin]["content"]).then(r => {
         exec(r)
@@ -911,9 +906,9 @@ window.addEventListener("DOMContentLoaded", () => {
       })
     }
   }
-  if (arr_option["url"] !== undefined && op=== undefined) {
+  if (arr_option["url"] !== undefined && op === undefined) {
     loadContent(arr_option["url"]).then(r => {
-      execUrl(r)
+      exec(r)
     })
   }
   // オプション設定を反映させる
@@ -1077,6 +1072,15 @@ window.addEventListener('touched', src => {
 })
 /*
 
+  「本文コピー」ボタンがクリックされたときの処理
+
+*/
+elm_copyButton.addEventListener("click", () => {
+  copyPost()
+})
+
+/*
+
   関数
 
 */
@@ -1099,9 +1103,15 @@ function exec(r) {
   }
   elm_text.classList.add("loaded")
 }
-function execUrl(r) {
-  setEos(r)
-  arr_format[arr_option["format"]](r)
+function copyPost() {
+  procbrk(srcText)
+  .then(r => {
+    return removeMd(r)
+  }).then(r => {
+    return arr_mode[arr_option["mode"]](r)
+  }).then(r => {
+    navigator.clipboard.writeText(r)
+  })
 }
 // EOL の決定
 function setEos(r) {
