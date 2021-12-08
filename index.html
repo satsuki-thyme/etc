@@ -1,8 +1,7 @@
-<!DOCTYPE html>
 <html>
-<head>
 <meta charset="utf-8">
-<title>etc</title>
+<title>etc - Satsuki Thyme</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="keywords" content="五月タイム, JavaScript">
 <meta name="description" content="自作のプログラムを公開しています。">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -87,29 +86,6 @@ ul {
   margin-top: 10px;
 }
 </style>
-<script src="https://etc.satsuki.me/mdparse.js"></script>
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-  let elm_h1 = document.querySelector("h1")
-  let elm_main = document.querySelector("main")
-  let currOrigin = location.origin
-  loadContent(currOrigin + "/README.md").then((data) => {
-    writeContenet(data)
-  })
-  async function loadContent(url) {
-    let w = await fetch(url)
-    return w.text()
-  }
-  async function writeContenet(data) {
-    let w = await mdParse(data)
-    elm_h1.innerHTML = w.replace(/<h1>(.*?)<\/h1>[\s\S]*/gm, "$1")
-    elm_main.innerHTML = w.replace(/<h1.*?\n+/, "").replace(/<h2>(.*?)<\/h2>/g, '<h2>$1</h2> <a href="' + currOrigin + '/$1" class="attach">link</a>')
-    return w
-  }
-})
-</script>
-</head>
-<body>
 <header>
 <img src="/attachment/common/satsuki-thyme-fg-green-bg-trn.svg">
 <h1></h1>
@@ -121,5 +97,26 @@ document.addEventListener("DOMContentLoaded", function() {
 <footer>
 &copy;Satsuki Thyme
 </footer>
-</body>
+<script src="https://etc.satsuki.me/mdparse.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  let elm_h1 = document.querySelector("h1")
+  let elm_main = document.querySelector("main")
+  let currOrigin = location.origin
+  loadContent(currOrigin + "/README.md").then((r) => {
+    writeContenet(r)
+  })
+  async function loadContent(url) {
+    let w = await fetch(url)
+    return w.text()
+  }
+  async function writeContenet(data) {
+    mdParse(data).then(r => {
+      elm_h1.innerHTML = r.replace(/<h1>(.*?)<\/h1>[\s\S]*/gm, "$1")
+      elm_main.innerHTML = r.replace(/<h1.*?\n+/, "").replace(/<h2>(.*?)<\/h2>/g, '<h2>$1</h2> <a href="' + currOrigin + '/$1" class="attach">link</a>')
+      return r
+    })
+  }
+})
+</script>
 </html>
