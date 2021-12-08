@@ -8,8 +8,7 @@ async function mdParse(src) {
     "blockquote": RegExp(/^>+ /),
     "pre": RegExp(/^ {3}/)
   }
-  let deliverables = ""
-  procBr()                  // read arr_im1, write arr_im2
+  return await procBr()     // read arr_im1, write arr_im2
     .then(async () => {
     await classify()        // read arr_im2, write arr_status
   }).then(async () => {
@@ -17,11 +16,10 @@ async function mdParse(src) {
   }).then(async () => {
     await markupBlock()     // read arr_im2, write arr_im2
   }).then(async () => {
-   await markupInline()     // read arr_im2, write arr_im2
-  }).then(async () => {
-    deliverables = arr_im2.join("\n")
+    await markupInline()    // read arr_im2, write arr_im2
+  }).then(() => {
+    return arr_im2.join("\n")
   })
-  return deliverables
   //
   // br の処理
   //
