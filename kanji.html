@@ -53,6 +53,6 @@ function setFontSize() {
     lineN = lineN - 1
   }
   fontSize = (windowHeight - frameHeight) / Math.floor(lineN) / lineHeight
-  elm_textarea.style.fontSize = fontSize + "px"
+  elm_textarea.style.fontSize = fontSize * 0.99 + "px"
 }
 </script>
