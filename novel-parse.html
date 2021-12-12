@@ -1158,6 +1158,16 @@ elm_postOutputOuter.onclick = (e) => {
 }
 /*
 
+  マウスホイールで横スクロールさせる処理
+
+*/
+window.onwheel = (e) => {
+  if (arr_option["orient"] === "v") {
+    document.body.scrollLeft += - e.deltaY
+  }
+}
+/*
+
   関数
 
 */
