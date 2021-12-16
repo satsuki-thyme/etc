@@ -912,8 +912,8 @@ window.addEventListener("DOMContentLoaded", () => {
   // op で作品が指定されていた場合の処理
   if (op !== undefined) {
     arr_repoFile = op.split("/")
-    prevFile = arr_repoFile[1].replace(/(\[\d+\]).+/, "$1") + ("00" + (Number(arr_repoFile[1].replace(/\[\d+\](\d+)\..+/, "$1")) - 1)).slice(-3) + arr_repoFile[1].replace(/\[\d+\]\d+(\..+)/, "$1")
-    nextFile = arr_repoFile[1].replace(/(\[\d+\]).+/, "$1") + ("00" + (Number(arr_repoFile[1].replace(/\[\d+\](\d+)\..+/, "$1")) + 1)).slice(-3) + arr_repoFile[1].replace(/\[\d+\]\d+(\..+)/, "$1")
+    prevFile = arr_repoFile[1].replace(/(\[.+\]).+/, "$1") + ("00" + (Number(arr_repoFile[1].replace(/\[.+\](\d+)\..+/, "$1")) - 1)).slice(-3) + arr_repoFile[1].replace(/\[.+\]\d+(\..+)/, "$1")
+    nextFile = arr_repoFile[1].replace(/(\[.+\]).+/, "$1") + ("00" + (Number(arr_repoFile[1].replace(/\[.+\](\d+)\..+/, "$1")) + 1)).slice(-3) + arr_repoFile[1].replace(/\[.+\]\d+(\..+)/, "$1")
     arr_url = {
       "http://etc.satsuki.c": {
         "backhost": "http://etc.satsuki.c/novel/" + arr_repoFile[0] + "/",
@@ -1460,6 +1460,7 @@ async function makeToc(src) {
              .map(r => r.replace(/^[*+-]? ?(.*)/g, "$1")
              .split(RegExp(" ?[:：] ?")))
   w.map(r => r.push(arr_url[currOrigin]["linkBase"] + r[0]))
+  console.log(w)
   return w
 }
 // 書き方向の変更処理
