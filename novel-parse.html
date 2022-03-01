@@ -362,7 +362,7 @@ a:hover {
   border-style: inset;
 }
 #post-output-outer.display {
-  position: absolute;
+  position: fixed;
   top: 0;
   right: 0;
   bottom: 0;
@@ -685,40 +685,40 @@ let arr_url = {}
 let arr_optionStorage = []
 let keys_arr_option = []
 // DOM
-let elm_title = document.querySelector("title")
-let elm_input = document.querySelector("#input")
-let elm_formatReading = document.querySelector("#format-reading")
-let elm_formatPost = document.querySelector("#format-post")
-let elm_formatPlot = document.querySelector("#format-plot")
-let elm_formatPickup = document.querySelector("#format-pickup")
-let elm_formatOdt = document.querySelector("#format-odt")
-let elm_orientH = document.querySelector("#orient-h")
-let elm_orientV = document.querySelector("#orient-v")
-let elm_themeLight = document.querySelector("#theme-light")
-let elm_themeDark = document.querySelector("#theme-dark")
-let elm_html = document.querySelector("html")
-let elm_frame = document.querySelector("#frame")
-let elm_text = document.querySelector("#text")
-let elm_countFull = document.querySelector("#count-full")
-let elm_countSelect = document.querySelector("#count-select")
+let nod_title = document.querySelector("title")
+let nod_input = document.querySelector("#input")
+let nod_formatReading = document.querySelector("#format-reading")
+let nod_formatPost = document.querySelector("#format-post")
+let nod_formatPlot = document.querySelector("#format-plot")
+let nod_formatPickup = document.querySelector("#format-pickup")
+let nod_formatOdt = document.querySelector("#format-odt")
+let nod_orientH = document.querySelector("#orient-h")
+let nod_orientV = document.querySelector("#orient-v")
+let nod_themeLight = document.querySelector("#theme-light")
+let nod_themeDark = document.querySelector("#theme-dark")
+let nod_html = document.querySelector("html")
+let nod_frame = document.querySelector("#frame")
+let nod_text = document.querySelector("#text")
+let nod_countFull = document.querySelector("#count-full")
+let nod_countSelect = document.querySelector("#count-select")
 let ndl_prev = document.querySelectorAll(".prev")
 let ndl_next = document.querySelectorAll(".next")
 let ndl_brk = document.querySelectorAll(".brk")
 let ndl_brkInc = document.querySelectorAll(".brk-include")
 let ndl_brkSlf = document.querySelectorAll(".brk-itself")
-let elm_topBar = document.querySelector("#top-bar")
-let elm_formatSelector = document.querySelector("#format-selector")
-let elm_modeNormal = document.querySelector("#mode-normal")
-let elm_modeHalf = document.querySelector("#mode-half")
-let elm_orientChipH = document.querySelector("#orient-chip-h")
-let elm_orientChipV = document.querySelector("#orient-chip-v")
-let elm_themeChipDark = document.querySelector("#theme-chip-dark")
-let elm_themeChipLight = document.querySelector("#theme-chip-light")
-let elm_modeChipNormal = document.querySelector("#mode-chip-normal")
-let elm_modeChipHalf = document.querySelector("#mode-chip-half")
-let elm_copyButton = document.querySelector("#copy-button")
-let elm_postOutput = document.querySelector("#post-output")
-let elm_postOutputOuter = document.querySelector("#post-output-outer")
+let nod_topBar = document.querySelector("#top-bar")
+let nod_formatSelector = document.querySelector("#format-selector")
+let nod_modeNormal = document.querySelector("#mode-normal")
+let nod_modeHalf = document.querySelector("#mode-half")
+let nod_orientChipH = document.querySelector("#orient-chip-h")
+let nod_orientChipV = document.querySelector("#orient-chip-v")
+let nod_themeChipDark = document.querySelector("#theme-chip-dark")
+let nod_themeChipLight = document.querySelector("#theme-chip-light")
+let nod_modeChipNormal = document.querySelector("#mode-chip-normal")
+let nod_modeChipHalf = document.querySelector("#mode-chip-half")
+let nod_copyButton = document.querySelector("#copy-button")
+let nod_postOutput = document.querySelector("#post-output")
+let nod_postOutputOuter = document.querySelector("#post-output-outer")
 let ndl_linkChip = document.querySelectorAll(".link-chip")
 let ndl_toc = document.querySelectorAll(".toc")
 // 改行の種類
@@ -727,11 +727,11 @@ let EOL = "\n"
 let arr_mode = {
   "normal": src => {
     return src.replace(/\r?\n/g, EOL)
-              .replace(/(\r?\n){5,}(?<![^\r\n])/g, "")
+              .replace(/(\r?\n){5,}/g, "")
   },
   "half": src => {
     return src.replace(/(.+)\r?\n/g, "$1")
-              .replace(/(\r?\n){5,}(?<![^\r\n])/g, "")
+              .replace(/(\r?\n){5,}/g, "")
               .replace(/\r?\n/g, EOL)
   }
 }
@@ -944,8 +944,8 @@ window.addEventListener("DOMContentLoaded", () => {
       loadContent(arr_url[currOrigin]["content"]).then(r => {
         exec(r)
         srcText = r
-        elm_topBar.classList.remove("unloaded")
-        elm_topBar.classList.add("loaded")
+        nod_topBar.classList.remove("unloaded")
+        nod_topBar.classList.add("loaded")
         loadContent(arr_url[currOrigin]["readme"]).then(r1 => {
           makeToc(r1).then((r2) => {
             arr_toc = r2
@@ -1005,78 +1005,78 @@ window.onresize = () => {
 
 */
 // デフォルト画面の変更
-elm_formatReading.onchange = () => {
+nod_formatReading.onchange = () => {
   arr_option["format"] = "reading"
 }
-elm_formatPost.onchange = () => {
+nod_formatPost.onchange = () => {
   arr_option["format"] = "post"
 }
-elm_formatPlot.onchange = () => {
+nod_formatPlot.onchange = () => {
   arr_option["format"] = "plot"
 }
-elm_formatPickup.onchange = () => {
+nod_formatPickup.onchange = () => {
   arr_option["format"] = "pickup"
 }
-elm_formatOdt.onchange = () => {
+nod_formatOdt.onchange = () => {
   arr_option["format"] = "odt"
 }
-elm_orientH.onchange = () => {
+nod_orientH.onchange = () => {
   arr_option["orient"] = "h"
   toggleOrient(arr_option["orient"]).then(() => {
     afterLoading()
   })
 }
-elm_orientV.onchange = () => {
+nod_orientV.onchange = () => {
   arr_option["orient"] = "v"
   toggleOrient(arr_option["orient"]).then(() => {
     afterLoading()
   })
 }
-elm_themeLight.onchange = () => {
+nod_themeLight.onchange = () => {
   arr_option["theme"] = "light"
   toggleTheme(arr_option["theme"])
 }
-elm_themeDark.onchange = () => {
+nod_themeDark.onchange = () => {
   arr_option["theme"] = "dark"
   toggleTheme(arr_option["theme"])
 }
-elm_modeNormal.onchange = () => {
+nod_modeNormal.onchange = () => {
   arr_option["mode"] = "normal"
 }
-elm_modeHalf.onchange = () => {
+nod_modeHalf.onchange = () => {
   arr_option["mode"] = "half"
 }
 // top-bar の中の変更
-elm_formatSelector.onchange = () => {
-  arr_option["format"] = elm_formatSelector.options[elm_formatSelector.selectedIndex].value
+nod_formatSelector.onchange = () => {
+  arr_option["format"] = nod_formatSelector.options[nod_formatSelector.selectedIndex].value
   exec(srcText)
 }
-elm_orientChipH.onchange = () => {
-  arr_option["orient"] = elm_orientChipH.value
+nod_orientChipH.onchange = () => {
+  arr_option["orient"] = nod_orientChipH.value
   toggleOrient(arr_option["orient"]).then(() => {
     afterLoading()
   })
 }
-elm_orientChipV.onchange = () => {
-  arr_option["orient"] = elm_orientChipV.value
+nod_orientChipV.onchange = () => {
+  arr_option["orient"] = nod_orientChipV.value
   toggleOrient(arr_option["orient"]).then(() => {
     afterLoading()
   })
 }
-elm_themeChipDark.onchange = () => {
-  arr_option["theme"] = elm_themeChipDark.value
+nod_themeChipDark.onchange = () => {
+  arr_option["theme"] = nod_themeChipDark.value
   toggleTheme(arr_option["theme"])
 }
-elm_themeChipLight.onchange = () => {
-  arr_option["theme"] = elm_themeChipLight.value
+nod_themeChipLight.onchange = () => {
+  arr_option["theme"] = nod_themeChipLight.value
   toggleTheme(arr_option["theme"])
 }
-elm_modeChipNormal.onchange = () => {
-  arr_option["mode"] = elm_modeChipNormal.value
+nod_modeChipNormal.onchange = () => {
+  arr_option["mode"] = nod_modeChipNormal.value
   toggleMode(arr_option["mode"])
 }
-elm_modeChipHalf.onchange = () => {
-  arr_option["mode"] = elm_modeChipHalf.value
+nod_modeChipHalf.onchange = () => {
+  arr_option["mode"] = nod_modeChipHalf.value
   toggleMode(arr_option["mode"])
 }
 /*
@@ -1084,7 +1084,7 @@ elm_modeChipHalf.onchange = () => {
   フォームからファイルが入力されたときの処理
 
 */
-elm_input.onchange = () => {
+nod_input.onchange = () => {
   let fr = new FileReader()
   trgFile = input.files[0]
   fr.readAsText(trgFile)
@@ -1134,10 +1134,10 @@ window.onkeyup = (e) => {
   文字列を選択したことで文字数を数えるときの処理
 
 */
-elm_text.addEventListener('mouseup', src => {
+nod_text.addEventListener('mouseup', src => {
   countSelect(src)
 })
-elm_text.addEventListener('touched', src => {
+nod_text.addEventListener('touched', src => {
   countSelect(src)
 })
 /*
@@ -1145,14 +1145,14 @@ elm_text.addEventListener('touched', src => {
   「本文コピー」ボタンがクリックされたときの処理
 
 */
-elm_copyButton.onclick = () => {
+nod_copyButton.onclick = () => {
   copyPost()
 }
-elm_postOutputOuter.onclick = (e) => {
+nod_postOutputOuter.onclick = (e) => {
   let wh = window.innerHeight
   let ww = window.innerWidth
   if (e.target.id === "post-output-outer") {
-    elm_postOutputOuter.classList.remove("display")
+    nod_postOutputOuter.classList.remove("display")
     document.scrollingElement.style.overflowY = "unset"
   }
 }
@@ -1178,10 +1178,10 @@ function exec(src) {
   let w = src.match(/^# .*/)
   if (w) {
     title = w[0].replace(/# /, "")
-    elm_title.textContent = title
+    nod_title.textContent = title
   }
   arr_proc[arr_option["format"]](src)
-  elm_text.classList.add("loaded")
+  nod_text.classList.add("loaded")
 }
 function writeReadme() {
   let arr_readme = []
@@ -1196,7 +1196,7 @@ function writeReadme() {
     arr_prm.push(prm)
   }
   Promise.all(arr_prm).then(() => {
-    elm_text.innerHTML = addTitle(`<p>全体 : ${sum} 文字</p>${EOL}<ul>${EOL}${arr_readme.join(EOL)}${EOL}</ul>`)
+    nod_text.innerHTML = addTitle(`<p>全体 : ${sum} 文字</p>${EOL}<ul>${EOL}${arr_readme.join(EOL)}${EOL}</ul>`)
   })
 }
 function copyPost() {
@@ -1207,17 +1207,17 @@ function copyPost() {
     return arr_mode[arr_option["mode"]](r)
   }).then(r => {
     if (location.protocol === "http:") {
-      elm_postOutput.textContent = r
+      nod_postOutput.textContent = r
       document.scrollingElement.style.overflowY = "hidden"
       let wh = window.innerHeight
-      elm_postOutput.style.height = wh * 0.7
-      elm_postOutput.style.top = wh * 0.15
-      elm_postOutput.style.left = window.innerWidth * 0.15
-      elm_postOutputOuter.style.height = document.body.innerHeight
-      elm_postOutputOuter.classList.add("display")
+      nod_postOutput.style.height = wh * 0.7
+      nod_postOutput.style.top = wh * 0.15
+      nod_postOutput.style.left = window.innerWidth * 0.15
+      nod_postOutputOuter.style.height = document.body.innerHeight
+      nod_postOutputOuter.classList.add("display")
       let copyPe = document.createRange()
-      copyPe.setStart(elm_postOutput, 0)
-      copyPe.setEnd(elm_postOutput, elm_postOutput.childNodes.length)
+      copyPe.setStart(nod_postOutput, 0)
+      copyPe.setEnd(nod_postOutput, nod_postOutput.childNodes.length)
       document.getSelection().removeAllRanges()
       document.getSelection().addRange(copyPe)
     } else {
@@ -1288,9 +1288,9 @@ function parseOdt(src) {
 }
 // 書き出しとその後の処理
 function writeText(src) {
-  elm_text.innerHTML = src
-  elm_html.classList.remove("reading", "post", "plot", "pickup", "odt")
-  elm_html.classList.add(arr_option["format"])
+  nod_text.innerHTML = src
+  nod_html.classList.remove("reading", "post", "plot", "pickup", "odt")
+  nod_html.classList.add(arr_option["format"])
   return true
 }
 // タグを処理する type=0 消去、tyep=1 色づけ
@@ -1348,21 +1348,21 @@ async function procbrk(src, type) {
 }
 // 全体の文字数を数える処理
 function countFull(src) {
-  elm_countFull.innerHTML = "全文：" + removeRuby(removeMd(src)).replace(/[\s　]/g, "").length + "文字"
-  elm_countFull.classList.add("loaded")
-  elm_countFull.classList.remove("unloaded")
+  nod_countFull.innerHTML = "全文：" + removeRuby(removeMd(src)).replace(/[\s　]/g, "").length + "文字"
+  nod_countFull.classList.add("loaded")
+  nod_countFull.classList.remove("unloaded")
 }
 // 選択範囲の文字数を数える処理
 function countSelect(src) {
   setTimeout(() => {
     let selected = document.getSelection()
     if (selected.isCollapsed === false) {
-      elm_countSelect.innerHTML = "選択：" + removeRuby(removeMd(selected.getRangeAt(0).toString())).replace(/[\s　]/g, "").length + "文字"
-      elm_countSelect.classList.add("selected")
-      elm_countSelect.classList.remove("unselected")
+      nod_countSelect.innerHTML = "選択：" + removeRuby(removeMd(selected.getRangeAt(0).toString())).replace(/[\s　]/g, "").length + "文字"
+      nod_countSelect.classList.add("selected")
+      nod_countSelect.classList.remove("unselected")
     } else {
-      elm_countSelect.classList.add("unselected")
-      elm_countSelect.classList.remove("selected")
+      nod_countSelect.classList.add("unselected")
+      nod_countSelect.classList.remove("selected")
     }
   }, 3)
 }
@@ -1409,71 +1409,71 @@ function setLink() {
 function applyOption() {
   // フォーマット
   if (arr_option["format"] === "reading") {
-    elm_formatReading.checked = true
-    elm_formatSelector.options[0].selected = true
+    nod_formatReading.checked = true
+    nod_formatSelector.options[0].selected = true
   } else if (arr_option["format"] === "post") {
-    elm_formatPost.checked = true
-    elm_formatSelector.options[1].selected = true
+    nod_formatPost.checked = true
+    nod_formatSelector.options[1].selected = true
   } else if (arr_option["format"] === "plot") {
-    elm_formatPlot.checked = true
-    elm_formatSelector.options[2].selected = true
+    nod_formatPlot.checked = true
+    nod_formatSelector.options[2].selected = true
   } else if (arr_option["format"] === "pickup") {
-    elm_formatPickup.checked = true
-    elm_formatSelector.options[3].selected = true
+    nod_formatPickup.checked = true
+    nod_formatSelector.options[3].selected = true
   } else if (arr_option["format"] === "odt") {
-    elm_formatOdt.checked = true
-    elm_formatSelector.options[4].selected = true
+    nod_formatOdt.checked = true
+    nod_formatSelector.options[4].selected = true
   }
   // 書き方向
   toggleOrient(arr_option["orient"])
   if (arr_option["orient"] === "h") {
-    elm_orientH.checked = true
-    elm_orientChipH.checked = true
+    nod_orientH.checked = true
+    nod_orientChipH.checked = true
   } else if (arr_option["orient"] === "v") {
-    elm_orientV.checked = true
-    elm_orientChipV.checked = true
+    nod_orientV.checked = true
+    nod_orientChipV.checked = true
   }
   // テーマ
   toggleTheme(arr_option["theme"])
   if (arr_option["theme"] === "light") {
-    elm_themeLight.checked = true
-    elm_themeChipLight.checked = true
+    nod_themeLight.checked = true
+    nod_themeChipLight.checked = true
   } else if (arr_option["theme"] === "dark") {
-    elm_themeDark.checked = true
-    elm_themeChipDark.checked = true
+    nod_themeDark.checked = true
+    nod_themeChipDark.checked = true
   }
   // モード
   if (arr_option["mode"] !== "half") {
     arr_option["mode"] = "normal"
-    elm_modeNormal.checked = true
-    elm_modeChipNormal.checked = true
+    nod_modeNormal.checked = true
+    nod_modeChipNormal.checked = true
   } else {
-    elm_modeHalf.checked = true
-    elm_modeChipHalf.checked = true
+    nod_modeHalf.checked = true
+    nod_modeChipHalf.checked = true
   }
 }
 // 目次の作成
 async function makeToc(src) {
   let w = src.replace(/(.*\r?\n)*(#+ 目次.*\r?\n)((.*\r?\n)*)(#|$)/gm, "$3")
-             .split(RegExp("\r?\n"))
+             .split(/\r?\n/)
              .filter(r => r !== "")
              .map(r => r.replace(/^[*+-]? ?(.*)/g, "$1")
-             .split(RegExp(" ?[:：] ?")))
+             .split(/[ \t]*[:：][ \t]*/))
   w.map(r => r.push(arr_url[currOrigin]["linkBase"] + r[0]))
   return w
 }
 // 書き方向の変更処理
 async function toggleOrient(orient) {
-  elm_html.classList.remove("h", "v")
-  elm_html.classList.add(orient)
+  nod_html.classList.remove("h", "v")
+  nod_html.classList.add(orient)
   if (arr_option["orient"] === "v") {
     document.body.scrollLeft = 100000
   }
 }
 // 色テーマの変更処理
 function toggleTheme(theme) {
-  elm_html.classList.remove("light", "dark" ,"auto")
-  elm_html.classList.add(theme)
+  nod_html.classList.remove("light", "dark" ,"auto")
+  nod_html.classList.add(theme)
 }
 // モードの変更処理
 function toggleMode(mode) {
@@ -1482,12 +1482,12 @@ function toggleMode(mode) {
 // レイアウトの調整
 async function layoutAdjustment() {
   if (arr_option["orient"] === "h") {
-    elm_frame.removeAttribute("style")
+    nod_frame.removeAttribute("style")
     ndl_linkChip[0].removeAttribute("style")
   }
   if (arr_option["orient"] === "v") {
-    let textWidth = window.getComputedStyle(elm_text).getPropertyValue("width")
-    elm_frame.style.width = textWidth
+    let textWidth = window.getComputedStyle(nod_text).getPropertyValue("width")
+    nod_frame.style.width = textWidth
     ndl_linkChip[0].style.marginLeft = Number(textWidth.slice(0, -2)) + 85 - Number(window.getComputedStyle(document.body).getPropertyValue("width").slice(0, -2))
   }
 }
