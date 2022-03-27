@@ -526,18 +526,18 @@ html.dark #copy-button {
           <span class="brk-itself"></span> の括弧自体を非表示にし、 <span class="brk-include"></span> の括弧と中身を非表示にします。</dd>
       </label>
       <label>
-        <input id="format-post" type="radio" name="format" value="post">
-        <dt>投稿</dt>
-        <dd>ウェブ小説記法のルビをそのまま表示し、解釈することしません。<br>
-          Markdown を非表示にします。<br>
-          <span class="brk-itself"></span> の括弧自体を非表示にし、 <span class="brk-include"></span> の括弧と中身を非表示にします。</dd>
-      </label>
-      <label>
         <input id="format-plot" type="radio" name="format" value="plot">
         <dt>プロット</dt>
         <dd>プロットを確認する際の表示です。<br>
           Markdown を解釈しますが、見出しは本文左に表示します。<br>
           閲覧、投稿では表示されない <span class="brk"></span> をそのままハイライトして表示します。</dd>
+      </label>
+      <label>
+        <input id="format-no-ruby" type="radio" name="format" value="noRuby">
+        <dt>ルビなし</dt>
+        <dd>ルビを非表示にします。文体解析などの際に使用します。<br>
+          Markdown を非表示にします。<br>
+          <span class="brk-itself"></span> の括弧自体を非表示にし、 <span class="brk-include"></span> の括弧と中身を非表示にします。</dd>
       </label>
       <label>
         <input id="format-pickup" type="radio" name="format" value="pickup">
@@ -614,8 +614,8 @@ html.dark #copy-button {
   <div id="format-chip" class="unloaded">
     <select id="format-selector">
       <option value="reading">閲覧</option>
-      <option value="post">投稿</option>
       <option value="plot">プロット</option>
+      <option value="noRuby">ルビなし</option>
       <option value="pickup">ピックアップ</option>
       <option value="odt">ODT</option>
     </select>
@@ -688,8 +688,8 @@ let keys_arr_option = []
 let nod_title = document.querySelector("title")
 let nod_input = document.querySelector("#input")
 let nod_formatReading = document.querySelector("#format-reading")
-let nod_formatPost = document.querySelector("#format-post")
 let nod_formatPlot = document.querySelector("#format-plot")
+let nod_formatNoRuby = document.querySelector("#format-no-ruby")
 let nod_formatPickup = document.querySelector("#format-pickup")
 let nod_formatOdt = document.querySelector("#format-odt")
 let nod_orientH = document.querySelector("#orient-h")
@@ -802,6 +802,25 @@ let arr_proc = {
     })
     countFull(src)
   },
+  noRuby: src => {
+    procbrk(src)
+    .then(r => {
+      return removeRuby(r)
+    }).then(r => {
+      return removeMd(r)
+    }).then(r => {
+      return arr_mode[arr_option["mode"]](r)
+    }).then(r => {
+      return parseNewline(r)
+    }).then(r => {
+      return addTitle(r)
+    }).then(r => {
+      return writeText(r)
+    }).then(() => {
+      afterLoading()
+    })
+    countFull(src)
+  },
   pickup: src => {
     let monoLine = removeMd(src).replace(/\r?\n/g, "")
     let h = 0
@@ -812,7 +831,7 @@ let arr_proc = {
       let RE_w1 = RegExp(".{0,30}" + esc(arr_brkInc[h]["before"]) + ".*?" + esc(arr_brkInc[h]["after"]) + ".{0,30}" + "(.{0,30}" + esc(arr_brkInc[h]["after"]) + ")?", "g")
       let arr_pickup0 = monoLine.match(RE_w0)
       let arr_pickup1 = monoLine.match(RE_w1)
-      if (arr_pickup0 !== null || match1 !== null) {
+      if (arr_pickup0 !== null) {
         let arr_pickupAll = arr_pickup0.concat(arr_pickup1)
         procbrk(arr_pickupAll.join(EOL).replace(/^(.*)$/gm, '<li>$1</li>'), 1)
         .then(async r => {
@@ -857,8 +876,8 @@ let arr_proc = {
       }
       zip.generateAsync({type: "blob"})
       .then(r => {
-        if (op!== undefined) {
-          saveAs(r, arr_makeFileName(search["op"]))
+        if (op !== undefined) {
+          saveAs(r, makeFileName(arr_repoFile[1]))
         } else {
           saveAs(r, makeFileName(trgFile.name))
         }
@@ -1020,11 +1039,11 @@ window.onresize = () => {
 nod_formatReading.onchange = () => {
   arr_option["format"] = "reading"
 }
-nod_formatPost.onchange = () => {
-  arr_option["format"] = "post"
-}
 nod_formatPlot.onchange = () => {
   arr_option["format"] = "plot"
+}
+nod_formatNoRuby.onchange = () => {
+  arr_option["format"] = "noRuby"
 }
 nod_formatPickup.onchange = () => {
   arr_option["format"] = "pickup"
@@ -1285,7 +1304,7 @@ function parseOdt(src) {
 // 書き出しとその後の処理
 function writeText(src) {
   nod_text.innerHTML = src
-  nod_html.classList.remove("reading", "post", "plot", "pickup", "odt")
+  nod_html.classList.remove("reading", "plot", "no-ruby", "pickup", "odt")
   nod_html.classList.add(arr_option["format"])
   return true
 }
@@ -1407,11 +1426,11 @@ function applyOption() {
   if (arr_option["format"] === "reading") {
     nod_formatReading.checked = true
     nod_formatSelector.options[0].selected = true
-  } else if (arr_option["format"] === "post") {
-    nod_formatPost.checked = true
-    nod_formatSelector.options[1].selected = true
   } else if (arr_option["format"] === "plot") {
     nod_formatPlot.checked = true
+    nod_formatSelector.options[1].selected = true
+  } else if (arr_option["format"] === "noRuby") {
+    nod_formatNoRuby.checked = true
     nod_formatSelector.options[2].selected = true
   } else if (arr_option["format"] === "pickup") {
     nod_formatPickup.checked = true
