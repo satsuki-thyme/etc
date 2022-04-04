@@ -276,8 +276,9 @@ html.v #top-bar {
   display: inline-block;
   margin-left: 15px;
 }
-#op-selector {
-  width: 5em;
+#op-selector-chip,
+#format-chip {
+  font-family: monospace;
 }
 #count-chip-full,
 #count-chip-select {
@@ -1029,22 +1030,24 @@ window.addEventListener("DOMContentLoaded", () => {
       }
     }
   }
+  let currOp = 0
   if (currOrigin.match("satsuki.c") !== null) {
     loadNovelIndex().then(r => {
-      let opNumber = 0
+      let w = r.filter(w => w[2] === "public")
       if (op !== undefined) {
-        opNumber = op.replace(/op(\d+).*/, "$1")
+        currOp = Number(op.replace(/op(\d+).*/, "$1"))
       }
-      for (let i = 0; i < r.length; i++) {
-        let w = document.createElement("option")
-        w.value = r[i][0]
-        w.textContent = `op${r[i][0]} ${r[i][1]}`
-        nod_opSelector.appendChild(w)
-        if (Number(opNumber) === r[i][0]) {
+      for (let i in w) {
+        let w1 = document.createElement("option")
+        w1.value = w[i][0]
+        w1.append(`op${w[i][0]}`)
+        nod_opSelector.appendChild(w1)
+      }
+      return w
+    }).then(r => {
+      for (let i in r) {
+        if (r[i][0] === currOp) {
           nod_opSelector.options[i].selected = true
-        }
-        nod_opSelector.onchange = () => {
-          location = `${currOrigin}/novel-parse.html?op=op${nod_opSelector.options[nod_opSelector.selectedIndex].value}/README.md`
         }
       }
     })
@@ -1088,6 +1091,9 @@ window.onresize = () => {
 
 */
 // デフォルト画面の変更
+nod_opSelector.onchange = () => {
+  location = `${currOrigin}/novel-parse.html?op=op${nod_opSelector.options[nod_opSelector.selectedIndex].value}/README.md`
+}
 nod_formatReading.onchange = () => {
   arr_option["format"] = "reading"
 }
