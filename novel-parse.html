@@ -626,6 +626,7 @@ html.dark #copy-button {
 </div><!-- frame -->
 <div id="top-bar">
   <div id="op-selector-chip">
+    <input id="public" type="checkbox" name="public" checked>
     <select id="op-selector">
     </select>
   </div>
@@ -754,6 +755,7 @@ let ndl_brkInc = document.querySelectorAll(".brk-include")
 let ndl_brkSlf = document.querySelectorAll(".brk-itself")
 let nod_topBar = document.querySelector("#top-bar")
 let nod_opSelectorChip = document.querySelector("#op-selector-chip")
+let nod_public = document.querySelector("#public")
 let nod_opSelector = document.querySelector("#op-selector")
 let nod_formatChip = document.querySelector("#format-chip")
 let nod_formatSelector = document.querySelector("#format-selector")
@@ -772,6 +774,7 @@ let nod_postOutput = document.querySelector("#post-output")
 let nod_postOutputOuter = document.querySelector("#post-output-outer")
 let ndl_linkGroup = document.querySelectorAll(".link-group")
 let ndl_toc = document.querySelectorAll(".toc")
+let novelIndex = null
 // 改行の種類
 let EOL = "\n"
 // モード = 同一行の処理と、改行の読み取り
@@ -1033,29 +1036,13 @@ window.addEventListener("DOMContentLoaded", () => {
   let currOp = 0
   if (currOrigin.match("satsuki.c") !== null) {
     loadNovelIndex().then(r => {
-      let w = r.filter(w => w[2] === "public")
-      if (op !== undefined) {
-        currOp = Number(op.replace(/op(\d+).*/, "$1"))
-      }
-      for (let i in w) {
-        let w1 = document.createElement("option")
-        w1.value = w[i][0]
-        w1.append(`op${w[i][0]}`)
-        nod_opSelector.appendChild(w1)
-      }
-      return w
-    }).then(r => {
-      for (let i in r) {
-        if (r[i][0] === currOp) {
-          nod_opSelector.options[i].selected = true
-        }
-      }
+      novelIndex = r
+      procNovelIndex(r)
     })
-    async function loadNovelIndex() {
-      let w = await fetch("http://etc.satsuki.c/novel/etc/novel-index.json?" + now)
-      return w.json()
-    }
-
+  }
+  async function loadNovelIndex() {
+    let w = await fetch("http://etc.satsuki.c/novel/etc/novel-index.json?" + now)
+    return  w.json()
   }
   if (arr_option["url"] !== undefined && op === undefined) {
     loadContent(arr_option["url"]).then(r => {
@@ -1091,6 +1078,9 @@ window.onresize = () => {
 
 */
 // デフォルト画面の変更
+nod_public.onchange = () => {
+  procNovelIndex(novelIndex)
+}
 nod_opSelector.onchange = () => {
   location = `${currOrigin}/novel-parse.html?op=op${nod_opSelector.options[nod_opSelector.selectedIndex].value}/README.md`
 }
@@ -1273,6 +1263,38 @@ function exec(src) {
   }
   arr_proc[arr_option["format"]](src)
 }
+// op のリストを作って opSelector にセットする
+function procNovelIndex(r) {
+  makeOpSelector(r).then(r => {
+    for (let i in r) {
+      if (r[i][0] === currOp) {
+        nod_opSelector.options[i].selected = true
+      }
+    }
+  })
+  async function makeOpSelector(r1) {
+    let w = null
+    if (nod_public.checked === true) {
+      w = r1.filter(w1 => w1[2] === "public")
+    } else {
+      w = r1
+    }
+    if (op !== undefined) {
+      currOp = Number(op.replace(/op(\d+).*/, "$1"))
+    }
+    while (nod_opSelector.firstChild) {
+      nod_opSelector.removeChild(nod_opSelector.firstChild)
+    }
+    for (let i in w) {
+      let w1 = document.createElement("option")
+      w1.value = w[i][0]
+      w1.append(`op${w[i][0]}`)
+      nod_opSelector.appendChild(w1)
+    }
+    return w
+  }
+}
+// 本文を投稿用にコピーする
 function copyPost() {
   procbrk(srcText)
   .then(r => {
