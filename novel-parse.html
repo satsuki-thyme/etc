@@ -689,27 +689,33 @@ for (let i = 0; i < arr_search.length; i++) {
 let op = arr_param["op"]
 delete arr_param["op"]
 let arr_repoFile = []
+let opSign = ""
 let prevFile = ""
 let nextFile = ""
 let arr_url = {}
 if (op !== undefined) {
   arr_repoFile = op.split("/")
+  opSign = arr_repoFile[0].replace(/(.*?)\d+/, "$1")
   prevFile = arr_repoFile[1].replace(/(\[.+\]).+/, "$1") + ("00" + (Number(arr_repoFile[1].replace(/\[.+\](\d+)\..+/, "$1")) - 1)).slice(-3) + arr_repoFile[1].replace(/\[.+\]\d+(\..+)/, "$1")
   nextFile = arr_repoFile[1].replace(/(\[.+\]).+/, "$1") + ("00" + (Number(arr_repoFile[1].replace(/\[.+\](\d+)\..+/, "$1")) + 1)).slice(-3) + arr_repoFile[1].replace(/\[.+\]\d+(\..+)/, "$1")
   arr_url = {
     "http://etc.satsuki.c": {
+      "backhostRoot": "http://etc.satsuki.c/novel/",
       "backhost": "http://etc.satsuki.c/novel/" + arr_repoFile[0] + "/",
       "linkBase": "http://etc.satsuki.c/novel-parse.html?op=" + arr_repoFile[0] + "/",
     },
     "http://satsuki.c": {
+      "backhostRoot": "http://etc.satsuki.c/novel/",
       "backhost": "http://etc.satsuki.c/novel/" + arr_repoFile[0] + "/",
       "linkBase": "http://etc.satsuki.c/novel-parse.html?op=" + arr_repoFile[0] + "/",
     },
     "https://etc.satsuki.me": {
+      "backhostRoot": "https://raw.gitbuusercontent.com/",
       "backhost": "https://raw.githubusercontent.com/satsuki-thyme/" + arr_repoFile[0] + "/master/",
       "linkBase": "https://etc.satsuki.me/novel-parse.html?op=" + arr_repoFile[0] + "/",
     },
     "https://satsuki.me": {
+      "backhostRoot": "https://raw.gitbuusercontent.com/",
       "backhost": "https://raw.githubusercontent.com/satsuki-thyme/" + arr_repoFile[0] + "/master/",
       "linkBase": "https://satsuki.me/novel-parse.html?op=" + arr_repoFile[0] + "/",
     }
@@ -775,6 +781,7 @@ let nod_postOutputOuter = document.querySelector("#post-output-outer")
 let ndl_linkGroup = document.querySelectorAll(".link-group")
 let ndl_toc = document.querySelectorAll(".toc")
 let novelIndex = null
+let public = "private"
 // 改行の種類
 let EOL = "\n"
 // モード = 同一行の処理と、改行の読み取り
@@ -970,11 +977,15 @@ let arr_proc = {
 
 */
 window.onunload = () => {
-  // リロード前のスクロールをリロード後に再現する
+  // スクロール量
   localStorage.setItem("scroll_top", document.body.scrollTop)
   localStorage.setItem("scroll_left", document.body.scrollLeft)
-  localStorage.setItem("file", arr_repoFile[1])
+  // リロード後にスクロール量を再現するか否かを判断するために今の話のリポジトリとファイルを記録する
+  localStorage.setItem("repoFile", arr_repoFile)
+  // 表示オプション
   localStorage.setItem("option", JSON.stringify(arr_option))
+  // public/private
+  localStorage.setItem("public", nod_public.checked)
 }
 /*
 
@@ -1033,16 +1044,14 @@ window.addEventListener("DOMContentLoaded", () => {
       }
     }
   }
+  // opSelector のための処理
+  public = localStorage.getItem("public")
   let currOp = 0
   if (currOrigin.match("satsuki.c") !== null) {
     loadNovelIndex().then(r => {
       novelIndex = r
       procNovelIndex(r)
     })
-  }
-  async function loadNovelIndex() {
-    let w = await fetch("http://etc.satsuki.c/novel/etc/novel-index.json?" + now)
-    return  w.json()
   }
   if (arr_option["url"] !== undefined && op === undefined) {
     loadContent(arr_option["url"]).then(r => {
@@ -1079,7 +1088,19 @@ window.onresize = () => {
 */
 // デフォルト画面の変更
 nod_public.onchange = () => {
-  procNovelIndex(novelIndex)
+  if (nod_public.checked === true) {
+   public = "public"
+  } else {
+    public = "private"
+  }
+  procNovelIndex(novelIndex).then(() => {
+    let trgOp = nod_opSelector.value
+    if (trgOp !== arr_repoFile[0]) {
+      loadContent(arr_url[currOrigin]["backhostRoot"] + opSign + trgOp + "/README.md?" + now).then(r => {
+        exec(r)
+      })
+    }
+  })
 }
 nod_opSelector.onchange = () => {
   location = `${currOrigin}/novel-parse.html?op=op${nod_opSelector.options[nod_opSelector.selectedIndex].value}/README.md`
@@ -1263,8 +1284,13 @@ function exec(src) {
   }
   arr_proc[arr_option["format"]](src)
 }
+// opSelector のために op のリストを読み込む
+async function loadNovelIndex() {
+    let w = await fetch("http://etc.satsuki.c/novel/etc/novel-index.json?" + now)
+    return  w.json()
+  }
 // op のリストを作って opSelector にセットする
-function procNovelIndex(r) {
+async function procNovelIndex(r) {
   makeOpSelector(r).then(r => {
     for (let i in r) {
       if (r[i][0] === currOp) {
@@ -1274,10 +1300,11 @@ function procNovelIndex(r) {
   })
   async function makeOpSelector(r1) {
     let w = null
-    if (nod_public.checked === true) {
+    if (public === "public") {
       w = r1.filter(w1 => w1[2] === "public")
     } else {
       w = r1
+      nod_public.checked = false
     }
     if (op !== undefined) {
       currOp = Number(op.replace(/op(\d+).*/, "$1"))
@@ -1596,7 +1623,7 @@ async function layoutAdjustment() {
 //  真のロード後の処理
 function afterLoading() {
   layoutAdjustment().then(() => {
-    if (localStorage.getItem("file") === arr_repoFile[1]) {
+    if (localStorage.getItem("repoFile") === arr_repoFile) {
       document.body.scrollTop = localStorage.getItem("scroll_top")
       document.body.scrollLeft = localStorage.getItem("scroll_left")
       if (localStorage.getItem("scroll_left") === null || localStorage.getItem("scroll_left") == 0) {
