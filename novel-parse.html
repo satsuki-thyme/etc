@@ -625,7 +625,7 @@ html.dark #copy-button {
   </main><!-- text -->
 </div><!-- frame -->
 <div id="top-bar">
-  <div id="op-selector-chip">
+  <div id="op-selector-chip" class="hiden">
     <input id="public" type="checkbox" name="public" checked>
     <select id="op-selector">
     </select>
@@ -780,8 +780,9 @@ let nod_postOutput = document.querySelector("#post-output")
 let nod_postOutputOuter = document.querySelector("#post-output-outer")
 let ndl_linkGroup = document.querySelectorAll(".link-group")
 let ndl_toc = document.querySelectorAll(".toc")
+let currOp = null
 let novelIndex = null
-let public = "private"
+let public = false
 // 改行の種類
 let EOL = "\n"
 // モード = 同一行の処理と、改行の読み取り
@@ -1009,17 +1010,17 @@ window.addEventListener("DOMContentLoaded", () => {
   // op で作品が指定されていた場合の処理
   if (op !== undefined) {
     if (arr_repoFile[1] !== "README.md") {
+      nod_topBar.classList.remove("hiden")
+      nod_opSelectorChip.classList.remove("hiden")
+      nod_countChip.classList.remove("hiden")
+      nod_formatChip.classList.remove("hiden")
+      nod_orientChip.classList.remove("hiden")
+      nod_themeChip.classList.remove("hiden")
+      nod_modeChip.classList.remove("hiden")
+      nod_copyChip.classList.remove("hiden")
       loadContent(arr_url[currOrigin]["backhost"] + arr_repoFile[1]).then(r => {
         exec(r)
         srcText = r
-        nod_topBar.classList.remove("hiden")
-        nod_opSelector.classList.remove("hiden")
-        nod_countChip.classList.remove("hiden")
-        nod_formatChip.classList.remove("hiden")
-        nod_orientChip.classList.remove("hiden")
-        nod_themeChip.classList.remove("hiden")
-        nod_modeChip.classList.remove("hiden")
-        nod_copyChip.classList.remove("hiden")
         loadContent(arr_url[currOrigin]["backhost"] + "README.md").then(r1 => {
           makeToc(r1).then((r2) => {
             arr_toc = r2
@@ -1029,6 +1030,7 @@ window.addEventListener("DOMContentLoaded", () => {
       })
     }
     else /* if (arr_repoFile[1] === "README.md") */{
+      nod_opSelectorChip.classList.remove("hiden")
       arr_option["format"] = "readme"
       loadContent(arr_url[currOrigin]["backhost"] + arr_repoFile[1]).then(r => {
         makeToc(r).then((r1) => {
@@ -1045,8 +1047,11 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   }
   // opSelector のための処理
-  public = localStorage.getItem("public")
-  let currOp = 0
+  if (localStorage.getItem("public") === "true") {
+    public = true
+  } else {
+    public = false
+  }
   if (currOrigin.match("satsuki.c") !== null) {
     loadNovelIndex().then(r => {
       novelIndex = r
@@ -1089,9 +1094,9 @@ window.onresize = () => {
 // デフォルト画面の変更
 nod_public.onchange = () => {
   if (nod_public.checked === true) {
-   public = "public"
+   public = true
   } else {
-    public = "private"
+    public = false
   }
   procNovelIndex(novelIndex).then(() => {
     let trgOp = nod_opSelector.value
@@ -1300,7 +1305,7 @@ async function procNovelIndex(r) {
   })
   async function makeOpSelector(r1) {
     let w = null
-    if (public === "public") {
+    if (public === true) {
       w = r1.filter(w1 => w1[2] === "public")
     } else {
       w = r1
