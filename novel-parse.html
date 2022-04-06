@@ -689,7 +689,7 @@ for (let i = 0; i < arr_search.length; i++) {
 let op = arr_param["op"]
 delete arr_param["op"]
 let arr_repoFile = []
-let opSign = ""
+let opSign = "op"
 let prevFile = ""
 let nextFile = ""
 let arr_url = {}
@@ -698,27 +698,29 @@ if (op !== undefined) {
   opSign = arr_repoFile[0].replace(/(.*?)\d+/, "$1")
   prevFile = arr_repoFile[1].replace(/(\[.+\]).+/, "$1") + ("00" + (Number(arr_repoFile[1].replace(/\[.+\](\d+)\..+/, "$1")) - 1)).slice(-3) + arr_repoFile[1].replace(/\[.+\]\d+(\..+)/, "$1")
   nextFile = arr_repoFile[1].replace(/(\[.+\]).+/, "$1") + ("00" + (Number(arr_repoFile[1].replace(/\[.+\](\d+)\..+/, "$1")) + 1)).slice(-3) + arr_repoFile[1].replace(/\[.+\]\d+(\..+)/, "$1")
-  arr_url = {
-    "http://etc.satsuki.c": {
-      "backhostRoot": "http://etc.satsuki.c/novel/",
-      "backhost": "http://etc.satsuki.c/novel/" + arr_repoFile[0] + "/",
-      "linkBase": "http://etc.satsuki.c/novel-parse.html?op=" + arr_repoFile[0] + "/",
-    },
-    "http://satsuki.c": {
-      "backhostRoot": "http://etc.satsuki.c/novel/",
-      "backhost": "http://etc.satsuki.c/novel/" + arr_repoFile[0] + "/",
-      "linkBase": "http://etc.satsuki.c/novel-parse.html?op=" + arr_repoFile[0] + "/",
-    },
-    "https://etc.satsuki.me": {
-      "backhostRoot": "https://raw.gitbuusercontent.com/",
-      "backhost": "https://raw.githubusercontent.com/satsuki-thyme/" + arr_repoFile[0] + "/master/",
-      "linkBase": "https://etc.satsuki.me/novel-parse.html?op=" + arr_repoFile[0] + "/",
-    },
-    "https://satsuki.me": {
-      "backhostRoot": "https://raw.gitbuusercontent.com/",
-      "backhost": "https://raw.githubusercontent.com/satsuki-thyme/" + arr_repoFile[0] + "/master/",
-      "linkBase": "https://satsuki.me/novel-parse.html?op=" + arr_repoFile[0] + "/",
-    }
+}
+arr_url = {
+  "http://etc.satsuki.c": {
+    "backhostRoot": "http://etc.satsuki.c/novel/",
+    "backhost": "http://etc.satsuki.c/novel/" + arr_repoFile[0] + "/",
+    "linkRoot": "http://etc.satsuki.c/novel-parse.html",
+    "linkBase": "http://etc.satsuki.c/novel-parse.html?op=" + arr_repoFile[0] + "/",
+  },
+  "http://satsuki.c": {
+    "backhostRoot": "http://etc.satsuki.c/novel/",
+    "backhost": "http://etc.satsuki.c/novel/" + arr_repoFile[0] + "/",
+    "linkRoot": "http://etc.satsuki.c/novel-parse.html",
+    "linkBase": "http://etc.satsuki.c/novel-parse.html?op=" + arr_repoFile[0] + "/",
+  },
+  "https://etc.satsuki.me": {
+    "backhostRoot": "https://raw.gitbuusercontent.com/",
+    "backhost": "https://raw.githubusercontent.com/satsuki-thyme/" + arr_repoFile[0] + "/master/",
+    "linkBase": "https://etc.satsuki.me/novel-parse.html?op=" + arr_repoFile[0] + "/",
+  },
+  "https://satsuki.me": {
+    "backhostRoot": "https://raw.gitbuusercontent.com/",
+    "backhost": "https://raw.githubusercontent.com/satsuki-thyme/" + arr_repoFile[0] + "/master/",
+    "linkBase": "https://satsuki.me/novel-parse.html?op=" + arr_repoFile[0] + "/",
   }
 }
 let arr_option = {
@@ -1007,11 +1009,14 @@ window.addEventListener("DOMContentLoaded", () => {
       arr_option[keys_arr_option[i]] = arr_optionDefault[keys_arr_option[i]]
     }
   }
+  // ホストで opSelector 周りを表示するかどうか選択する
+  if (currOrigin === Object.keys(arr_url)[0] || currOrigin === Object.keys(arr_url)[1]) {
+    nod_opSelectorChip.classList.remove("hiden")
+  }
   // op で作品が指定されていた場合の処理
   if (op !== undefined) {
     if (arr_repoFile[1] !== "README.md") {
       nod_topBar.classList.remove("hiden")
-      nod_opSelectorChip.classList.remove("hiden")
       nod_countChip.classList.remove("hiden")
       nod_formatChip.classList.remove("hiden")
       nod_orientChip.classList.remove("hiden")
@@ -1100,15 +1105,24 @@ nod_public.onchange = () => {
   }
   procNovelIndex(novelIndex).then(() => {
     let trgOp = nod_opSelector.value
-    if (trgOp !== arr_repoFile[0]) {
-      loadContent(arr_url[currOrigin]["backhostRoot"] + opSign + trgOp + "/README.md?" + now).then(r => {
-        exec(r)
-      })
+    if (arr_repoFile.length !== 0) {
+      if (trgOp !== arr_repoFile[0].replace(/.*?(\d+).*/, "$1") && trgOp !== "-") {
+        location = arr_url[currOrigin]["linkRoot"] + "?op=" + opSign + trgOp + "/README.md"
+      } else if (trgOp === "-") {
+        location = arr_url[currOrigin]["linkRoot"]
+      }
+    } else {
+      location = arr_url[currOrigin]["linkRoot"]
     }
   })
 }
 nod_opSelector.onchange = () => {
-  location = `${currOrigin}/novel-parse.html?op=op${nod_opSelector.options[nod_opSelector.selectedIndex].value}/README.md`
+  let trgOp = nod_opSelector.options[nod_opSelector.selectedIndex].value
+  if (trgOp !== "-") {
+    location = `${currOrigin}/novel-parse.html?op=op${trgOp}/README.md`
+  } else {
+    location = arr_url[currOrigin]["linkRoot"]
+  }
 }
 nod_formatReading.onchange = () => {
   arr_option["format"] = "reading"
@@ -1299,7 +1313,7 @@ async function procNovelIndex(r) {
   makeOpSelector(r).then(r => {
     for (let i in r) {
       if (r[i][0] === currOp) {
-        nod_opSelector.options[i].selected = true
+        nod_opSelector.options[Number(i) + 1].selected = true
       }
     }
   })
@@ -1317,6 +1331,10 @@ async function procNovelIndex(r) {
     while (nod_opSelector.firstChild) {
       nod_opSelector.removeChild(nod_opSelector.firstChild)
     }
+    let w2 = document.createElement("option")
+    w2.value = "-"
+    w2.append("-")
+    nod_opSelector.appendChild(w2)
     for (let i in w) {
       let w1 = document.createElement("option")
       w1.value = w[i][0]
