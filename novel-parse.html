@@ -210,21 +210,21 @@ html.v #text {
   writing-mode: vertical-rl;
   text-orientation: upright;
 }
-#text.display p {
+#text p {
   margin: 0;
   padding: 0;
 }
-#text.display h1 + p,
-#text.display h1 + div.plot-heading-block,
-#text.display h1 + div.plot-heading-block + p {
+#text h1 + p,
+#text h1 + div.plot-heading-block,
+#text h1 + div.plot-heading-block + p {
   margin-top: 50px;
 }
-html.v #text.display h1 + p,
-html.v #text.display h1 + div.plot-heading-block + p {
+html.v #text h1 + p,
+html.v #text h1 + div.plot-heading-block + p {
   margin-top: 0;
   margin-right: 80px;
 }
-html.v #text.display div.plot-heading-block {
+html.v #text div.plot-heading-block {
   display: none;
 }
 #text h1 {
@@ -232,6 +232,9 @@ html.v #text.display div.plot-heading-block {
 }
 html.v #text h1 {
   text-align: unset;
+}
+#default-display-container.hiden {
+  display: none;
 }
 #top-bar.hiden,
 #op-selector-chip.hiden,
@@ -346,13 +349,13 @@ a:hover {
   border-width: 1px;
   border-style: solid;
 }
-#text.display div.plot-heading-block {
+#text div.plot-heading-block {
   display: block;
   float: left;
   width: 280px;
   margin-left: -300px;
 }
-#text.display h2.plot-heading {
+#text h2.plot-heading {
   margin: 0;
   font-size: 16px;
   font-weight: normal;
@@ -504,7 +507,7 @@ html.dark #copy-button {
   #top-bar.display {
     display: none;
   }
-  #text.display div.plot-heading-block {
+  #text div.plot-heading-block {
     display: none;
   }
 }
@@ -517,115 +520,117 @@ html.dark #copy-button {
 </div>
 <div id="frame">
   <main id="text">
-    <h1>使い方</h1>
-    <p>表示するテキストファイルを<label id="input-button">ここ<input type="file" id="input"></label>から読み込むか、ドラッグ & ドロップしてください。</p>
-    <h2>全文の文字数</h2>
-    <p>表示される文字数は以下の文字を含みません。</p>
-    <ul>
-      <li>全角スペース</li>
-      <li>半角スペース</li>
-      <li>タブ</li>
-      <li>改行記号</li>
-      <li>ルビ</li>
-    </ul>
-    <h2>選択範囲の文字数</h2>
-    <p>表示される文字数は以下の文字を含みません。ルビは数えられます。</p>
-    <ul>
-      <li>全角スペース</li>
-      <li>半角スペース</li>
-      <li>タブ</li>
-      <li>改行記号</li>
-    </ul>
-    <h2>オプション</h2>
-    <h3>フォーマット</h3>
-    <dl>
-      <label>
-        <input id="format-reading" type="radio" name="format" value="reading" checked>
-        <dt>閲覧</dt>
-        <dd>閲覧用の表示でデフォルトです。<br>
-          ウェブ小説記法のルビを解釈します。<br>
-          Markdown を非表示にします。<br>
-          <span class="brk-itself"></span> の括弧自体を非表示にし、 <span class="brk-include"></span> の括弧と中身を非表示にします。</dd>
-      </label>
-      <label>
-        <input id="format-plot" type="radio" name="format" value="plot">
-        <dt>プロット</dt>
-        <dd>プロットを確認する際の表示です。<br>
-          Markdown を解釈しますが、見出しは本文左に表示します。<br>
-          閲覧、投稿では表示されない <span class="brk"></span> をそのままハイライトして表示します。</dd>
-      </label>
-      <label>
-        <input id="format-no-ruby" type="radio" name="format" value="noRuby">
-        <dt>ルビなし</dt>
-        <dd>ルビを非表示にします。文体解析などの際に使用します。<br>
-          Markdown を非表示にします。<br>
-          <span class="brk-itself"></span> の括弧自体を非表示にし、 <span class="brk-include"></span> の括弧と中身を非表示にします。</dd>
-      </label>
-      <label>
-        <input id="format-pickup" type="radio" name="format" value="pickup">
-        <dt>ピックアップ</dt>
-        <dd><span class="brk"></span> で囲った部分をピックアップして表示します。</dd>
-      </label>
-      <label>
-        <input id="format-odt" type="radio" name="format" value="odt">
-        <dt>ODT</dt>
-        <dd>ウェブ小説記法のルビを解釈し、 odt に変換してダウンロードします。<br>
-          LibreOffice などで開くことができます。<br>
-          <span class="brk-itself"></span> の括弧自体を非表示にし、 <span class="brk-include"></span> の括弧と中身を非表示にします。<br>
-          ダウンロードに際してブラウザから危険性を示唆されます。自己責任でご利用ください。</dd>
-      </label>
-    </dl>
-    <h3>書き方向</h3>
-    <p>横書きと縦書きが選べます。<br>
-      フォーマット「 ODT 」には影響がありません。</p>
-    <dl>
-      <label>
-        <input id="orient-h" type="radio" name="orient" value="orient-h">
-        <dt>横書き</dt>
-        <dd>横書きです。</dd>
-      </label>
-      <label>
-        <input id="orient-v" type="radio" name="orient" value="orient-v">
-        <dt>縦書き</dt>
-        <dd>縦書きです。</dd>
-      </label>
-    </dl>
-    <h3>テーマ</h3>
-    <p>テーマはブラウザの設定から自動的に選ばれますが、明示的に指定することも可能です。</p>
-    <dl>
-      <label>
-        <input id="theme-light" type="radio" name="theme" value="light">
-        <dt>ライト</dt>
-        <dd>明るい配色です。</dd>
-      </label>
-      <label>
-        <input id="theme-dark" type="radio" name="theme" value="dark">
-        <dt>ダーク</dt>
-        <dd>暗い配色です。</dd>
-      </label>
-    </dl>
-    <h3>モード</h3>
-    <p>原文の改行をそのまま反映するか、 2 個で 1 行の改行をするか選択できます。</p>
-    <dl>
-      <label>
-        <input id="mode-normal" type="radio" name="mode" value="normal">
-        <dt>標準</dt>
-        <dd>原文の改行をそのまま反映します。</dd>
-      </label>
-      <label>
-        <input id="mode-half" type="radio" name="mode" value="half">
-        <dt>ハーフ</dt>
-        <dd>原文の改行をそのまま反映します。</dd>
-      </label>
-    </dl>
-    <h2>URL オプション</h2>
-    <p>URL で ? に続けてオプションを指定することができます。</p>
-    <h3>URL</h3>
-    <dl>
-      <dt>url=作品のテキストファイルの URL</dt>
-      <dd>作品のテキストファイルの URL を指定して読み込ませる<br>
-      GitHub の場合は <code>https://raw.githubusercontent.com/ユーザ名/リポジトリ名/ブランチ名/ファイル名</code> とする</dd>
-    </dl>
+    <div id="default-display-container">
+      <h1>使い方</h1>
+      <p>表示するテキストファイルを<label id="input-button">ここ<input type="file" id="input"></label>から読み込むか、ドラッグ & ドロップしてください。</p>
+      <h2>全文の文字数</h2>
+      <p>表示される文字数は以下の文字を含みません。</p>
+      <ul>
+        <li>全角スペース</li>
+        <li>半角スペース</li>
+        <li>タブ</li>
+        <li>改行記号</li>
+        <li>ルビ</li>
+      </ul>
+      <h2>選択範囲の文字数</h2>
+      <p>表示される文字数は以下の文字を含みません。ルビは数えられます。</p>
+      <ul>
+        <li>全角スペース</li>
+        <li>半角スペース</li>
+        <li>タブ</li>
+        <li>改行記号</li>
+      </ul>
+      <h2>オプション</h2>
+      <h3>フォーマット</h3>
+      <dl>
+        <label>
+          <input id="format-reading" type="radio" name="format" value="reading" checked>
+          <dt>閲覧</dt>
+          <dd>閲覧用の表示でデフォルトです。<br>
+            ウェブ小説記法のルビを解釈します。<br>
+            Markdown を非表示にします。<br>
+            <span class="brk-itself"></span> の括弧自体を非表示にし、 <span class="brk-include"></span> の括弧と中身を非表示にします。</dd>
+        </label>
+        <label>
+          <input id="format-plot" type="radio" name="format" value="plot">
+          <dt>プロット</dt>
+          <dd>プロットを確認する際の表示です。<br>
+            Markdown を解釈しますが、見出しは本文左に表示します。<br>
+            閲覧、投稿では表示されない <span class="brk"></span> をそのままハイライトして表示します。</dd>
+        </label>
+        <label>
+          <input id="format-no-ruby" type="radio" name="format" value="noRuby">
+          <dt>ルビなし</dt>
+          <dd>ルビを非表示にします。文体解析などの際に使用します。<br>
+            Markdown を非表示にします。<br>
+            <span class="brk-itself"></span> の括弧自体を非表示にし、 <span class="brk-include"></span> の括弧と中身を非表示にします。</dd>
+        </label>
+        <label>
+          <input id="format-pickup" type="radio" name="format" value="pickup">
+          <dt>ピックアップ</dt>
+          <dd><span class="brk"></span> で囲った部分をピックアップして表示します。</dd>
+        </label>
+        <label>
+          <input id="format-odt" type="radio" name="format" value="odt">
+          <dt>ODT</dt>
+          <dd>ウェブ小説記法のルビを解釈し、 odt に変換してダウンロードします。<br>
+            LibreOffice などで開くことができます。<br>
+            <span class="brk-itself"></span> の括弧自体を非表示にし、 <span class="brk-include"></span> の括弧と中身を非表示にします。<br>
+            ダウンロードに際してブラウザから危険性を示唆されます。自己責任でご利用ください。</dd>
+        </label>
+      </dl>
+      <h3>書き方向</h3>
+      <p>横書きと縦書きが選べます。<br>
+        フォーマット「 ODT 」には影響がありません。</p>
+      <dl>
+        <label>
+          <input id="orient-h" type="radio" name="orient" value="orient-h">
+          <dt>横書き</dt>
+          <dd>横書きです。</dd>
+        </label>
+        <label>
+          <input id="orient-v" type="radio" name="orient" value="orient-v">
+          <dt>縦書き</dt>
+          <dd>縦書きです。</dd>
+        </label>
+      </dl>
+      <h3>テーマ</h3>
+      <p>テーマはブラウザの設定から自動的に選ばれますが、明示的に指定することも可能です。</p>
+      <dl>
+        <label>
+          <input id="theme-light" type="radio" name="theme" value="light">
+          <dt>ライト</dt>
+          <dd>明るい配色です。</dd>
+        </label>
+        <label>
+          <input id="theme-dark" type="radio" name="theme" value="dark">
+          <dt>ダーク</dt>
+          <dd>暗い配色です。</dd>
+        </label>
+      </dl>
+      <h3>モード</h3>
+      <p>原文の改行をそのまま反映するか、 2 個で 1 行の改行をするか選択できます。</p>
+      <dl>
+        <label>
+          <input id="mode-normal" type="radio" name="mode" value="normal">
+          <dt>標準</dt>
+          <dd>原文の改行をそのまま反映します。</dd>
+        </label>
+        <label>
+          <input id="mode-half" type="radio" name="mode" value="half">
+          <dt>ハーフ</dt>
+          <dd>原文の改行をそのまま反映します。</dd>
+        </label>
+      </dl>
+      <h2>URL オプション</h2>
+      <p>URL で ? に続けてオプションを指定することができます。</p>
+      <h3>URL</h3>
+      <dl>
+        <dt>url=作品のテキストファイルの URL</dt>
+        <dd>作品のテキストファイルの URL を指定して読み込ませる<br>
+        GitHub の場合は <code>https://raw.githubusercontent.com/ユーザ名/リポジトリ名/ブランチ名/ファイル名</code> とする</dd>
+      </dl>
+    </div><!-- default-display-container -->
   </main><!-- text -->
 </div><!-- frame -->
 <div id="top-bar">
@@ -765,6 +770,7 @@ let ndl_next = document.querySelectorAll(".next")
 let ndl_brk = document.querySelectorAll(".brk")
 let ndl_brkInc = document.querySelectorAll(".brk-include")
 let ndl_brkSlf = document.querySelectorAll(".brk-itself")
+let nod_defaultDisplayContainer = document.querySelector("#default-display-container")
 let nod_topBar = document.querySelector("#top-bar")
 let nod_opSelectorChip = document.querySelector("#op-selector-chip")
 let nod_public = document.querySelector("#public")
@@ -1000,6 +1006,7 @@ window.onunload = () => {
 
 */
 window.addEventListener("DOMContentLoaded", () => {
+  nod_defaultDisplayContainer.classList.add("hiden")
   let arr_optionStorage = JSON.parse(localStorage.getItem("option"))
   let keys_arr_option = Object.keys(arr_option)
   for (let i = 0; i < keys_arr_option.length; i++) {
@@ -1370,7 +1377,7 @@ function copyPost() {
       nod_postOutput.style.top = wh * 0.15
       nod_postOutput.style.left = window.innerWidth * 0.15
       nod_postOutputOuter.style.height = document.body.innerHeight
-      nod_postOutputOuter.classList.add("display")
+      nod_postOutputOuter.classList.remove("hiden")
       let copyPe = document.createRange()
       copyPe.setStart(nod_postOutput, 0)
       copyPe.setEnd(nod_postOutput, nod_postOutput.childNodes.length)
@@ -1505,7 +1512,6 @@ async function procbrk(src, type) {
 // 全体の文字数を数える処理
 function countChipFull(src) {
   nod_countChipFull.innerHTML = "全文：" + removeRuby(removeMd(src)).replace(/[\s　]/g, "").length + "文字"
-  nod_countChipFull.classList.add("display")
   nod_countChipFull.classList.remove("hiden")
 }
 // 選択範囲の文字数を数える処理
@@ -1514,11 +1520,9 @@ function countChipSelect(src) {
     let selected = document.getSelection()
     if (selected.isCollapsed === false) {
       nod_countChipSelect.innerHTML = "選択：" + removeRuby(removeMd(selected.getRangeAt(0).toString())).replace(/[\s　]/g, "").length + "文字"
-      nod_countChipSelect.classList.add("display")
       nod_countChipSelect.classList.remove("hiden")
     } else {
       nod_countChipSelect.classList.add("hiden")
-      nod_countChipSelect.classList.remove("display")
     }
   }, 3)
 }
@@ -1528,13 +1532,13 @@ function setLink() {
   let arr_adjacentProc = {
     prev: () => {
       ndl_prev.forEach((r) => {
-        r.href = arr_url[currOrigin] + prevFile
+        r.href = arr_url[currOrigin]["linkBase"] + prevFile
         r.innerHTML = "<< " + arr_toc[currEpisode - 2][1]
       })
     },
     next: () => {
       ndl_next.forEach((r) => {
-        r.href = arr_url[currOrigin] + nextFile
+        r.href = arr_url[currOrigin]["linkBase"] + nextFile
         r.innerHTML = arr_toc[currEpisode][1] + " >>"
       })
     }
