@@ -614,12 +614,12 @@ html.dark #copy-button {
         <label>
           <input id="mode-normal" type="radio" name="mode" value="normal">
           <dt>標準</dt>
-          <dd>原文の改行をそのまま反映します。</dd>
+          <dd>原文の改行をそのまま表示します。</dd>
         </label>
         <label>
           <input id="mode-half" type="radio" name="mode" value="half">
           <dt>ハーフ</dt>
-          <dd>原文の改行をそのまま反映します。</dd>
+          <dd>原文の 2 つ続く改行を 1 つの改行とし、 1 つのみの改行を消去して表示します。</dd>
         </label>
       </dl>
       <h2>URL オプション</h2>
@@ -1006,81 +1006,89 @@ window.onunload = () => {
 
 */
 window.addEventListener("DOMContentLoaded", () => {
-  nod_defaultDisplayContainer.classList.add("hiden")
-  let arr_optionStorage = JSON.parse(localStorage.getItem("option"))
-  let keys_arr_option = Object.keys(arr_option)
-  for (let i = 0; i < keys_arr_option.length; i++) {
-    if (arr_param[keys_arr_option[i]] !== null && arr_param[keys_arr_option[i]] !== undefined) {
-      arr_option[keys_arr_option[i]] = arr_param[keys_arr_option[i]]
-    }
-    else if (arr_optionStorage !== null && arr_optionStorage[keys_arr_option[i]] !== undefined) {
-      arr_option[keys_arr_option[i]] = arr_optionStorage[keys_arr_option[i]]
-    }
-    else {
-      arr_option[keys_arr_option[i]] = arr_optionDefault[keys_arr_option[i]]
-    }
+  if (location.search !== undefined) {
+    nod_defaultDisplayContainer.classList.add("hiden")
   }
-  // ホストで opSelector 周りを表示するかどうか選択する
-  if (currOrigin === Object.keys(arr_url)[0] || currOrigin === Object.keys(arr_url)[1]) {
-    nod_opSelectorChip.classList.remove("hiden")
-  }
-  // op で作品が指定されていた場合の処理
-  if (op !== undefined) {
-    if (arr_repoFile[1] !== "README.md") {
-      nod_topBar.classList.remove("hiden")
-      nod_countChip.classList.remove("hiden")
-      nod_formatChip.classList.remove("hiden")
-      nod_orientChip.classList.remove("hiden")
-      nod_themeChip.classList.remove("hiden")
-      nod_modeChip.classList.remove("hiden")
-      nod_copyChip.classList.remove("hiden")
-      loadContent(arr_url[currOrigin]["backhost"] + arr_repoFile[1]).then(r => {
-        exec(r)
-        srcText = r
-        loadContent(arr_url[currOrigin]["backhost"] + "README.md").then(r1 => {
-          makeToc(r1).then((r2) => {
-            arr_toc = r2
-            setLink()
-          })
-        })
-      })
-    }
-    else /* if (arr_repoFile[1] === "README.md") */{
-      nod_opSelectorChip.classList.remove("hiden")
-      arr_option["format"] = "readme"
-      loadContent(arr_url[currOrigin]["backhost"] + arr_repoFile[1]).then(r => {
-        makeToc(r).then((r1) => {
-          arr_toc = r1
-          exec(r)
-        })
-      })
-    }
-    if (arr_repoFile[1] !== "README.md") {
-      for (let i = 0; i < ndl_toc.length; i++) {
-        ndl_toc[i].classList.remove("hiden")
-        ndl_toc[i].firstChild.href = arr_url[currOrigin]["linkBase"] + "README.md"
+  async function procOption() {
+    let arr_optionStorage = JSON.parse(localStorage.getItem("option"))
+    let keys_arr_option = Object.keys(arr_option)
+    for (let i in keys_arr_option) {
+      if (arr_param[keys_arr_option[i]] !== null && arr_param[keys_arr_option[i]] !== undefined) {
+        arr_option[keys_arr_option[i]] = arr_param[keys_arr_option[i]]
+      }
+      else if (arr_optionStorage !== null && arr_optionStorage[keys_arr_option[i]] !== "") {
+        arr_option[keys_arr_option[i]] = arr_optionStorage[keys_arr_option[i]]
+        console.log(arr_option[keys_arr_option[i]])
+      }
+      else {
+        arr_option[keys_arr_option[i]] = arr_optionDefault[keys_arr_option[i]]
       }
     }
+    return arr_option
   }
-  // opSelector のための処理
-  if (localStorage.getItem("public") === "true") {
-    public = true
-  } else {
-    public = false
-  }
-  if (currOrigin.match("satsuki.c") !== null) {
-    loadNovelIndex().then(r => {
-      novelIndex = r
-      procNovelIndex(r)
-    })
-  }
-  if (arr_option["url"] !== undefined && op === undefined) {
-    loadContent(arr_option["url"]).then(r => {
-      exec(r)
-    })
-  }
-  // オプション設定を反映させる
-  applyOption()
+  procOption().then(r => {
+    // ホストで opSelector 周りを表示するかどうか選択する
+    if (currOrigin === Object.keys(arr_url)[0] || currOrigin === Object.keys(arr_url)[1]) {
+      nod_opSelectorChip.classList.remove("hiden")
+    }
+    // op で作品が指定されていた場合の処理
+    if (op !== undefined) {
+      if (arr_repoFile[1] !== "README.md") {
+        nod_topBar.classList.remove("hiden")
+        nod_countChip.classList.remove("hiden")
+        nod_formatChip.classList.remove("hiden")
+        nod_orientChip.classList.remove("hiden")
+        nod_themeChip.classList.remove("hiden")
+        nod_modeChip.classList.remove("hiden")
+        nod_copyChip.classList.remove("hiden")
+        loadContent(arr_url[currOrigin]["backhost"] + arr_repoFile[1]).then(r0 => {
+          exec(r0)
+          srcText = r0
+          loadContent(arr_url[currOrigin]["backhost"] + "README.md").then(r1 => {
+            makeToc(r1).then((r2) => {
+              arr_toc = r2
+              setLink()
+            })
+          })
+        })
+      }
+      else /* if (arr_repoFile[1] === "README.md") */{
+        nod_opSelectorChip.classList.remove("hiden")
+        r["format"] = "readme"
+        loadContent(arr_url[currOrigin]["backhost"] + arr_repoFile[1]).then(r0 => {
+          makeToc(r0).then((r1) => {
+            arr_toc = r1
+            exec(r0)
+          })
+        })
+      }
+      if (arr_repoFile[1] !== "README.md") {
+        for (let i = 0; i < ndl_toc.length; i++) {
+          ndl_toc[i].classList.remove("hiden")
+          ndl_toc[i].firstChild.href = arr_url[currOrigin]["linkBase"] + "README.md"
+        }
+      }
+    }
+    // opSelector のための処理
+    if (localStorage.getItem("public") === "true") {
+      public = true
+    } else {
+      public = false
+    }
+    if (currOrigin.match("satsuki.c") !== null) {
+      loadNovelIndex().then(r1 => {
+        novelIndex = r1
+        procNovelIndex(r1)
+      })
+    }
+    if (r["url"] !== undefined && op === undefined) {
+      loadContent(r["url"]).then(r1 => {
+        exec(r1)
+      })
+    }
+    // オプション設定を反映させる
+    applyOption(r)
+  })
   // 括弧を書き出す
   writeBrackets()
 })
@@ -1566,45 +1574,45 @@ function setLink() {
   }
 }
 // arr_option の内容を画面に反映
-function applyOption() {
+function applyOption(r) {
   // フォーマット
-  if (arr_option["format"] === "reading") {
+  if (r["format"] === "reading") {
     nod_formatReading.checked = true
     nod_formatSelector.options[0].selected = true
-  } else if (arr_option["format"] === "plot") {
+  } else if (r["format"] === "plot") {
     nod_formatPlot.checked = true
     nod_formatSelector.options[1].selected = true
-  } else if (arr_option["format"] === "noRuby") {
+  } else if (r["format"] === "noRuby") {
     nod_formatNoRuby.checked = true
     nod_formatSelector.options[2].selected = true
-  } else if (arr_option["format"] === "pickup") {
+  } else if (r["format"] === "pickup") {
     nod_formatPickup.checked = true
     nod_formatSelector.options[3].selected = true
-  } else if (arr_option["format"] === "odt") {
+  } else if (r["format"] === "odt") {
     nod_formatOdt.checked = true
     nod_formatSelector.options[4].selected = true
   }
   // 書き方向
-  toggleOrient(arr_option["orient"])
-  if (arr_option["orient"] === "h") {
+  toggleOrient(r["orient"])
+  if (r["orient"] === "h") {
     nod_orientH.checked = true
     nod_orientChipH.checked = true
-  } else if (arr_option["orient"] === "v") {
+  } else if (r["orient"] === "v") {
     nod_orientV.checked = true
     nod_orientChipV.checked = true
   }
   // テーマ
-  toggleTheme(arr_option["theme"])
-  if (arr_option["theme"] === "light") {
+  toggleTheme(r["theme"])
+  if (r["theme"] === "light") {
     nod_themeLight.checked = true
     nod_themeChipLight.checked = true
-  } else if (arr_option["theme"] === "dark") {
+  } else if (r["theme"] === "dark") {
     nod_themeDark.checked = true
     nod_themeChipDark.checked = true
   }
   // モード
-  if (arr_option["mode"] !== "half") {
-    arr_option["mode"] = "normal"
+  if (r["mode"] !== "half") {
+    r["mode"] = "normal"
     nod_modeChipNormal.checked = true
     nod_modeChipNormal.checked = true
   } else {
