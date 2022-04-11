@@ -1,4 +1,4 @@
-<html class="h">
+<html lang="ja-JP" class="h">
 <meta charset="utf-8">
 <title>小説をパースするやつ</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -512,7 +512,6 @@ html.dark #copy-button {
   }
 }
 </style>
-<body>
 <div class="link-group first">
   <p class="toc hiden"><a>目次</a></p>
   <a class="prev"></a>
@@ -671,12 +670,11 @@ html.dark #copy-button {
 <div class="link-group last">
   <a class="prev"></a>
   <a class="next"></a>
-  <p class="toc hiden><a>目次</a></p>
+  <p class="toc hiden"><a>目次</a></p>
 </div>
 <div id="post-output-outer" class="hiden">
   <pre id="post-output"></pre>
 </div>
-</body>
 <script src="https://etc.satsuki.me/mdparse.js"></script>
 <script src="https://etc.satsuki.me/3rd-party-lib/jszip.min.js"></script>
 <script src="https://etc.satsuki.me/3rd-party-lib/FileSaver.min.js"></script>
@@ -733,11 +731,11 @@ arr_url = {
   }
 }
 let arr_option = {
-  "format": "",
-  "orient": "",
-  "theme": "",
-  "mode": "",
-  "url": ""
+  "format": undefined,
+  "orient": undefined,
+  "theme": undefined,
+  "mode": undefined,
+  "url": undefined
 }
 let arr_optionDefault = {
   "format": "reading",
@@ -1007,7 +1005,7 @@ window.onunload = () => {
 */
 window.addEventListener("DOMContentLoaded", () => {
   if (location.search !== undefined) {
-    nod_defaultDisplayContainer.classList.add("hiden")
+    nod_defaultDisplayContainer.classList.remove("hiden")
   }
   async function procOption() {
     let arr_optionStorage = JSON.parse(localStorage.getItem("option"))
@@ -1016,9 +1014,8 @@ window.addEventListener("DOMContentLoaded", () => {
       if (arr_param[keys_arr_option[i]] !== null && arr_param[keys_arr_option[i]] !== undefined) {
         arr_option[keys_arr_option[i]] = arr_param[keys_arr_option[i]]
       }
-      else if (arr_optionStorage !== null && arr_optionStorage[keys_arr_option[i]] !== "") {
+      else if (arr_optionStorage !== null && arr_optionStorage[keys_arr_option[i]] !== undefined) {
         arr_option[keys_arr_option[i]] = arr_optionStorage[keys_arr_option[i]]
-        console.log(arr_option[keys_arr_option[i]])
       }
       else {
         arr_option[keys_arr_option[i]] = arr_optionDefault[keys_arr_option[i]]
@@ -1069,6 +1066,15 @@ window.addEventListener("DOMContentLoaded", () => {
         }
       }
     }
+    else if (r["url"] !== "" && r["url"] !== undefined) {
+      loadContent(r["url"]).then(r1 => {
+        delete arr_option["url"]
+        if (r["format"] === "" || r["format"] === "readme") {
+          r["format"] = "reading"
+        }
+        exec(r1)
+      })
+    }
     // opSelector のための処理
     if (localStorage.getItem("public") === "true") {
       public = true
@@ -1079,11 +1085,6 @@ window.addEventListener("DOMContentLoaded", () => {
       loadNovelIndex().then(r1 => {
         novelIndex = r1
         procNovelIndex(r1)
-      })
-    }
-    if (r["url"] !== undefined && op === undefined) {
-      loadContent(r["url"]).then(r1 => {
-        exec(r1)
       })
     }
     // オプション設定を反映させる
