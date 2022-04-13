@@ -175,8 +175,13 @@ nod_execute.onclick = () => {
   })
 }
 nod_copy.onclick = () => {
-  navigator.clipboard.writeText(output)
-  alert("クリップボードにコピーしました")
+  navigator.clipboard.writeText(output).then(copySuccess, copyFail)
+  function copySuccess() {
+    alert("クリップボードにコピーしました")
+  }
+  function copyFail() {
+    alert("クリップボードへのコピーに失敗しました")
+  }
 }
 async function procInsert() {
   output = ""
