@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="https://unpkg.com/purecss@2.1.0/build/pure-min.css" integrity="sha384-yHIFVG6ClnONEA5yB5DJXfW2/KC173DIQrYoZMEtBvGzmf0PKiGyNEqe9N6BNDBH" crossorigin="anonymous">
 <style>
 #container {
-  width: 98%;
+  width: 93%;
   max-width: 600px;
   margin-right: auto;
   margin-left: auto;
@@ -17,37 +17,69 @@ footer {
   text-align: center;
 }
 header {
-  padding-top: 5px;
-  padding-bottom: 8px;
+  padding-bottom: 3px;
 }
 footer {
-  padding-top: 50px;
+  padding-top: 20px;
+}
+h1 {
+  font-size: 23px;
+}
+h2.label {
+  margin: 0;
+  font-size: 100%;
+  font-weight: normal;
 }
 #input,
 #output {
   width: 100%;
   height: 150px;
 }
-.section + .section {
+#input::placeholder,
+#output.gray-out {
+  color: #ccc;
+}
+section + section {
   margin-top: 20px;
 }
 #output {
   padding: 0.5em 0.6em;
-    display: inline-block;
-    border: 1px solid #ccc;
-    box-shadow: inset 0 1px 3px #ddd;
-    border-radius: 4px;
-    vertical-align: middle;
-    box-sizing: border-box;}
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-shadow: inset 0 1px 3px #ddd;
+  border-radius: 4px;
+  vertical-align: middle;
+  box-sizing: border-box;}
 #option option {
   text-align: center;
 }
-#another {
-  width: 3em;
+#option-unit {
+  display: flex;
+  flex-direction: row;
+  justify-content: stretch;
+  flex-wrap: nowrap;
+  align-content: center;
 }
-#another.active {
-  user-select: all;
-  background-color: #fff
+#option {
+  flex-grow: 0;
+  align-self: center;
+}
+#another {
+  flex-grow: 0;
+  align-self: center;
+  max-width: 3em;
+  margin-left: 4px;
+  margin-bottom: 0;
+}
+#execute {
+  flex-grow: 1;
+  align-self: center;
+  margin-left: 4px;
+  line-height: 1.18;
+}
+#copy {
+  width: 100%;
+  line-height: 1.18;
 }
 </style>
 <body>
@@ -56,13 +88,13 @@ footer {
       <h1>挿入メーカー</h1>
     </header>
     <main class="pure-form">
-      <div class="section">
-        <label>入力
-          <textarea id="input"></textarea>
-        </label>
-      </div>
-      <div class="section">
-        <label>オプション<br>
+      <section>
+        <h2 class="label">入力</h2>
+        <textarea id="input" placeholder="ここに元の文を入力してください。"></textarea>
+      </section>
+      <section>
+        <h2 class="label">オプション</h2>
+        <div id="option-unit">
           <select id="option">
             <option value="ﾞ" class="flag0">ﾞ</option>
             <option value="ﾟ" class="flag0">ﾟ</option>
@@ -75,24 +107,19 @@ footer {
             <option value="&lt;br&gt;" class="flag1">改行</option>
             <option value="another" class="flag0">その他</option>
           </select>
-        </label>
-        <label>
           <input type="text" id="another" disabled>
-        </label>
-        <label>
-          <input type="button" value="挿入" id="execuse" class="pure-button pure-button-primary">
-        </label>
-      </div>
-      <div class="section">
-        <label>出力
-          <div id="output"></div>
-        </label>
-      </div>
-      <div class="section">
+          <input type="button" value="挿入" id="execute" class="pure-button pure-button-primary">
+        </div>
+      </section>
+      <section>
+        <h2 class="label">出力</h2>
+        <div id="output" class="gray-out">ここに挿入された文が表示されます。</div>
+      </section>
+      <section>
         <label>
           <input type="button" value="コピー" id="copy" class="pure-button pure-button-primary">
         </label>
-      </div>
+      </section>
     </main>
     <footer>
       &copy;Satsuki Thyme
@@ -104,7 +131,7 @@ let nod_input = document.querySelector("#input")
 let nod_output = document.querySelector("#output")
 let nod_option = document.querySelector("#option")
 let nod_another = document.querySelector("#another")
-let nod_execuse = document.querySelector("#execuse")
+let nod_execute = document.querySelector("#execute")
 let nod_copy = document.querySelector("#copy")
 let selected = "ﾞ"
 let flag = "flag0"
@@ -121,9 +148,10 @@ nod_option.onchange = () => {
 nod_another.onchange = () => {
   selected = nod_another.value
 }
-nod_execuse.onclick = () => {
+nod_execute.onclick = () => {
   procInsert().then(r => {
     nod_output.innerHTML = r
+    nod_output.classList.remove("gray-out")
   })
 }
 nod_copy.onclick = () => {
