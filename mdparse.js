@@ -343,10 +343,17 @@ async function mdParse(src) {
     }
   }
   async function heading(i, h) {
-    arr_im2[i] = arr_im2[i].replace(/^#{1,6} (.*)/, `<${h}>$1</${h}>`)
+    arr_im2[i] = arr_im2[i].replace(/^#{1,6} (.*)/, `<${h[0]}>$1</${h[0]}>`)
     return true
   }
   async function blockquote(i) {
+  
+
+
+　　　ここをやる
+
+
+
     return true
   }
   async function pre(i) {
