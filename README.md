@@ -15,6 +15,10 @@
 * 表のサイト？の表紙
 * [https://etc.satsuki.me](https://etc.satsuki.me)
 
+## insert-maker.html
+* 入力した文字列に指定した文字を挿入する
+* 挿入する文字は複数でもいい
+
 ## kanji.html
 * 大きな文字で入力できるので、よく分からない漢字を手書きする際に便利
 * **更新履歴**  
