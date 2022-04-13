@@ -1,0 +1,147 @@
+<Html lang="ja-JP">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>挿入メーカー</title>
+<link rel="stylesheet" href="/3rd-party-lib/normalize.css">
+<link rel="stylesheet" href="https://unpkg.com/purecss@2.1.0/build/pure-min.css" integrity="sha384-yHIFVG6ClnONEA5yB5DJXfW2/KC173DIQrYoZMEtBvGzmf0PKiGyNEqe9N6BNDBH" crossorigin="anonymous">
+<style>
+#container {
+  width: 98%;
+  max-width: 600px;
+  margin-right: auto;
+  margin-left: auto;
+  padding: 5px;
+}
+header,
+footer {
+  text-align: center;
+}
+header {
+  padding-top: 5px;
+  padding-bottom: 8px;
+}
+footer {
+  padding-top: 50px;
+}
+#input,
+#output {
+  width: 100%;
+  height: 150px;
+}
+.section + .section {
+  margin-top: 20px;
+}
+#output {
+  padding: 0.5em 0.6em;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-shadow: inset 0 1px 3px #ddd;
+    border-radius: 4px;
+    vertical-align: middle;
+    box-sizing: border-box;}
+#option option {
+  text-align: center;
+}
+#another {
+  width: 3em;
+}
+#another.active {
+  user-select: all;
+  background-color: #fff
+}
+</style>
+<body>
+  <div id="container">
+    <header>
+      <h1>挿入メーカー</h1>
+    </header>
+    <main class="pure-form">
+      <div class="section">
+        <label>入力
+          <textarea id="input"></textarea>
+        </label>
+      </div>
+      <div class="section">
+        <label>オプション<br>
+          <select id="option">
+            <option value="ﾞ" class="flag0">ﾞ</option>
+            <option value="ﾟ" class="flag0">ﾟ</option>
+            <option value="ー" class="flag0">ー</option>
+            <option value="・" class="flag1">・</option>
+            <option value="！" class="flag0">！</option>
+            <option value="？" class="flag0">？</option>
+            <option value="　" class="flag1">全角空白</option>
+            <option value=" " class="flag1">半角空白</option>
+            <option value="&lt;br&gt;" class="flag1">改行</option>
+            <option value="another" class="flag0">その他</option>
+          </select>
+        </label>
+        <label>
+          <input type="text" id="another" disabled>
+        </label>
+        <label>
+          <input type="button" value="挿入" id="execuse" class="pure-button pure-button-primary">
+        </label>
+      </div>
+      <div class="section">
+        <label>出力
+          <div id="output"></div>
+        </label>
+      </div>
+      <div class="section">
+        <label>
+          <input type="button" value="コピー" id="copy" class="pure-button pure-button-primary">
+        </label>
+      </div>
+    </main>
+    <footer>
+      &copy;Satsuki Thyme
+    </footer>
+  </div>
+</body>
+<script>
+let nod_input = document.querySelector("#input")
+let nod_output = document.querySelector("#output")
+let nod_option = document.querySelector("#option")
+let nod_another = document.querySelector("#another")
+let nod_execuse = document.querySelector("#execuse")
+let nod_copy = document.querySelector("#copy")
+let selected = "ﾞ"
+let flag = "flag0"
+let output = ""
+nod_option.onchange = () => {
+  selected = nod_option.options[nod_option.selectedIndex].value
+  flag = nod_option.options[nod_option.selectedIndex].classList.value
+  if (selected !== "another" && nod_another.getAttributeNames().indexOf("disabled") < 0) {
+    nod_another.setAttribute("disabled", "")
+  } else if (selected === "another" && nod_another.getAttributeNames().indexOf("disabled") > -1) {
+    nod_another.removeAttribute("disabled")
+  }
+}
+nod_another.onchange = () => {
+  selected = nod_another.value
+}
+nod_execuse.onclick = () => {
+  procInsert().then(r => {
+    nod_output.innerHTML = r
+  })
+}
+nod_copy.onclick = () => {
+  navigator.clipboard = output
+  alert("クリップボードにコピーしました")
+}
+async function procInsert() {
+  output = ""
+  let arr_input = nod_input.value.split("")
+  let length = arr_input.length
+  for (let i in arr_input) {
+    if (Number(i) !== length - 1 || flag === "flag0") {
+      output += arr_input[i] + selected
+    } else {
+      output += arr_input[i]
+    }
+  }
+  return output
+}
+</script>
+</Html>
