@@ -119,7 +119,6 @@ nod_execute.onclick = () => {
   nod_output.classList.remove("gray-out")
 }
 nod_copy.onclick = () => {
-  console.log(clipboard)
   navigator.clipboard.writeText(clipboard).then(() => {
     alert("クリップボードにコピーしました")
   }, () => {

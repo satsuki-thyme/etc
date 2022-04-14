@@ -50,19 +50,22 @@ h2.label {
   font-size: 100%;
   font-weight: normal;
 }
+p {
+  margin: 0;
+}
 #input,
-#output {
+#string {
   width: 100%;
   height: 150px;
 }
 #input::placeholder,
-#output.gray-out {
+#string.gray-out {
   color: #ccc;
 }
 section + section {
   margin-top: 20px;
 }
-#output {
+#string {
   padding: 0.5em 0.6em;
   display: inline-block;
   border: 1px solid #ccc;
@@ -135,7 +138,7 @@ section + section {
       </section>
       <section>
         <h2 class="label">結果</h2>
-        <div id="output" class="gray-out">ここに挿入された文が表示されます。</div>
+        <div id="string" class="gray-out">ここに挿入された文が表示されます。</div>
       </section>
       <section>
         <label>
@@ -150,14 +153,14 @@ section + section {
 </body>
 <script>
 let nod_input = document.querySelector("#input")
-let nod_output = document.querySelector("#output")
+let nod_string = document.querySelector("#string")
 let nod_option = document.querySelector("#option")
 let nod_another = document.querySelector("#another")
 let nod_execute = document.querySelector("#execute")
 let nod_copy = document.querySelector("#copy")
 let selected = "ﾞ"
 let flag = "flag0"
-let output = ""
+let clipboard = ""
 nod_option.onchange = () => {
   selected = nod_option.options[nod_option.selectedIndex].value
   flag = nod_option.options[nod_option.selectedIndex].classList.value
@@ -172,29 +175,30 @@ nod_another.onchange = () => {
 }
 nod_execute.onclick = () => {
   procInsert().then(r => {
-    nod_output.innerHTML = r
-    nod_output.classList.remove("gray-out")
+    clipboard = r
+    nod_string.innerHTML = r
+    nod_string.classList.remove("gray-out")
   })
 }
 nod_copy.onclick = () => {
-  navigator.clipboard.writeText(output).then(() => {
+  navigator.clipboard.writeText(clipboard).then(() => {
     alert("クリップボードにコピーしました")
   }, () => {
     alert("クリップボードへのコピーに失敗しました")
   })
 }
 async function procInsert() {
-  output = ""
+  let string = ""
   let arr_input = Array.from(nod_input.value)
   let length = arr_input.length
   for (let i in arr_input) {
     if ((Number(i) !== length - 1 || flag === "flag0") && arr_input[i].match(/\r?\n/) === null) {
-      output += arr_input[i] + selected
+      string += arr_input[i] + selected
     } else {
-      output += arr_input[i]
+      string += arr_input[i]
     }
   }
-  return output.replace(/\r?\n/g, `<br>`)
+  return string.replace(/^(.*)$/gm, `<p>$1</p>`)
 }
 </script>
 </Html>

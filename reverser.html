@@ -51,6 +51,9 @@
     font-weight: normal;
     text-align: left;
   }
+  p {
+    margin: 0;
+  }
   #input,
   #output {
     width: 100%;
@@ -112,17 +115,18 @@ let nod_input = document.querySelector("#input")
 let nod_output = document.querySelector("#output")
 let nod_execute = document.querySelector("#execute")
 let nod_copy = document.querySelector("#copy")
-let arr_string = []
+let clipboard = ""
 nod_execute.onclick = () => {
   procSplit(nod_input.value).then(r => {
     procReverse(r).then(r => {
+      clipboard = r
       nod_output.innerHTML = r
       nod_output.classList.remove("gray-out")
     })
   })
 }
 nod_copy.onclick = () => {
-  navigator.clipboard.writeText(output).then(() => {
+  navigator.clipboard.writeText(clipboard).then(() => {
     alert("クリップボードにコピーしました")
   }, () => {
     alert("クリップボードへのコピーに失敗しました")
@@ -136,7 +140,7 @@ async function procReverse(r) {
   for (let i = r.length - 1; i >= 0; i--) {
     rString += r[i]
   }
-  return await rString.replace(/\r?\n/g, `<br>`)
+  return await rString.replace(/^(.*)$/gm, `<p>$1</p>`)
 }
 </script>
 </html>
