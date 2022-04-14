@@ -51,6 +51,9 @@
     font-weight: normal;
     text-align: left;
   }
+  p {
+    margin: 0;
+  }
   #input,
   #output {
     width: 100%;
@@ -82,6 +85,9 @@
     width: 60%;
     line-height: 1.18;
   }
+  #count {
+    text-align: right;
+  }
 </style>
 <div id="container">
   <header>
@@ -98,6 +104,7 @@
     <section>
       <h2 class="label">結果</h2>
       <pre id="output" class="gray-out">ここにルビの削除された文章が表示されます。</pre>
+      <p id="count"><br></p>
     </section>
     <section>
       <input type="button" id="copy" value="コピー" class="pure-button pure-button-primary">
@@ -112,6 +119,7 @@ let nod_input = document.querySelector("#input")
 let nod_output = document.querySelector("#output")
 let nod_execute = document.querySelector("#execute")
 let nod_copy = document.querySelector("#copy")
+let nod_count = document.querySelector("#count")
 let output = ""
 let clipboard = ""
 nod_execute.onclick = () => {
@@ -119,6 +127,7 @@ nod_execute.onclick = () => {
   clipboard = output
   nod_output.innerHTML = output
   nod_output.classList.remove("gray-out")
+  nod_count.innerHTML = `${countChar(output)} 文字`
 }
 nod_copy.onclick = () => {
   navigator.clipboard.writeText(clipboard).then(() => {
@@ -131,6 +140,9 @@ function removeRuby(src) {
   return src.replace(/｜([^｜]*?)《.*?》/g, "$1")
             .replace(/([\u4E00-\u9FFF]+)（(.*?)）/g, "$1")
             .replace(/｜(（.*?）)/g, "$1")
+}
+function countChar(src) {
+  return src.replace(/　| |\t|\r?\n/g, "").length
 }
 </script>
 </html>
