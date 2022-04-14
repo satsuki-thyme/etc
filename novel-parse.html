@@ -844,7 +844,7 @@ let arr_proc = {
     }).then(r => {
       return arr_mode[arr_option["mode"]](r)
     }).then(r => {
-      return parseNewline(r)
+      return parseParagraph(r)
     }).then(r => {
       return addTitle(r)
     }).then(r => {
@@ -863,7 +863,7 @@ let arr_proc = {
     }).then(r => {
       return arr_mode[arr_option["mode"]](r)
     }).then(r => {
-      return parseNewline(r)
+      return parseParagraph(r)
     }).then(r => {
       return addTitle(r)
     }).then(async r => {
@@ -883,7 +883,7 @@ let arr_proc = {
     }).then(r => {
       return arr_mode[arr_option["mode"]](r)
     }).then(r => {
-      return parseNewline(r)
+      return parseParagraph(r)
     }).then(r => {
       return addTitle(r)
     }).then(r => {
@@ -1419,7 +1419,7 @@ function addTitle(src) {
   }
   return titleHtml + src
 }
-function parseNewline(src, type) {
+function parseParagraph(src, type) {
   if (type !== 1) {
     return src.replace(/^(.*)$/gm, '<p>$1</p>')
               .replace(/<p><\/p>/g, '<p><br></p>')
