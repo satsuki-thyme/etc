@@ -138,7 +138,7 @@ section + section {
       </section>
       <section>
         <h2 class="label">結果</h2>
-        <div id="string" class="gray-out">ここに挿入された文が表示されます。</div>
+        <pre id="string" class="gray-out">ここに挿入された文が表示されます。</pre>
       </section>
       <section>
         <label>
@@ -198,7 +198,7 @@ async function procInsert() {
       string += arr_input[i]
     }
   }
-  return string.replace(/^(.*)$/gm, `<p>$1</p>`)
+  return string.replace(/\r?\n/gm, `<br>`)
 }
 </script>
 </Html>
