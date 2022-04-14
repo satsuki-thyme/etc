@@ -90,14 +90,14 @@
   <main class="pure-form">
     <section>
       <h2 class="label">入力</h2>
-      <textarea id="input" placeholder="ここに元の文章を入力してください。"></textarea>
+      <textarea id="input" placeholder="ここに元の文を入力してください。"></textarea>
     </section>
     <section>
       <input type="button" id="execute" value="マークアップ" class="pure-button pure-button-primary">
     </section>
     <section>
       <h2 class="label">結果</h2>
-      <div id="output" class="gray-out">ここにマークアップされた文章が表示されます。</div>
+      <pre id="output" class="gray-out">ここにマークアップされた文章が表示されます。</pre>
     </section>
     <section>
       <input type="button" id="copy" value="コピー" class="pure-button pure-button-primary">
@@ -147,7 +147,7 @@ function parseRubyHtmlEsc(src) {
             .replace(/｜(（.*?）)/g, "$1")
 }
 function parseNewlineDisplay(src) {
-  return src
+  return src.replace(/\r?\n/g, "<br>")
 }
 </script>
 </html>
