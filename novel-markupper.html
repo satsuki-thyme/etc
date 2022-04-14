@@ -1,0 +1,140 @@
+<html lang="ja-JP">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>ウェブ小説を HTML でマークアップするメーカー</title>
+  <meta name="keywords" content="HTML, マークアップする, メーカー, 絵文字">
+  <meta name="description" content="ウェブ小説へ投稿する形式の文章を HTML でマークアップするツールです。">
+  <meta property="og:url" content="https://etc.satsuki.me/markupper.html">
+  <meta property="og:title" content="etc">
+  <meta property="og:description" content="ウェブ小説へ投稿する形式の文章を HTML でマークアップするツールです。">
+  <meta property="og:image" content="https://etc.satsuki.me/attachment/common/thyme-fg-white-bg-green-512s.png">
+  <meta property="og:image:width" content="512">
+  <meta property="og:image:height" content="512">
+  <meta property="og:site_name" content="etc">
+  <meta property="og:type" content="webpage">
+  <meta property="og:locale" content="ja_JP">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@SatsukiThyme">
+  <meta name="twitter:image:src" content="https://etc.satsuki.me/attachment/common/thyme-fg-white-bg-green-512s.png">
+  <meta name="msapplication-square70x70logo" content="https://etc.satsuki.me/attachment/common/thyme-fg-white-bg-green-70s.png">
+  <meta name="msapplication-square150x150logo" content="https://etc.satsuki.me/attachment/common/thyme-fg-white-bg-green-150s.png">
+  <meta name="msapplication-wide310x150logo" content="https://etc.satsuki.me/attachment/common/thyme-fg-white-bg-green-310x150.png">
+  <meta name="msapplication-square310x310logo" content="https://etc.satsuki.me/attachment/common/thyme-fg-white-bg-green-310s.png">
+  <meta name="msapplication-TileColor" content="#62a433">
+  <link rel="stylesheet" href="/3rd-party-lib/normalize.css">
+  <link rel="stylesheet" href="https://unpkg.com/purecss@2.1.0/build/pure-min.css" integrity="sha384-yHIFVG6ClnONEA5yB5DJXfW2/KC173DIQrYoZMEtBvGzmf0PKiGyNEqe9N6BNDBH" crossorigin="anonymous">
+  <style>
+  #container {
+    width: 93%;
+    max-width: 600px;
+    margin-right: auto;
+    margin-left: auto;
+    padding: 5px;
+  }
+  header,
+  footer {
+    text-align: center;
+  }
+  header {
+    padding-top: 10px;
+  }
+  footer {
+    padding-top: 20px;
+  }
+  h1 {
+    margin: 0;
+    font-size: 23px;
+  }
+  h2.label {
+    margin: 0;
+    font-size: 100%;
+    font-weight: normal;
+    text-align: left;
+  }
+  #input,
+  #output {
+    width: 100%;
+    height: 150px;
+  }
+  #input::placeholder,
+  #output.gray-out {
+    color: #ccc;
+  }
+  section + section {
+    margin-top: 20px;
+  }
+  section {
+    text-align: center;
+  }
+  #output {
+    padding: 0.5em 0.6em;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-shadow: inset 0 1px 3px #ddd;
+    border-radius: 4px;
+    vertical-align: middle;
+    box-sizing: border-box;
+    text-align: left;
+    overflow-y: scroll;
+  }
+  #execute,
+  #copy {
+    width: 60%;
+    line-height: 1.18;
+  }
+</style>
+<div id="container">
+  <header>
+    <h1>ウェブ小説を HTML でマークアップするメーカー</h1>
+  </header>
+  <main class="pure-form">
+    <section>
+      <h2 class="label">入力</h2>
+      <textarea id="input"></textarea>
+    </section>
+    <section>
+      <input type="button" id="execute" value="マークアップ" class="pure-button pure-button-primary">
+    </section>
+    <section>
+      <h2 class="label">結果</h2>
+      <div id="output" class="gray-out"></div>
+    </section>
+    <section>
+      <input type="button" id="copy" value="コピー" class="pure-button pure-button-primary">
+    </section>
+  </main>
+  <footer>
+    &copy;Satsuki Thyme
+  </footer>
+</div>
+<script>
+let nod_input = document.querySelector("#input")
+let nod_output = document.querySelector("#output")
+let nod_execute = document.querySelector("#execute")
+let nod_copy = document.querySelector("#copy")
+let arr_string = []
+nod_execute.onclick = () => {
+  nod_output.innerHTML = parseNewline(parseRuby(parseParagraph(nod_input.value)))
+  nod_output.classList.remove("gray-out")
+}
+nod_copy.onclick = () => {
+  navigator.clipboard.writeText(output).then(() => {
+    alert("クリップボードにコピーしました")
+  }, () => {
+    alert("クリップボードへのコピーに失敗しました")
+  })
+}
+function parseParagraph(src) {
+  return src.replace(/^(.*)$/gm, '&lt;p&gt;$1&lt;/p&gt;')
+            .replace(/&lt;p&gt;&lt;\/p&gt;/g, '&lt;p&gt;&lt;br&gt;&lt;/p&gt;')
+}
+function parseRuby(src) {
+  return src.replace(/｜([^｜]*?)《(.*?)》/g, '&lt;ruby&gt;$1&lt;rt&gt;$2&lt;/rt&gt;&lt;/ruby&gt;')
+            .replace(/([\u4E00-\u9FFF]+)（(.*?)）/g, '&lt;ruby&gt;$1&lt;rt&gt;$2&lt;/rt&gt;&lt;/ruby&gt;')
+            .replace(/｜(（.*?）)/g, "$1")
+}
+function parseNewline(src) {
+  return src.replace(/\r?\n/g, "<br>")
+}
+</script>
+</html>
