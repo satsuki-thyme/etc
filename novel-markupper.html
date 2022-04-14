@@ -114,12 +114,11 @@ let nod_execute = document.querySelector("#execute")
 let nod_copy = document.querySelector("#copy")
 let arr_string = []
 nod_execute.onclick = () => {
-  output = parseNewline(parseRuby(parseParagraph(nod_input.value)))
-  nod_output.innerHTML = output
+  nod_output.innerHTML = parseNewline(parseRuby(parseParagraph(nod_input.value)))
   nod_output.classList.remove("gray-out")
 }
 nod_copy.onclick = () => {
-  navigator.clipboard.writeText(output).then(() => {
+  navigator.clipboard.writeText(nod_output.textContent).then(() => {
     alert("クリップボードにコピーしました")
   }, () => {
     alert("クリップボードへのコピーに失敗しました")
