@@ -1,69 +1,101 @@
+<html lang="ja-JP">
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ランダム整数</title>
+<meta name="keywords" content="ランダム, 整数, メーカー">
+<meta name="description" content="指定した範囲内でランダムに整数を発生するツールです。">
+<meta property="og:url" content="https://etc.satsuki.me/random.html">
+<meta property="og:title" content="ランダム整数">
+<meta property="og:description" content="指定した範囲内でランダムに整数を発生するツールです。">
+<meta property="og:image" content="https://etc.satsuki.me/attachment/common/thyme-fg-white-bg-green-512s.png">
+<meta property="og:image:width" content="512">
+<meta property="og:image:height" content="512">
+<meta property="og:site_name" content="データ公開サイト">
+<meta property="og:type" content="webpage">
+<meta property="og:locale" content="ja_JP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@SatsukiThyme">
+<meta name="twitter:image:src" content="https://etc.satsuki.me/attachment/common/thyme-fg-white-bg-green-512s.png">
+<meta name="msapplication-square70x70logo" content="https://etc.satsuki.me/attachment/common/thyme-fg-white-bg-green-70s.png">
+<meta name="msapplication-square150x150logo" content="https://etc.satsuki.me/attachment/common/thyme-fg-white-bg-green-150s.png">
+<meta name="msapplication-wide310x150logo" content="https://etc.satsuki.me/attachment/common/thyme-fg-white-bg-green-310x150.png">
+<meta name="msapplication-square310x310logo" content="https://etc.satsuki.me/attachment/common/thyme-fg-white-bg-green-310s.png">
+<meta name="msapplication-TileColor" content="#62a433">
+<link rel="stylesheet" href="/lib/normalize.css">
+<link rel="stylesheet" href="https://unpkg.com/purecss@2.1.0/build/pure-min.css" integrity="sha384-yHIFVG6ClnONEA5yB5DJXfW2/KC173DIQrYoZMEtBvGzmf0PKiGyNEqe9N6BNDBH" crossorigin="anonymous">
 <style>
-#container {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  width: 400px;
-  height: 400px;
-  margin: auto;
-  padding-right: 100px;
-  text-align: right;
-  box-sizing: border-box;
+html,
+body {
+  height: 100%;
 }
-#container div:last-child {
-  margin-top: 30px;
-}
-#container div:last-child span {
-  margin-left: 10px;
-}
-#container label,
-#container input,
-#container button,
-#container span {
-  margin: 0;
-  padding: 0;
-  width: 200px;
-  height: 50px;
-  letter-spacing: 0.1;
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   text-align: center;
-  line-height: 50px;
-  vertical-align: middle;
-  box-sizing: border-box;
 }
-#container label {
-  font-size: 16px;
+#container {
+  width: 95%;
+  max-width: 600px;
 }
-#container input,
-#container span {
-  font-size: 40px;
+#input-outer {
+  display: flex;
+  flex-wrap: nowrap;
 }
-#container input {
-  border-width: 1px;
+#input-min-outer,
+#input-max-outer {
+  flex-basis: auto;
+  align-items: auto;
 }
-#container button {
-  margin-top: 1px;
-  padding-left: 1em;
-  font-size: 28px;
-  letter-spacing: 1em;
+#input-min,
+#input-max {
+  width: 100%;
+  text-align: center;
 }
-#container span {
-  display: inline-block;
+#execute {
+  width: 100%;
 }
-#container input::-webkit-outer-spin-button,
-#container input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+#execute-outer,
+#output-outer {
+  margin-top: 20px;
+}
+#input-min,
+#input-max {
+  font-size: 30px;
+}
+#output {
+  font-size: 50px;
+}
+#site-footer {
+  padding-top: 30px;
 }
 </style>
 <div id="container">
-  <div><label>最小値: <input type="number" id="min"></label></div>
-  <div><label>最大値: <input type="number" id="max"></label></div>
-  <div><button id="update">更新</button></div>
-  <div><label>ランダム: <span id="output">値</span></label></div>
+  <header id="site-header">
+    <h1 id="site-title">ランダム整数</h1>
+  </header>
+  <main id="main" class="pure-form">
+    <div id="input-outer">
+      <div id="input-min-outer">
+        最小値<br>
+        <input type="number" id="input-min">
+      </div>
+      <div id="input-max-outer">
+        最大値<br>
+        <input type="number" id="input-max">
+      </div>
+    </div>
+    <div id="execute-outer">
+      <input type="button" value="更新" id="execute" class="pure-button pure-button-primary">
+    </div>
+    <div id="output-outer">
+      ランダム値<br>
+      <span id="output">値</span>
+    </div>
+  </main>
+  <footer id="site-footer">
+    &copy;Satsuki Thyme
+  </footer>
 </div>
 <script>
 let searchArr = location.search.slice(1).split("&")
@@ -76,11 +108,11 @@ let min = 0
 searchObj["min"] != undefined ? min = Number(searchObj["min"]) : 0
 let max = 0
 searchObj["max"] != undefined ? max = Number(searchObj["max"]) : 0
-let elm_min = document.querySelector("#min")
-let elm_max = document.querySelector("#max")
+let elm_min = document.querySelector("#input-min")
+let elm_max = document.querySelector("#input-max")
 elm_min.value = min
 elm_max.value = max
-let elm_update = document.querySelector("#update")
+let elm_update = document.querySelector("#execute")
 let elm_output = document.querySelector("#output")
 let innerMin = 0
 let innerMax = 0
@@ -110,3 +142,4 @@ function update() {
   elm_output.innerHTML = String(Math.floor(Math.random() * (Math.abs(innerMax - innerMin) + 1) + innerMin))
 }
 </script>
+</html>
