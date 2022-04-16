@@ -1,17 +1,17 @@
 <html>
 <meta charset="utf-8">
-<title>etc - Satsuki Thyme</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="keywords" content="五月タイム, JavaScript">
-<meta name="description" content="自作のプログラムを公開しています。">
+<title>データ公開サイト - Satsuki Thyme</title>
+<meta name="keywords" content="ウェブアプリ, HTML, JavaScript, EmEditor, キャラ設定, プルチック・モデル, 公開">
+<meta name="description" content="いろいろなデータを公開しています。">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta property="og:url" content="https://etc.satsuki.me/">
-<meta property="og:title" content="etc">
-<meta property="og:description" content="自作のプログラムを公開しています。">
+<meta property="og:title" content="データ公開サイト">
+<meta property="og:description" content="いろいろなデータを公開しています。">
 <meta property="og:image" content="https://etc.satsuki.me/attachment/common/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:site_name" content="etc">
+<meta property="og:site_name" content="データ公開サイト">
 <meta property="og:type" content="webpage">
 <meta property="og:locale" content="ja_JP">
 <meta name="twitter:card" content="summary_large_image">
@@ -22,57 +22,25 @@
 <meta name="msapplication-wide310x150logo" content="https://etc.satsuki.me/attachment/common/thyme-fg-white-bg-green-310x150.png">
 <meta name="msapplication-square310x310logo" content="https://etc.satsuki.me/attachment/common/thyme-fg-white-bg-green-310s.png">
 <meta name="msapplication-TileColor" content="#62a433">
+<link rel="stylesheet" href="/lib/normalize.css">
 <style>
-html,
-body {
-  margin: 0;
-  padding: 0;
+section {
+  padding-left: 20px;
 }
-body {
-  color: #222;
-  background-color: #fff;
+section > section {
+  margin-left: 20px;
 }
-main,
-header,
-footer {
-  width: 600px;
-  margin: auto;
+section + section {
+  margin-top: 40px;
 }
-header,
-footer {
-  text-align: center;
+p {
+  line-height: 1.73;
 }
-header p {
-  display: block;
-  position: absolute;
-  top: 20px;
-  right: 0;
-  text-align: right;
+li + li {
+  margin-top: 10px;
 }
-main {
-  padding: 30px 0;
-}
-header {
-  position: relative;
-  padding-top: 20px;
-}
-footer {
-  margin-top: 20px;
-  margin-bottom: 8px;
-}
-h1 {
-  margin: -30px 0 0 0;
-  font-size: 28px;
-  font-weight: normal;
-  text-align: center;
-  color: #62a433;
-}
-h2 {
-  display: inline-block;
-  margin-bottom: 0;
-}
-a.attach {
-  font-size: 12px;
+li > ul {
+  margin-top: 15px;
 }
 a,
 a:visited,
@@ -82,41 +50,183 @@ a:hover {
 a:hover {
   text-decoration: underline;
 }
-ul {
-  margin-top: 10px;
+#container {
+  width: 95%;
+  max-width: 600px;
+  margin: auto;
+}
+#site-header {
+  text-align: center;
+}
+#title {
+  margin: 0;
+  font-size: 24px;
+  text-align: center;
+  color: #62a433;
+}
+#top-menu {
+  text-align: right;
+}
+#external-site-link {
+  display: inline-block;
+  text-align: left;
+}
+#external-site-link li {
+  list-style: none;
+}
+.history {
+  margin-left: 20px;
+  margin-bottom: 0;
+}
+.history + ul {
+  margin-left: 20px;
+}
+#site-footer {
+  padding-top: 60px;
+  padding-bottom: 10px;
+  text-align: center;
 }
 </style>
-<header>
-<img src="/attachment/common/satsuki-thyme-fg-green-bg-trn.svg">
-<h1></h1>
-<p><a href="https://github.com/satsuki-thyme/etc" class="attach">GitHub</a><br>
-<a href="https://satsuki.me" class="attach">五月タイムのサイト</a></p>
-</header>
-<main>
-</main>
-<footer>
-&copy;Satsuki Thyme
-</footer>
-<script src="https://etc.satsuki.me/mdparse.js"></script>
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-  let elm_h1 = document.querySelector("h1")
-  let elm_main = document.querySelector("main")
-  let currOrigin = location.origin
-  loadContent(currOrigin + "/README.md").then((r) => {
-    writeContenet(r)
-  })
-  async function loadContent(url) {
-    let w = await fetch(url)
-    return w.text()
-  }
-  async function writeContenet(data) {
-    mdParse(data).then(r => {
-      elm_h1.innerHTML = r.replace(/<h1>(.*?)<\/h1>[\s\S]*/gm, "$1")
-      elm_main.innerHTML = r.replace(/<h1.*?\n+/, "").replace(/<h2>(.*?)<\/h2>/g, '<h2>$1</h2> <a href="' + currOrigin + '/$1" class="attach">link</a>')
-      return r
-    })
-  }
-})
-</script>
+<div id="container">
+  <header id="site-header">
+  <img src="/attachment/common/satsuki-thyme-fg-green-bg-trn.svg">
+  <h1 id="title">データ公開サイト</h1>
+  <div id="top-menu">
+    <div id="external-site-link">
+      <ul>
+        <li><a href="https://github.com/satsuki-thyme/etc" class="attach">GitHub</a></li>
+        <li><a href="https://satsuki.me" class="attach">五月タイムのサイト</a></li>
+      </ul>
+    </div>
+  </div>
+  </header>
+  <main>
+    <section>
+      <p>お役立ちアイテムを公開しています。著作者であることは保持しますが、ご自由に利用・改変・改変したものの配布をしてください。そのまま再配布することはご遠慮ください。</p>
+    </section>
+    <section>
+      <h2>ウェブアプリ</h2>
+      <section>
+        <h3><a href="inserter.html">一文字ずつ挿入するメーカー</a></h3>
+        <ul>
+          <li>入力した文字列に一文字おきに指定した文字を挿入するツールです</li>
+          <li>挿入する文字は複数でも可能です</li>
+          <li>一部の絵文字にも対応しています</li>
+        </ul>
+      </section>
+      <section>
+        <h3><a href="kanji.html">漢字調べるやつ</a></h3>
+        <ul>
+          <li>大きな文字で入力できるので、よく分からない漢字を手書きする際に便利です</li>
+        </ul>
+        <h4 class="history">更新履歴</h4>
+        <ul>
+          <li>2021-11-23 動作してなかったのを改善、リロード前の内容が残るように変更、画面のリサイズに対応</li>
+          <li>2021-09-06 初稿</li>
+        </ul>
+      </section>
+      <section>
+        <h3><a href="md-toc.html">Markdown から TOC を生成するやつ</a></h3>
+        <ul>
+          <li>Markdown から目次を生成します</li>
+        </ul>
+        <h4 class="history">更新履歴</h4>
+        <ul>
+          <li>2021-11-23 ちょっと現代的に修正してみた</li>
+          <li>2021-09-09 初稿</li>
+        </ul>
+      </section>
+      <section>
+        <h3><a href="novel-markupper.html">ウェブ小説を HTML でマークアップするメーカー</a></h3>
+        <ul>
+          <li>ウェブ小説へ投稿する形式の文章を HTML でマークアップするツールです</li>
+        </ul>
+      </section>
+      <section>
+        <h3><a href="novel-parse.html">小説をパースするやつ</a></h3>
+        <ul>
+          <li>小説投稿サイトの記法（改行とルビ）を解釈して表示したり、 odt に変換したりするツールです</li>
+          <li>見え方は小説家になろうに似ています</li>
+        </ul>
+      </section>
+      <section>
+        <h3><a href="random.html">ランダム整数</a></h3>
+        <ul>
+          <li>整数をランダムに表示します</li>
+        </ul>
+      </section>
+      <section>
+        <h3><a href="reverser.html">文を反転するメーカー</a></h3>
+        <ul>
+          <li>入力した文字列反転するツールです</li>
+          <li>一部の絵文字にも対応しています</li>
+        </ul>
+      </section>
+      <section>
+        <h3><a href="ruby-remover.html">ウェブ小説のルビを削除するメーカー</a></h3>
+        <ul>
+          <li>ウェブ小説のルビを削除するツールです</li>
+          <li>ルビ表記を除いた文字数をカウントして表示ます</li>
+        </ul>
+      </section>
+    </section>
+    <section>
+      <h2>EmEditor 用</h2>
+      <section>
+        <h3><a href="markdown.ESY">EmEditor 用の Markdown のシンタックスハイライト構文</a></h3>
+        <ul>
+          <li>「現在の設定のプロパティ」の「強調(1)」からインポートします</li>
+        </ul>
+      </section>
+      <section>
+        <h3><a href="文頭接続詞.esy">EmEditor 用の文頭接続詞のハイライト構文</a></h3>
+        <ul>
+          <li>「現在の設定のプロパティ」の「強調(1)」からインポートする</li>
+        </ul>
+      </section>
+    </section>
+    <section>
+      <h2>その他</h2>
+      <section>
+        <h3><a href="amazon-url-properly.js">Amazon で商品の URL を短くするブックマークレット</a></h3>
+        <ul>
+          <li>短くした URL のページに移動しつつクリップボードに URL をコピーします</li>
+        </ul>
+        <h4 class="history">更新履歴</h4>
+        <ul>
+          <li>2021-11-17 商品コードが末尾だった際に動作しない問題を修正</li>
+          <li>2021-10-23 商品コードの次に "?" が来る際に動作しない問題を修正</li>
+          <li>2021-09-04 初稿</li>
+        </ul>
+      </section>
+      <section>
+        <h3><a href="esc.js">esc.js</a></h3>
+        <ul>
+          <li>正規表現に使えない文字をエスケープしたり戻したりする</li>
+          <li>RegExp(param) で param に使えない文字が含まれる場合に使うものです</li>
+        </ul>
+      </section>
+      <section>
+        <h3><a href="キャラ設定.gsheet" download="">キャラ設定項目リスト</a></h3>
+        <ul>
+          <li>キャラ設定の項目リストです</li>
+        </ul>
+      </section>
+      <section>
+        <h3>プルチック・モデル</h3>
+        <ul>
+          <li>プルチック・モデルの画像データです
+            <ul>
+              <li><a href="プルチック・モデル.svg">プルチック・モデル.svg</a></li>
+              <li><a href="プルチック・モデル.png">プルチック・モデル.png</a></li>
+            </ul>
+          </li>
+        </ul>
+      </section>
+    </section>
+  </main>
+  <footer id="site-footer">
+    &copy;Satsuki Thyme
+  </footer>
+</div>
 </html>

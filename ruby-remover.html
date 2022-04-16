@@ -1,93 +1,93 @@
 <html lang="ja-JP">
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>ウェブ小説のルビを削除するメーカー</title>
-  <meta name="keywords" content="HTML, マークアップする, メーカー">
-  <meta name="description" content="ウェブ小説のルビを削除するツールです。">
-  <meta property="og:url" content="https://etc.satsuki.me/ruby-remover.html">
-  <meta property="og:title" content="ウェブ小説のルビを削除するメーカー">
-  <meta property="og:description" content="ウェブ小説のルビを削除するツールです。">
-  <meta property="og:image" content="https://etc.satsuki.me/attachment/common/thyme-fg-white-bg-green-512s.png">
-  <meta property="og:image:width" content="512">
-  <meta property="og:image:height" content="512">
-  <meta property="og:site_name" content="etc">
-  <meta property="og:type" content="webpage">
-  <meta property="og:locale" content="ja_JP">
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:site" content="@SatsukiThyme">
-  <meta name="twitter:image:src" content="https://etc.satsuki.me/attachment/common/thyme-fg-white-bg-green-512s.png">
-  <meta name="msapplication-square70x70logo" content="https://etc.satsuki.me/attachment/common/thyme-fg-white-bg-green-70s.png">
-  <meta name="msapplication-square150x150logo" content="https://etc.satsuki.me/attachment/common/thyme-fg-white-bg-green-150s.png">
-  <meta name="msapplication-wide310x150logo" content="https://etc.satsuki.me/attachment/common/thyme-fg-white-bg-green-310x150.png">
-  <meta name="msapplication-square310x310logo" content="https://etc.satsuki.me/attachment/common/thyme-fg-white-bg-green-310s.png">
-  <meta name="msapplication-TileColor" content="#62a433">
-  <link rel="stylesheet" href="/lib/normalize.css">
-  <link rel="stylesheet" href="https://unpkg.com/purecss@2.1.0/build/pure-min.css" integrity="sha384-yHIFVG6ClnONEA5yB5DJXfW2/KC173DIQrYoZMEtBvGzmf0PKiGyNEqe9N6BNDBH" crossorigin="anonymous">
-  <style>
-  #container {
-    width: 93%;
-    max-width: 600px;
-    margin-right: auto;
-    margin-left: auto;
-    padding: 5px;
-  }
-  header,
-  footer {
-    text-align: center;
-  }
-  header {
-    padding-top: 10px;
-  }
-  footer {
-    padding-top: 20px;
-  }
-  h1 {
-    margin: 0;
-    font-size: 23px;
-  }
-  h2.label {
-    margin: 0;
-    font-size: 100%;
-    font-weight: normal;
-    text-align: left;
-  }
-  p {
-    margin: 0;
-  }
-  #input,
-  #output {
-    width: 100%;
-    height: 150px;
-  }
-  #input::placeholder,
-  #output.gray-out {
-    color: #ccc;
-  }
-  section + section {
-    margin-top: 20px;
-  }
-  section {
-    text-align: center;
-  }
-  #output {
-    padding: 0.5em 0.6em;
-    display: inline-block;
-    border: 1px solid #ccc;
-    box-shadow: inset 0 1px 3px #ddd;
-    border-radius: 4px;
-    vertical-align: middle;
-    box-sizing: border-box;
-    text-align: left;
-    overflow-y: scroll;
-  }
-  #execute,
-  #copy {
-    width: 60%;
-    line-height: 1.18;
-  }
-  #count {
-    text-align: right;
-  }
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ウェブ小説のルビを削除するメーカー</title>
+<meta name="keywords" content="HTML, マークアップする, メーカー">
+<meta name="description" content="ウェブ小説のルビを削除するツールです。">
+<meta property="og:url" content="https://etc.satsuki.me/ruby-remover.html">
+<meta property="og:title" content="ウェブ小説のルビを削除するメーカー">
+<meta property="og:description" content="ウェブ小説のルビを削除するツールです。">
+<meta property="og:image" content="https://etc.satsuki.me/attachment/common/thyme-fg-white-bg-green-512s.png">
+<meta property="og:image:width" content="512">
+<meta property="og:image:height" content="512">
+<meta property="og:site_name" content="データ公開サイト">
+<meta property="og:type" content="webpage">
+<meta property="og:locale" content="ja_JP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@SatsukiThyme">
+<meta name="twitter:image:src" content="https://etc.satsuki.me/attachment/common/thyme-fg-white-bg-green-512s.png">
+<meta name="msapplication-square70x70logo" content="https://etc.satsuki.me/attachment/common/thyme-fg-white-bg-green-70s.png">
+<meta name="msapplication-square150x150logo" content="https://etc.satsuki.me/attachment/common/thyme-fg-white-bg-green-150s.png">
+<meta name="msapplication-wide310x150logo" content="https://etc.satsuki.me/attachment/common/thyme-fg-white-bg-green-310x150.png">
+<meta name="msapplication-square310x310logo" content="https://etc.satsuki.me/attachment/common/thyme-fg-white-bg-green-310s.png">
+<meta name="msapplication-TileColor" content="#62a433">
+<link rel="stylesheet" href="/lib/normalize.css">
+<link rel="stylesheet" href="https://unpkg.com/purecss@2.1.0/build/pure-min.css" integrity="sha384-yHIFVG6ClnONEA5yB5DJXfW2/KC173DIQrYoZMEtBvGzmf0PKiGyNEqe9N6BNDBH" crossorigin="anonymous">
+<style>
+#container {
+  width: 93%;
+  max-width: 600px;
+  margin-right: auto;
+  margin-left: auto;
+  padding: 5px;
+}
+header,
+footer {
+  text-align: center;
+}
+header {
+  padding-top: 10px;
+}
+footer {
+  padding-top: 20px;
+}
+h1 {
+  margin: 0;
+  font-size: 23px;
+}
+h2.label {
+  margin: 0;
+  font-size: 100%;
+  font-weight: normal;
+  text-align: left;
+}
+p {
+  margin: 0;
+}
+#input,
+#output {
+  width: 100%;
+  height: 150px;
+}
+#input::placeholder,
+#output.gray-out {
+  color: #ccc;
+}
+section + section {
+  margin-top: 20px;
+}
+section {
+  text-align: center;
+}
+#output {
+  padding: 0.5em 0.6em;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-shadow: inset 0 1px 3px #ddd;
+  border-radius: 4px;
+  vertical-align: middle;
+  box-sizing: border-box;
+  text-align: left;
+  overflow-y: scroll;
+}
+#execute,
+#copy {
+  width: 60%;
+  line-height: 1.18;
+}
+#count {
+  text-align: right;
+}
 </style>
 <div id="container">
   <header>
