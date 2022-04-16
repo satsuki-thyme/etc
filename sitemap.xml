@@ -64,4 +64,11 @@
     <priority>0.2</priority>
   </url>
 
+  <url>
+    <loc>https://etc.satsuki.me/tweet-link-maker.html</loc>
+    <lastmod>2022-04-16T20:00:00+09:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.2</priority>
+  </url>
+
 </urlset>
