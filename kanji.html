@@ -33,7 +33,7 @@ textarea {
 </style>
 <textarea></textarea>
 <script>
-let elm_textarea = document.querySelector("textarea")
+let nod_textarea = document.querySelector("textarea")
 window.addEventListener("DOMContentLoaded", () => {
   setFontSize()
 })
@@ -41,22 +41,22 @@ window.onresize = () => {
   setFontSize()
 }
 window.onunload = () => {
-  localStorage.setItem("contents", elm_textarea.value)
+  localStorage.setItem("contents", nod_textarea.value)
 }
 window.onload = () => {
-  elm_textarea.textContent = localStorage.getItem("contents")
+  nod_textarea.textContent = localStorage.getItem("contents")
 }
 function setFontSize() {
   let windowHeight = window.innerHeight
   let lineHeight = 1.1
-  let frameHeight = 20  // textarea 外の部分の高さ（ CSS の padding-top, padding-bottom の値の和）
+  let frameHeight = Number(window.getComputedStyle(nod_textarea).paddingTop.slice(0, -2)) + Number(window.getComputedStyle(nod_textarea).paddingBottom.slice(0, -2))
   let fontSize = 140 // およその font-size
   let lineN = (windowHeight - frameHeight) / (fontSize * lineHeight)
   if (windowHeight - fontSize * lineHeight * lineN < 10) {
     lineN = lineN - 1
   }
   fontSize = (windowHeight - frameHeight) / Math.floor(lineN) / lineHeight
-  elm_textarea.style.fontSize = fontSize * 0.99 + "px"
+  nod_textarea.style.fontSize = fontSize * 0.99 + "px"
 }
 </script>
 </html>
