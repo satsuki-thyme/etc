@@ -49,7 +49,7 @@ window.onload = () => {
 function setFontSize() {
   let windowHeight = window.innerHeight
   let lineHeight = 1.1
-  let frameHeight = 20  // textarea 外の部分の高さ
+  let frameHeight = 20  // textarea 外の部分の高さ（ CSS の padding-top, padding-bottom の値の和）
   let fontSize = 140 // およその font-size
   let lineN = (windowHeight - frameHeight) / (fontSize * lineHeight)
   if (windowHeight - fontSize * lineHeight * lineN < 10) {
