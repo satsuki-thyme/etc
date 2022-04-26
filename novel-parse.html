@@ -1312,7 +1312,7 @@ window.onwheel = (e) => {
 */
 // キーになる処理
 function exec(src) {
-  seteol(src)
+  setEol(src)
   arr_proc[arr_option["format"]](src)
 }
 // opSelector のために op のリストを読み込む
@@ -1391,7 +1391,7 @@ function copyPost() {
   })
 }
 // eol の決定
-function seteol(r) {
+function setEol(r) {
   let eol_LF = r.match(/\n/)
   let eol_CR = r.match(/\r\n/)
   if (eol_LF === null || (eol_LF !== null && eol_CR !== null && eol_LF.length < eol_CR.length)) {
@@ -1406,15 +1406,24 @@ async function loadContent(url) {
 // 変換の実処理
 async function addTitle(src) {
   let w = ""
-  await getTitle(src).then(r => {
-    w = '<h1>' + r + '</h1>' + eol + src
-  })
+  if (op !== undefined) {
+    await getTitle().then(r => {
+      w = '<h1>' + r + '</h1>' + eol + src
+    })
+  } else {
+    await getTitleFromIndividualFile().then(r => {
+      w = '<h1>' + r + '</h1>' + eol + src
+    })
+  }
+  nod_title.textContent = title
   return w
   // 子関数
-  async function getTitle(src) {
-    // 文章内のタイトル表記に使う変数 title に値を代入し、 <title> にタイトルを代入
+  async function getTitle() {
     title = arr_toc[Number(arr_repoFile[1].replace(/(\[.*?\])?(\d+).*/, "$2")) - 1][1]
-    nod_title.textContent = title
+    return title
+  }
+  async function getTitleFromIndividualFile(src) {
+    title = src.match(/# .*/)[0].replace(/# (.*)/, "$1")
     return title
   }
 }
