@@ -793,6 +793,7 @@ let ndl_toc = document.querySelectorAll(".toc")
 let currOp = null
 let novelIndex = null
 let public = false
+let readmeContent = null
 // 改行の種類
 let eol = "\n"
 // モード = 同一行の処理と、改行の読み取り
@@ -966,20 +967,21 @@ let arr_proc = {
     }
   },
   readme: () => {
-    let arr_readme = []
-    let sum = 0
-    let arr_prm = []
-    for (let i in arr_toc) {
-      let prm = loadContent(`${arr_url[currOrigin]["backhost"]}${arr_toc[i][0]}?${now}`).then(async r => {
-        let w = await removeRuby(removeMd(r)).replace(/[\s　]/g, "").length
-        sum += w
-        arr_readme[i] = await `<li><a href="${arr_toc[i][2]}&format=reading">${arr_toc[i][1]}</a> : ${w} 文字</li>`
-      })
-      arr_prm.push(prm)
-    }
-    Promise.all(arr_prm).then(() => {
-      nod_text.innerHTML = addTitle(`<p>全体 : ${sum} 文字</p>${eol}<ol>${eol}${arr_readme.join(eol)}${eol}</ol>`)
+    makeReadme().then(async r => {
+      nod_text.innerHTML = await addTitle(`<p>全体 : ${r[1]} 文字</p>${eol}<ol>${eol}${r[0].join(eol)}${eol}</ol>`)
     })
+    async function makeReadme() {
+      let w = []
+      let w1 = 0
+      for (let i in arr_toc) {
+        await loadContent(`${arr_url[currOrigin]["backhost"]}${arr_toc[i][0]}?${now}`).then(async r => {
+          let w2 = await removeRuby(removeMd(r)).replace(/[ 　\t\r\n]/g, "").length
+          w1 += await w2
+          w.push(`<li><a href="${arr_toc[i][2]}&format=reading">${arr_toc[i][1]}</a> : ${w2} 文字</li>`)
+        })
+      }
+      return [w, w1]
+    }
   }
 }
 /*
@@ -1049,9 +1051,11 @@ window.addEventListener("DOMContentLoaded", () => {
         })
       }
       else /* if (arr_repoFile[1] === "README.md") */{
+        console.log("if README.md")
         nod_opSelectorChip.classList.remove("hidden")
         r["format"] = "readme"
         loadContent(arr_url[currOrigin]["backhost"] + arr_repoFile[1]).then(r1 => {
+          readmeContent = r1
           makeToc(r1).then(() => {
             exec(r1)
           })
@@ -1406,7 +1410,7 @@ async function loadContent(url) {
 // 変換の実処理
 async function addTitle(src) {
   let w = ""
-  if (op !== undefined) {
+  if (arr_repoFile[1].match(/\d+/) !== null) {
     await getTitle().then(r => {
       w = '<h1>' + r + '</h1>' + eol + src
     })
@@ -1419,11 +1423,11 @@ async function addTitle(src) {
   return w
   // 子関数
   async function getTitle() {
-    title = arr_toc[Number(arr_repoFile[1].replace(/(\[.*?\])?(\d+).*/, "$2")) - 1][1]
+    title = await arr_toc[Number(arr_repoFile[1].replace(/(\[.*?\])?(\d+).*/, "$2")) - 1][1]
     return title
   }
-  async function getTitleFromIndividualFile(src) {
-    title = src.match(/# .*/)[0].replace(/# (.*)/, "$1")
+  async function getTitleFromIndividualFile() {
+    title = readmeContent.match(/# .*/)[0].replace(/# (.*)/, "$1")
     return title
   }
 }
