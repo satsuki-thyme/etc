@@ -17,6 +17,8 @@ textarea {
   margin: 0;
   padding: 10px;
   font-family: serif;
+  text-align: justify;
+  text-justify: inter-ideograph;
   line-height: 1.1;
   box-sizing: border-box;
   border-width: 0;
@@ -50,7 +52,7 @@ function setFontSize() {
   let windowHeight = window.innerHeight
   let lineHeight = 1.1
   let frameHeight = Number(window.getComputedStyle(nod_textarea).paddingTop.slice(0, -2)) + Number(window.getComputedStyle(nod_textarea).paddingBottom.slice(0, -2))
-  let fontSize = 140 // およその font-size
+  let fontSize = 120 // およその font-size
   let lineN = (windowHeight - frameHeight) / (fontSize * lineHeight)
   if (windowHeight - fontSize * lineHeight * lineN < 10) {
     lineN = lineN - 1
