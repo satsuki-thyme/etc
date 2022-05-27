@@ -1320,7 +1320,7 @@ function exec(src) {
 }
 // opSelector のために op のリストを読み込む
 async function loadNovelIndex() {
-    let w = await fetch("http://etc.satsuki.c/novel/etc/novel-index.json?" + now)
+    let w = await fetch("http://etc.satsuki.c/novel/index.json?" + now)
     return  w.json()
   }
 // op のリストを作って opSelector にセットする
