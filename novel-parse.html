@@ -708,14 +708,14 @@ if (op !== undefined) {
 }
 arr_url = {
   "http://etc.satsuki.c": {
-    "backhostRoot": "http://etc.satsuki.c/novel/",
-    "backhost": "http://etc.satsuki.c/novel/" + arr_repoFile[0] + "/",
+    "backhostRoot": "http://etc.satsuki.c/scribe/",
+    "backhost": "http://etc.satsuki.c/scribe/" + arr_repoFile[0] + "/",
     "linkRoot": "http://etc.satsuki.c/novel-parse.html",
     "linkBase": "http://etc.satsuki.c/novel-parse.html?op=" + arr_repoFile[0] + "/",
   },
   "http://satsuki.c": {
-    "backhostRoot": "http://etc.satsuki.c/novel/",
-    "backhost": "http://etc.satsuki.c/novel/" + arr_repoFile[0] + "/",
+    "backhostRoot": "http://etc.satsuki.c/scribe/",
+    "backhost": "http://etc.satsuki.c/scribe/" + arr_repoFile[0] + "/",
     "linkRoot": "http://etc.satsuki.c/novel-parse.html",
     "linkBase": "http://etc.satsuki.c/novel-parse.html?op=" + arr_repoFile[0] + "/",
   },
@@ -1320,7 +1320,7 @@ function exec(src) {
 }
 // opSelector のために op のリストを読み込む
 async function loadNovelIndex() {
-    let w = await fetch("http://etc.satsuki.c/novel/index.json?" + now)
+    let w = await fetch("http://etc.satsuki.c/scribe/index.json?" + now)
     return  w.json()
   }
 // op のリストを作って opSelector にセットする
