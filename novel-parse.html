@@ -900,10 +900,10 @@ let arr_proc = {
     pick("")
     function pick(w0) {
       let w = w0
-      let RE_w0 = RegExp(".{0,30}" + esc(arr_brkSlf[h]["before"]) + ".*?" + esc(arr_brkSlf[h]["after"]) + ".{0,30}" + "(.{0,30}" + esc(arr_brkSlf[h]["after"]) + ")?", "g")
-      let RE_w1 = RegExp(".{0,30}" + esc(arr_brkInc[h]["before"]) + ".*?" + esc(arr_brkInc[h]["after"]) + ".{0,30}" + "(.{0,30}" + esc(arr_brkInc[h]["after"]) + ")?", "g")
-      let arr_pickup0 = monoLine.match(RE_w0)
-      let arr_pickup1 = monoLine.match(RE_w1)
+      let rx_w0 = RegExp(".{0,30}" + esc(arr_brkSlf[h]["before"]) + ".*?" + esc(arr_brkSlf[h]["after"]) + ".{0,30}" + "(.{0,30}" + esc(arr_brkSlf[h]["after"]) + ")?", "g")
+      let rx_w1 = RegExp(".{0,30}" + esc(arr_brkInc[h]["before"]) + ".*?" + esc(arr_brkInc[h]["after"]) + ".{0,30}" + "(.{0,30}" + esc(arr_brkInc[h]["after"]) + ")?", "g")
+      let arr_pickup0 = monoLine.match(rx_w0)
+      let arr_pickup1 = monoLine.match(rx_w1)
       if (arr_pickup0 !== null) {
         let arr_pickupAll = arr_pickup0.concat(arr_pickup1)
         procBrackets(arr_pickupAll.join(eol).replace(/^(.*)$/gm, '<li>$1</li>'), 1)
@@ -1481,9 +1481,9 @@ async function procBrackets(src, type) {
   if (type === 1) {
     return markupInc(markupslf(src))
   } else {
-    return src.replace(RE_deleteslf(), "").replace(RE_deleteInc(), "")
+    return src.replace(rx_deleteslf(), "").replace(rx_deleteInc(), "")
   }
-  function RE_deleteslf() {
+  function rx_deleteslf() {
     let w = ""
     let h = 0
     for (let i = 0; i < arr_brkSlf.length; i++) {
@@ -1494,7 +1494,7 @@ async function procBrackets(src, type) {
       }
     }
   }
-  function RE_deleteInc() {
+  function rx_deleteInc() {
     let w = ""
     let h = 0
     for (let i = 0; i < arr_brkInc.length; i++) {
@@ -1507,9 +1507,9 @@ async function procBrackets(src, type) {
   }
   function markupslf(r) {
     let g = 0
-    let RE_brkBefore = RegExp(esc(arr_brkSlf[g]["before"]), "g")
-    let RE_brkAfter = RegExp(esc(arr_brkSlf[g]["after"]), "g")
-    let w = unEsc(r.replace(RE_brkBefore, arr_brkSlf[g]["replaceBefore"] + esc(arr_brkSlf[g]["before"]) + arr_brkSlf[g]["replaceAfter"]).replace(RE_brkAfter, arr_brkSlf[g]["replaceBefore"] + esc(arr_brkSlf[g]["after"]) + arr_brkSlf[g]["replaceAfter"]))
+    let rx_brkBefore = RegExp(esc(arr_brkSlf[g]["before"]), "g")
+    let rx_brkAfter = RegExp(esc(arr_brkSlf[g]["after"]), "g")
+    let w = unEsc(r.replace(rx_brkBefore, arr_brkSlf[g]["replaceBefore"] + esc(arr_brkSlf[g]["before"]) + arr_brkSlf[g]["replaceAfter"]).replace(rx_brkAfter, arr_brkSlf[g]["replaceBefore"] + esc(arr_brkSlf[g]["after"]) + arr_brkSlf[g]["replaceAfter"]))
     g++
     if (g < arr_brkSlf.length) {
       markupslf(w)
@@ -1519,8 +1519,8 @@ async function procBrackets(src, type) {
   }
   function markupInc(r) {
     let f = 0
-    let RE_brk = RegExp(esc(arr_brkInc[f]["before"]) + "(.*?)" + esc(arr_brkInc[f]["after"]), "g")
-    let w = unEsc(r.replace(RE_brk, arr_brkInc[f]["replaceBefore"] + esc(arr_brkInc[f]["before"]) + "$1" + esc(arr_brkInc[f]["after"]) + arr_brkInc[f]["replaceAfter"]))
+    let rx_brk = RegExp(esc(arr_brkInc[f]["before"]) + "(.*?)" + esc(arr_brkInc[f]["after"]), "g")
+    let w = unEsc(r.replace(rx_brk, arr_brkInc[f]["replaceBefore"] + esc(arr_brkInc[f]["before"]) + "$1" + esc(arr_brkInc[f]["after"]) + arr_brkInc[f]["replaceAfter"]))
     f++
     if (f < arr_brkInc.length) {
       markupInc(w)
