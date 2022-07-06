@@ -850,8 +850,8 @@ let arr_proc = {
       return addTitle(r)
     }).then(r => {
       return writeText(r)
-    }).then(() => {
-      afterLoading()
+    }).then(r => {
+      afterLoading(r)
     })
     countChipFull(src)
   },
@@ -1681,7 +1681,7 @@ async function layoutAdjustment() {
 //  真のロード後の処理
 function afterLoading() {
   layoutAdjustment().then(() => {
-    if (localStorage.getItem("repoFile") === arr_repoFile) {
+    if (localStorage.getItem("repoFile") === arr_repoFile.join(",")) {
       document.body.scrollTop = localStorage.getItem("scroll_top")
       document.body.scrollLeft = localStorage.getItem("scroll_left")
       if (localStorage.getItem("scroll_left") === null || localStorage.getItem("scroll_left") == 0) {
