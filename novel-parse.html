@@ -712,22 +712,26 @@ arr_url = {
     "backhost": "http://etc.satsuki.c/scribe/" + arr_repoFile[0] + "/",
     "linkRoot": "http://etc.satsuki.c/novel-parse.html",
     "linkBase": "http://etc.satsuki.c/novel-parse.html?op=" + arr_repoFile[0] + "/",
+    "private": true
   },
   "http://satsuki.c": {
     "backhostRoot": "http://etc.satsuki.c/scribe/",
     "backhost": "http://etc.satsuki.c/scribe/" + arr_repoFile[0] + "/",
     "linkRoot": "http://etc.satsuki.c/novel-parse.html",
     "linkBase": "http://etc.satsuki.c/novel-parse.html?op=" + arr_repoFile[0] + "/",
+    "private": true
   },
   "https://etc.satsuki.me": {
     "backhostRoot": "https://raw.gitbuusercontent.com/",
     "backhost": "https://raw.githubusercontent.com/satsuki-thyme/" + arr_repoFile[0] + "/master/",
     "linkBase": "https://etc.satsuki.me/novel-parse.html?op=" + arr_repoFile[0] + "/",
+    "private": true
   },
   "https://satsuki.me": {
     "backhostRoot": "https://raw.gitbuusercontent.com/",
     "backhost": "https://raw.githubusercontent.com/satsuki-thyme/" + arr_repoFile[0] + "/master/",
     "linkBase": "https://satsuki.me/novel-parse.html?op=" + arr_repoFile[0] + "/",
+    "private": true
   }
 }
 let arr_option = {
@@ -1027,8 +1031,10 @@ window.addEventListener("DOMContentLoaded", () => {
   }
   procOption().then(r => {
     // ホストで opSelector 周りを表示するかどうか選択する
-    if (currOrigin === Object.keys(arr_url)[0] || currOrigin === Object.keys(arr_url)[1]) {
-      nod_opSelectorChip.classList.remove("hidden")
+    for (let i in arr_url) {
+      if (arr_url[i]["private"] === true) {
+        nod_opSelectorChip.classList.remove("hidden")
+      }
     }
     // op で作品が指定されていた場合の処理
     if (op !== undefined) {
