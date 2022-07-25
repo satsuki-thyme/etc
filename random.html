@@ -141,7 +141,7 @@ function exec() {
   }
 }
 function update() {
-  elm_output.innerHTML = String(Math.floor(Math.random() * (Math.abs(innerMax - innerMin) + 1) + innerMin))
+  elm_output.innerHTML = String(Math.round(Math.random() * Math.abs(innerMax - innerMin) + innerMin))
 }
 </script>
 </html>
