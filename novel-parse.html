@@ -174,8 +174,8 @@ html.v body {
   overflow-y: hidden;
 }
 body {
-  color: #333;
-  background-color: #fff;
+  color: #1e1f1c;
+  background-color: #f1eee9;
 }
 html.v body {
   display: flex;
@@ -256,7 +256,7 @@ html.v #text h1 {
   top: 0;
   left: 0;
   padding-right: 15px;
-  background-color: #ccc;
+  background-color: #f1eee9;
 }
 html.v #top-bar {
   right: 0;
@@ -420,7 +420,7 @@ a:hover {
 @media (prefers-color-scheme: dark) {
   body,
   #post-output {
-    background-color: #000;
+    background-color: #1e1f1c;
   }
   body,
   #top-bar,
@@ -428,22 +428,22 @@ a:hover {
   #format-selector,
   #copy-button,
   #post-output {
-    color: #ccc;
+    color: #f1eee9;
   }
   #top-bar,
   #op-selector,
   #format-selector {
-    background-color: #222;
+    background-color: #1e1f1c;
   }
   #input-button,
   #copy-button {
     border-width: 1px;
-    background-color: #333;
+    background-color: #1e1f1c;
   }
 }
 html.light body,
 html.light #post-output {
-  background-color: #fff;
+  background-color: #f1eee9;
 }
 html.light body,
 html.light #top-bar,
@@ -451,16 +451,16 @@ html.light #op-selector,
 html.light #format-selector,
 html.light #copy-button,
 html.light #post-output {
-  color: #333;
+  color: #1e1f1c;
 }
 html.light #top-bar,
 html.light #op-selector,
 html.light #format-selector {
-  background-color: #ccc;
+  background-color: #f1eee9;
 }
 html.dark body,
 html.dark #post-output {
-  background-color: #000;
+  background-color: #1e1f1c;
 }
 html.dark body,
 html.dark #top-bar,
@@ -468,12 +468,12 @@ html.dark #op-selector,
 html.dark #format-selector,
 html.dark #copy-button,
 html.dark #post-output {
-  color: #ccc;
+  color: #f1eee9;
 }
 html.dark #top-bar,
 html.dark #op-selector,
 html.dark #format-selector {
-  background-color: #222;
+  background-color: #1e1f1c;
 }
 html.light #input-button,
 html.light #copy-button {
@@ -483,14 +483,14 @@ html.light #copy-button {
 html.dark #input-button,
 html.dark #copy-button {
   border-width: 1px;
-  background-color: #333;
+  background-color: #1e1f1c;
 }
 @media print {
   html body,
   html.light body,
   html.dark body {
     color: #000;
-    background-color: #fff;
+    background-color: #f1eee9;
   }
   #frame {
     width: 100%;
@@ -794,10 +794,10 @@ let nod_postOutput = document.querySelector("#post-output")
 let nod_postOutputOuter = document.querySelector("#post-output-outer")
 let ndl_linkGroup = document.querySelectorAll(".link-group")
 let ndl_toc = document.querySelectorAll(".toc")
-let currOp = null
-let novelIndex = null
+let currOp = ""
+let novelIndex = ""
 let public = false
-let readmeContent = null
+let readmeContent = ""
 // 改行の種類
 let eol = "\n"
 // モード = 同一行の処理と、改行の読み取り
@@ -1326,14 +1326,13 @@ function exec(src) {
 }
 // opSelector のために op のリストを読み込む
 async function loadNovelIndex() {
-    let w = await fetch("http://etc.satsuki.c/scribe/index.json?" + now)
-    return  w.json()
+    return (await fetch("http://etc.satsuki.c/scribe/index.json?" + now)).json()
   }
 // op のリストを作って opSelector にセットする
 async function procNovelIndex(r) {
   makeOpSelector(r).then(r => {
     for (let i in r) {
-      if (r[i][0] === currOp) {
+      if (r[i]["op"] === currOp) {
         nod_opSelector.options[Number(i) + 1].selected = true
       }
     }
@@ -1341,13 +1340,13 @@ async function procNovelIndex(r) {
   async function makeOpSelector(r1) {
     let w = null
     if (public === true) {
-      w = r1.filter(w1 => w1[2] === "public")
+      w = r1.filter(w1 => w1["destination"] === "public")
     } else {
       w = r1
       nod_public.checked = false
     }
     if (op !== undefined) {
-      currOp = Number(op.replace(/op(\d+).*/, "$1"))
+      currOp = op.replace(/op(\d+).*/, "$1")
     }
     while (nod_opSelector.firstChild) {
       nod_opSelector.removeChild(nod_opSelector.firstChild)
@@ -1358,8 +1357,8 @@ async function procNovelIndex(r) {
     nod_opSelector.appendChild(w2)
     for (let i in w) {
       let w1 = document.createElement("option")
-      w1.value = w[i][0]
-      w1.append(`op${w[i][0]} - ${w[i][1]}`)
+      w1.value = w[i]["op"]
+      w1.append(`op${w[i]["op"]} - ${w[i]["title"]}`)
       nod_opSelector.appendChild(w1)
     }
     return w
