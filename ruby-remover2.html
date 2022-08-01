@@ -1,0 +1,26 @@
+<script>
+console.log(1)
+document.addEventListener("DOMContentLoaded", () => {
+  navigator.permissions.query({name: "clipboard-read"}).then(r => {
+    if (r.state == "granted" || r.state == "prompt") {
+      navigator.clipboard.read().then(async r => {
+        for (let i in r.entries) {
+          if (r[i].types.indexOf("text/html") > -1) {
+            (await r[i].getType("text/html")).text().then(r => {
+              container.innerHTML = r.replace(/<ruby.*?<\/ruby>/g, "")
+            })
+          }
+        }
+      })
+    }
+    else {
+      alert("クリップボードの読み取りが拒否されました。")
+    }
+  })
+})
+</script>
+<body>
+  <div id="container">
+  </div>
+</body>
+  
