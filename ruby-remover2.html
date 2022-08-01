@@ -1,5 +1,5 @@
 <script>
-console.log(1)
+console.log(2)
 document.addEventListener("DOMContentLoaded", () => {
   navigator.permissions.query({name: "clipboard-read"}).then(r => {
     if (r.state == "granted" || r.state == "prompt") {
@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
         for (let i in r.entries) {
           if (r[i].types.indexOf("text/html") > -1) {
             (await r[i].getType("text/html")).text().then(r => {
+              console.log(r)
               container.innerHTML = r.replace(/<ruby.*?<\/ruby>/g, "")
             })
           }
