@@ -1387,11 +1387,11 @@ function copyPost() {
       nod_postOutput.style.left = window.innerWidth * 0.15
       nod_postOutputOuter.style.height = document.body.innerHeight
       nod_postOutputOuter.classList.remove("hidden")
-      let copyPe = document.createRange()
-      copyPe.setStart(nod_postOutput, 0)
-      copyPe.setEnd(nod_postOutput, nod_postOutput.childNodes.length)
+      let copyRange = document.createRange()
+      copyRange.setStart(nod_postOutput, 0)
+      copyRange.setEnd(nod_postOutput, nod_postOutput.childNodes.length)
       document.getSelection().removeAllRanges()
-      document.getSelection().addRange(copyPe)
+      document.getSelection().addRange(copyRange)
     } else {
       navigator.clipboard.writeText(r)
       alert("投稿用データをクリップボードにコピーしました。")
