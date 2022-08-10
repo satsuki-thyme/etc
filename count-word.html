@@ -1,3 +1,7 @@
+<html lang="ja-JP">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>文字数カウンター</title>
 <style>
 body {
   color: #1e1f1c;
@@ -10,16 +14,21 @@ body {
   bottom: 0;
   left: 0;
   width: 300px;
-  height: 100px;
+  height: 60px;
   margin: auto;
 }
 #display {
+  height: 20px;
+  margin: 0;
+  padding: 0;
   text-align: center;
+  line-height: 20px;
 }
 #progress-outer {
+  position: relative;
   width: 200px;
   height: 20px;
-  margin: auto;
+  margin: 20px auto 0;
   padding: 0;
   border-width: 1px;
   border-style: solid;
@@ -30,6 +39,16 @@ body {
   margin: 0;
   padding: 0;
   background-color: #1e1e7a;
+}
+#progress-message {
+  position: absolute;
+  width: 200px;
+  margin: 0;
+  padding: 0;
+  font-size: 16px;
+  text-align: center;
+  line-height: 20px;
+  color: #fff;
 }
 @media (prefers-color-scheme: dark) {
   body {
@@ -54,6 +73,7 @@ let progress = 0
 document.addEventListener("DOMContentLoaded", () => {
   nod_num = document.getElementById("num")
   nod_progress = document.getElementById("progress-inner")
+  nod_message = document.getElementById("progress-message")
 })
 loadIndex()
 .then(r => {
@@ -142,6 +162,7 @@ async function sumLength(listOv) {
 }
 function writeNum(num) {
   nod_num.innerText = num
+  nod_message.innerText = "Count done."
 }
 async function loadIndex() {
   let w = await fetch(`${baseDir}/${indexFile}`)
@@ -186,7 +207,11 @@ function removeRuby(src) {
 <body>
   <div id="container">
     <p id="display">総文字数 : <span id="num"></span> 文字</p>
-    <div id="progress-outer"><div id="progress-inner" style="width: 0;"></div></div>
+    <div id="progress-outer">
+      <div id="progress-inner" style="width: 0;">
+        <p id="progress-message">Count in progress.</p>
+      </div>
+    </div>
   </div>
 </body>
-  
+</html>
