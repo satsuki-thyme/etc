@@ -1,4 +1,3 @@
-<html lang="ja-JP">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>文字数カウンター</title>
@@ -68,6 +67,7 @@ let baseDir = "/scribe"
 let indexFile = "index.json"
 let listFile = "README.md"
 let arr_listOv = []
+let waitingTime = 10
 let totalWork = 0
 let progress = 0
 document.addEventListener("DOMContentLoaded", () => {
@@ -104,55 +104,50 @@ loadIndex()
 })
 function countWord(r) {
   for (let i in r) {
-/*
-
-  progress is here
-
-*/
-    progres()
-    if (r[i]["list"].length !== 0) {
-      let subSumLen = 0
-      for (let j in r[i]["list"]) {
-        let prm_countWord = new Promise(resolve => {
-          loadWord(r[i]["op"], r[i]["list"][j])
-          .then(r2 => {
-            subSumLen += removeRuby(r2.replace(/^#+[ \t]*.*\r?\n([\s\S]*)$/g, "$1").replace(/[\r\n 　\t]/g, "")).length
-            if (j >= r[i]["list"].length - 1) {
-              resolve(subSumLen)
+    setTimeout(() => {
+      progres()
+      if (r[i]["list"].length !== 0) {
+        let subSumLen = 0
+        for (let j in r[i]["list"]) {
+          let prm_countWord = new Promise(resolve => {
+            loadWord(r[i]["op"], r[i]["list"][j])
+            .then(r2 => {
+              subSumLen += removeRuby(removeMd(r2)).replace(/[\r\n 　\t]/g, "").length
+              if (j >= r[i]["list"].length - 1) {
+                resolve(subSumLen)
+              }
+            })
+          })
+          prm_countWord
+          .then(r3 => {
+            r[i]["len"] = r3
+            if (i >= r.length - 1) {
+              sumLength(r)
             }
           })
-        })
-        prm_countWord
-        .then(r3 => {
-          r[i]["len"] = r3
-          if (i >= r.length - 1) {
-            sumLength(r)
-          }
-        })
+        }
       }
-    }
-    else {
-      r[i]["len"] = 0
-      if (i >= r.length - 1) {
-        sumLength(r)
+      else {
+        r[i]["len"] = 0
+        if (i >= r.length - 1) {
+          sumLength(r)
+        }
       }
-    }
+    }, waitingTime)
   }
 }
 async function sumLength(listOv) {
   let sumLen = 0
   let prm_sumLength = new Promise(resolve => {
     for (let i in listOv) {
-/*
-
-  progress is here
-
-*/
-      progres()
-      sumLen += listOv[i]["len"]
-      if (i >= listOv.length - 1) {
-        resolve(sumLen)
-      }
+      setTimeout(() => {
+        progres()
+        sumLen += listOv[i]["len"]
+        console.log(sumLen)
+        if (i >= listOv.length - 1) {
+          resolve(sumLen)
+        }
+      }, waitingTime)
     }
   })
   prm_sumLength
@@ -203,15 +198,15 @@ function removeRuby(src) {
             .replace(/[々〇〻\u3400-\u9FFF\uF900-\uFAFF\uD840-\uD87F\uDC00-\uDFFF]+（(.*?)）/g, "$1")
             .replace(/｜(（.*?）)/g, "$1")
 }
+function removeMd(src) {
+  return src.replace(/^[ \t]*[#*+\-_~=`>|].*\r?\n/gm, "")
+}
 </script>
-<body>
-  <div id="container">
-    <p id="display">総文字数 : <span id="num"></span> 文字</p>
-    <div id="progress-outer">
-      <div id="progress-inner" style="width: 0;">
-        <p id="progress-message">Count in progress.</p>
-      </div>
+<div id="container">
+  <p id="display">総文字数 : <span id="num"></span> 文字</p>
+  <div id="progress-outer">
+    <div id="progress-inner" style="width: 0;">
+      <p id="progress-message">Count in progress.</p>
     </div>
   </div>
-</body>
-</html>
+</div>
