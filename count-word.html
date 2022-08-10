@@ -1,0 +1,192 @@
+<style>
+body {
+  color: #1e1f1c;
+  background-color: #f1eee9;
+}
+#container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 300px;
+  height: 100px;
+  margin: auto;
+}
+#display {
+  text-align: center;
+}
+#progress-outer {
+  width: 200px;
+  height: 20px;
+  margin: auto;
+  padding: 0;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #1e1f1c;
+}
+#progress-inner {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: #1e1e7a;
+}
+@media (prefers-color-scheme: dark) {
+  body {
+    color: #f1eee9;
+    background-color: #1e1f1c;
+  }
+  #progress-outer {
+    border-color: #f1eee9;
+  }
+  #progress-inner {
+    background-color: #3b3ba0;
+  }
+}
+</style>
+<script>
+let baseDir = "/scribe"
+let indexFile = "index.json"
+let listFile = "README.md"
+let arr_listOv = []
+let totalWork = 0
+let progress = 0
+document.addEventListener("DOMContentLoaded", () => {
+  nod_num = document.getElementById("num")
+  nod_progress = document.getElementById("progress-inner")
+})
+loadIndex()
+.then(r => {
+  getTotalWork(r)
+  for (let i in r) {
+    let prm_makeList = new Promise(resolve => {
+      loadList(r[i]["op"])
+      .then(r2 => {
+        let list = r2
+        .replace(/^[\s\S]*?#+[ \t]*(?:目次|本文).*\r?\n([\s\S]*)(?:#[\s\S]*|$)/g, "$1")
+        .replace(/^(?:[*+-] ?|\d+\. ?)(.*?)(?:[ \t]*[:：][ \t]*.*)*$/gm, "$1")
+        .split(/\r?\n/)
+        .filter(r => r !== "")
+        arr_listOv.push({
+          "op": r[i]["op"],
+          "list": list
+        })
+        if (i >= r.length - 1) {
+          resolve(arr_listOv)
+        }
+      })
+    })
+    prm_makeList
+    .then(r => {
+      countWord(r)
+    })
+  }
+})
+function countWord(r) {
+  for (let i in r) {
+/*
+
+  progress is here
+
+*/
+    progres()
+    if (r[i]["list"].length !== 0) {
+      let subSumLen = 0
+      for (let j in r[i]["list"]) {
+        let prm_countWord = new Promise(resolve => {
+          loadWord(r[i]["op"], r[i]["list"][j])
+          .then(r2 => {
+            subSumLen += removeRuby(r2.replace(/^#+[ \t]*.*\r?\n([\s\S]*)$/g, "$1").replace(/[\r\n 　\t]/g, "")).length
+            if (j >= r[i]["list"].length - 1) {
+              resolve(subSumLen)
+            }
+          })
+        })
+        prm_countWord
+        .then(r3 => {
+          r[i]["len"] = r3
+          if (i >= r.length - 1) {
+            sumLength(r)
+          }
+        })
+      }
+    }
+    else {
+      r[i]["len"] = 0
+      if (i >= r.length - 1) {
+        sumLength(r)
+      }
+    }
+  }
+}
+async function sumLength(listOv) {
+  let sumLen = 0
+  let prm_sumLength = new Promise(resolve => {
+    for (let i in listOv) {
+/*
+
+  progress is here
+
+*/
+      progres()
+      sumLen += listOv[i]["len"]
+      if (i >= listOv.length - 1) {
+        resolve(sumLen)
+      }
+    }
+  })
+  prm_sumLength
+  .then(r => {
+    writeNum(r)
+  })
+}
+function writeNum(num) {
+  nod_num.innerText = num
+}
+async function loadIndex() {
+  let w = await fetch(`${baseDir}/${indexFile}`)
+  if (w.ok) {
+    return w.json()
+  }
+  else {
+    console.error(`${indexFile} の取得に失敗しました。`)
+  }
+}
+async function loadList(op) {
+  let w = await fetch(`${baseDir}/op${op}/${listFile}`)
+  if (w.ok) {
+    return w.text()
+  }
+  else {
+    console.error(`${listFile} の取得に失敗しました。`)
+  }
+}
+async function loadWord(op, wordFile) {
+  let w = await fetch(`${baseDir}/op${op}/${wordFile}`)
+  if (w.ok) {
+    return w.text()
+  }
+  else {
+    console.error(`${wordFile} の取得に失敗しました。`)
+  }
+}
+function getTotalWork(index) {
+  totalWork = index.length
+}
+function progres() {
+  progress += 1 / (totalWork * 2)
+  nod_progress.style.width = progress * 100 + "%"
+}
+function removeRuby(src) {
+  return src.replace(/｜([^｜]*?)《.*?》/g, "$1")
+            .replace(/[々〇〻\u3400-\u9FFF\uF900-\uFAFF\uD840-\uD87F\uDC00-\uDFFF]+（(.*?)）/g, "$1")
+            .replace(/｜(（.*?）)/g, "$1")
+}
+</script>
+<body>
+  <div id="container">
+    <p id="display">総文字数 : <span id="num"></span> 文字</p>
+    <div id="progress-outer"><div id="progress-inner" style="width: 0;"></div></div>
+  </div>
+</body>
+  
