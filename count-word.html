@@ -63,11 +63,13 @@ body {
 }
 </style>
 <script>
+// 設定
 let baseDir = "/scribe"
 let indexFile = "index.json"
 let listFile = "README.md"
+let waitingTime = 100
+// 定義
 let arr_listOv = []
-let waitingTime = 10
 let totalWork = 0
 let progress = 0
 document.addEventListener("DOMContentLoaded", () => {
@@ -75,13 +77,20 @@ document.addEventListener("DOMContentLoaded", () => {
   nod_progress = document.getElementById("progress-inner")
   nod_message = document.getElementById("progress-message")
 })
+/*
+
+  実行
+
+*/
 loadIndex()
 .then(r => {
   getTotalWork(r)
+  // 各物語ごとの目次を抽出する
   for (let i in r) {
     let prm_makeList = new Promise(resolve => {
       loadList(r[i]["op"])
       .then(r2 => {
+        // 目次を抽出する
         let list = r2
         .replace(/^[\s\S]*?#+[ \t]*(?:目次|本文).*\r?\n([\s\S]*)(?:#[\s\S]*|$)/g, "$1")
         .replace(/^(?:[*+-] ?|\d+\. ?)(.*?)(?:[ \t]*[:：][ \t]*.*)*$/gm, "$1")
@@ -92,28 +101,37 @@ loadIndex()
           "list": list
         })
         if (i >= r.length - 1) {
+          // 全物語の目次が抽出されたら resolve() する
           resolve(arr_listOv)
         }
       })
     })
+    // Promise.then()
     prm_makeList
     .then(r => {
+// 次の段階へ移行
       countWord(r)
     })
   }
 })
+// 第 2 段階
 function countWord(r) {
+  // 各物語ごとに処理する
   for (let i in r) {
     setTimeout(() => {
       progres()
+      // 目次が空でなければ
       if (r[i]["list"].length !== 0) {
         let subSumLen = 0
+        // 各エピソードごとに処理する
         for (let j in r[i]["list"]) {
           let prm_countWord = new Promise(resolve => {
+            // 各エピソードの本文をロードする
             loadWord(r[i]["op"], r[i]["list"][j])
             .then(r2 => {
               subSumLen += removeRuby(removeMd(r2)).replace(/[\r\n 　\t]/g, "").length
               if (j >= r[i]["list"].length - 1) {
+                // 全エピソードの文字数が加算されたら resolve()
                 resolve(subSumLen)
               }
             })
@@ -122,29 +140,35 @@ function countWord(r) {
           .then(r3 => {
             r[i]["len"] = r3
             if (i >= r.length - 1) {
+// 次の段階へ移行
               sumLength(r)
             }
           })
         }
       }
+      // 目次が空であれば
       else {
         r[i]["len"] = 0
         if (i >= r.length - 1) {
+// 次の段階へ移行
           sumLength(r)
         }
       }
     }, waitingTime)
   }
 }
-async function sumLength(listOv) {
+// 第 3 段階
+function sumLength(listOv) {
   let sumLen = 0
   let prm_sumLength = new Promise(resolve => {
+    // 各物語について処理する
     for (let i in listOv) {
       setTimeout(() => {
         progres()
         sumLen += listOv[i]["len"]
         console.log(sumLen)
         if (i >= listOv.length - 1) {
+          // 全物語について処理したら resolve()
           resolve(sumLen)
         }
       }, waitingTime)
@@ -152,13 +176,21 @@ async function sumLength(listOv) {
   })
   prm_sumLength
   .then(r => {
+// 次の段階へ移行
     writeNum(r)
   })
 }
+// 第 4 段階
 function writeNum(num) {
   nod_num.innerText = num
   nod_message.innerText = "Count done."
 }
+/*
+
+  副次的な関数
+
+*/
+// 作品群のインデックスを読み込む
 async function loadIndex() {
   let w = await fetch(`${baseDir}/${indexFile}`)
   if (w.ok) {
@@ -168,6 +200,7 @@ async function loadIndex() {
     console.error(`${indexFile} の取得に失敗しました。`)
   }
 }
+// エピソード群の目次を読み込む
 async function loadList(op) {
   let w = await fetch(`${baseDir}/op${op}/${listFile}`)
   if (w.ok) {
@@ -177,6 +210,7 @@ async function loadList(op) {
     console.error(`${listFile} の取得に失敗しました。`)
   }
 }
+// エピソード自体を読み込む
 async function loadWord(op, wordFile) {
   let w = await fetch(`${baseDir}/op${op}/${wordFile}`)
   if (w.ok) {
@@ -186,18 +220,22 @@ async function loadWord(op, wordFile) {
     console.error(`${wordFile} の取得に失敗しました。`)
   }
 }
+// プログレスバーのために全仕事量を算出する
 function getTotalWork(index) {
   totalWork = index.length
 }
+// プログレスバーを進める
 function progres() {
   progress += 1 / (totalWork * 2)
   nod_progress.style.width = progress * 100 + "%"
 }
+// ルビを削除する
 function removeRuby(src) {
   return src.replace(/｜([^｜]*?)《.*?》/g, "$1")
             .replace(/[々〇〻\u3400-\u9FFF\uF900-\uFAFF\uD840-\uD87F\uDC00-\uDFFF]+（(.*?)）/g, "$1")
             .replace(/｜(（.*?）)/g, "$1")
 }
+// Markdown を削除する
 function removeMd(src) {
   return src.replace(/^[ \t]*[#*+\-_~=`>|].*\r?\n/gm, "")
 }
@@ -207,6 +245,6 @@ function removeMd(src) {
   <div id="progress-outer">
     <div id="progress-inner" style="width: 0;">
       <p id="progress-message">Count in progress.</p>
-    </div>
-  </div>
-</div>
+    </div><!-- #progress-innner -->
+  </div><!-- #progress-outer -->
+</div><!-- #container -->
