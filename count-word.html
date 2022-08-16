@@ -67,7 +67,7 @@ body {
 let baseDir = "/scribe"
 let indexFile = "index.json"
 let listFile = "README.md"
-let waitingTime = 100
+let waitingTime = 0
 // 定義
 let arr_listOv = []
 let totalWork = 0
@@ -129,11 +129,26 @@ function countWord(r) {
             // 各エピソードの本文をロードする
             loadWord(r[i]["op"], r[i]["list"][j])
             .then(r2 => {
-              subSumLen += removeRuby(removeMd(r2)).replace(/[\r\n 　\t]/g, "").length
-              if (j >= r[i]["list"].length - 1) {
-                // 全エピソードの文字数が加算されたら resolve()
-                resolve(subSumLen)
-              }
+              let prm_len = new Promise(resolve1 => {
+                let w = r2.replace(/｜([^｜]*?)《.*?》/g, "$1")
+                .replace(/[々〇〻\u3400-\u9FFF\uF900-\uFAFF\uD840-\uD87F\uDC00-\uDFFF]+（(.*?)）/g, "$1")
+                .replace(/｜(（.*?）)/g, "$1")
+                .replace(/^[ \t]*[#*+\-_~=`>|].*\r?\n/gm, "")
+                .replace(/[\r\n 　\t]/g, "")
+                .length
+                resolve1(w)
+              })
+              prm_len
+              .then(r3 => {
+                setTimeout(() => {
+                  console.log(r3)
+                  subSumLen += r3
+                  if (j >= r[i]["list"].length - 1) {
+                    // 全エピソードの文字数が加算されたら resolve()
+                    resolve(subSumLen)
+                  }
+                }, waitingTime)
+              })
             })
           })
           prm_countWord
@@ -166,7 +181,6 @@ function sumLength(listOv) {
       setTimeout(() => {
         progres()
         sumLen += listOv[i]["len"]
-        console.log(sumLen)
         if (i >= listOv.length - 1) {
           // 全物語について処理したら resolve()
           resolve(sumLen)
@@ -228,16 +242,6 @@ function getTotalWork(index) {
 function progres() {
   progress += 1 / (totalWork * 2)
   nod_progress.style.width = progress * 100 + "%"
-}
-// ルビを削除する
-function removeRuby(src) {
-  return src.replace(/｜([^｜]*?)《.*?》/g, "$1")
-            .replace(/[々〇〻\u3400-\u9FFF\uF900-\uFAFF\uD840-\uD87F\uDC00-\uDFFF]+（(.*?)）/g, "$1")
-            .replace(/｜(（.*?）)/g, "$1")
-}
-// Markdown を削除する
-function removeMd(src) {
-  return src.replace(/^[ \t]*[#*+\-_~=`>|].*\r?\n/gm, "")
 }
 </script>
 <div id="container">
