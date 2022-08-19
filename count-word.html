@@ -118,58 +118,51 @@ loadIndex()
 function countWord(r) {
   // 各物語ごとに処理する
   for (let i in r) {
-    setTimeout(() => {
-      progres()
-      // 目次が空でなければ
-      if (r[i]["list"].length !== 0) {
-        let subSumLen = 0
-        // 各エピソードごとに処理する
-        for (let j in r[i]["list"]) {
-          let prm_countWord = new Promise(resolve => {
-            // 各エピソードの本文をロードする
-            loadWord(r[i]["op"], r[i]["list"][j])
-            .then(r2 => {
-              let prm_len = new Promise(resolve1 => {
-                let w = r2.replace(/｜([^｜]*?)《.*?》/g, "$1")
-                .replace(/[々〇〻\u3400-\u9FFF\uF900-\uFAFF\uD840-\uD87F\uDC00-\uDFFF]+（(.*?)）/g, "$1")
-                .replace(/｜(（.*?）)/g, "$1")
-                .replace(/^[ \t]*[#*+\-_~=`>|].*\r?\n/gm, "")
-                .replace(/[\r\n 　\t]/g, "")
-                .length
-                resolve1(w)
-              })
-              prm_len
-              .then(r3 => {
-                setTimeout(() => {
-                  console.log(r3)
-                  subSumLen += r3
-                  if (j >= r[i]["list"].length - 1) {
-                    // 全エピソードの文字数が加算されたら resolve()
-                    resolve(subSumLen)
-                  }
-                }, waitingTime)
-              })
+    progres()
+    // 目次が空でなければ
+    if (r[i]["list"].length !== 0) {
+      let subSumLen = 0
+      // 各エピソードごとに処理する
+      for (let j in r[i]["list"]) {
+        let prm_countWord = new Promise(resolve => {
+          // 各エピソードの本文をロードする
+          loadWord(r[i]["op"], r[i]["list"][j])
+          .then(r2 => {
+            let prm_len = new Promise(resolve1 => {
+              let w = r2.replace(/｜([^｜]*?)《.*?》/g, "$1")
+              .replace(/[々〇〻\u3400-\u9FFF\uF900-\uFAFF\uD840-\uD87F\uDC00-\uDFFF]+（(.*?)）/g, "$1")
+              .replace(/｜(（.*?）)/g, "$1")
+              .replace(/^[ \t]*[#*+\-_~=`>|].*\r?\n/gm, "")
+              .replace(/[\r\n 　\t]/g, "")
+              .length
+              resolve1(w)
+            })
+            prm_len
+            .then(r3 => {
+              console.log(r3)
+              subSumLen += r3
+              resolve(subSumLen)
             })
           })
-          prm_countWord
-          .then(r3 => {
-            r[i]["len"] = r3
-            if (i >= r.length - 1) {
-// 次の段階へ移行
-              sumLength(r)
-            }
-          })
-        }
+        })
+        prm_countWord
+        .then(r3 => {
+          r[i]["len"] = r3
+          if (i >= r.length - 1) {
+            // 次の段階へ移行
+            sumLength(r)
+          }
+        })
       }
-      // 目次が空であれば
-      else {
-        r[i]["len"] = 0
-        if (i >= r.length - 1) {
-// 次の段階へ移行
-          sumLength(r)
-        }
+    }
+    // 目次が空であれば
+    else {
+      r[i]["len"] = 0
+      if (i >= r.length - 1) {
+        // 次の段階へ移行
+        sumLength(r)
       }
-    }, waitingTime)
+    }
   }
 }
 // 第 3 段階
