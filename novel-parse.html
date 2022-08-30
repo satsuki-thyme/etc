@@ -366,12 +366,6 @@ a:hover {
 #pickup-list li + li {
   margin-top: 30px;
 }
-.curly-brks {
-  color: #d00;
-}
-.square-brks {
-  color: #0ae;
-}
 #input-button,
 #copy-button {
   border-style: outset;
@@ -818,21 +812,27 @@ let title = ""
 let trgFile = null
 // URL の search で作品が指定されていた場合の作品のホスト
 let now = Date()
-// タグの定義（タグ自身を処理の対象にする）
+// タグの定義（タグを最終的な本文に含めない＝削除する）
 let arr_brkSlf = [
-  {
+{
     "before": "{",
     "after": "}",
-    "replaceBefore": '<span class="curly-brks">',
+    "replaceBefore": '<span style="color: #d00;">',
     "replaceAfter": '</span>'
-  }
-]
-// タグの定義（タグと中身を処理の対象にする）
-let arr_brkInc = [
+  },
   {
     "before": "[",
     "after": "]",
-    "replaceBefore": '<span class="square-brks">',
+    "replaceBefore": '<span style="color: #dd0;">',
+    "replaceAfter": '</span>'
+  }
+]
+// タグの定義（タグを最終的な本文に含める＝削除しない）
+let arr_brkInc = [
+  {
+    "before": "〈",
+    "after": "〉",
+    "replaceBefore": '<span style="color: #0ae;">',
     "replaceAfter": '</span>'
   }
 ]
@@ -908,23 +908,27 @@ let arr_proc = {
       let rx_w1 = RegExp(".{0,30}" + esc(arr_brkInc[h]["before"]) + ".*?" + esc(arr_brkInc[h]["after"]) + ".{0,30}" + "(.{0,30}" + esc(arr_brkInc[h]["after"]) + ")?", "g")
       let arr_pickup0 = monoLine.match(rx_w0)
       let arr_pickup1 = monoLine.match(rx_w1)
-      if (arr_pickup0 !== null) {
-        let arr_pickupAll = arr_pickup0.concat(arr_pickup1)
-        procBrackets(arr_pickupAll.join(eol).replace(/^(.*)$/gm, '<li>$1</li>'), 1)
-        .then(async r => {
-          return parseRuby(r)
-        }).then(async r => {
-          w += r
-          h++
-          if (h < arr_brkSlf) {
-            pick(w)
-          } else {
-            writeText(w.replace(/((.*(\r?\n)?)+)/gm, '<ul id="pickup-list">$1</ul>'))
-          }
-        }).then(() => {
-          afterLoading()
-        })
+      if (arr_pickup0 === null) {
+        arr_pickup0 = []
       }
+      if (arr_pickup1 === null) {
+        arr_pickup1 = []
+      }
+      let arr_pickupAll = arr_pickup0.concat(arr_pickup1)
+      procBrackets(arr_pickupAll.join(eol).replace(/^(.*)$/gm, '<li>$1</li>'), 1)
+      .then(r => {
+        return parseRuby(r)
+      }).then(r => {
+        w += r
+        h++
+        if (h < arr_brkSlf) {
+          pick(w)
+        } else {
+          writeText(w.replace(/((.*(\r?\n)?)+)/gm, '<ul id="pickup-list">$1</ul>'))
+        }
+      }).then(() => {
+        afterLoading()
+      })
     }
   },
   odt: src => {
@@ -1491,11 +1495,11 @@ function writeText(src) {
 // タグを処理する type=0 消去、tyep=1 色づけ
 async function procBrackets(src, type) {
   if (type === 1) {
-    return markupInc(markupslf(src))
+    return markupInc(markupSlf(src))
   } else {
-    return src.replace(rx_deleteslf(), "").replace(rx_deleteInc(), "")
+    return src.replace(rx_deleteSlf(), "")
   }
-  function rx_deleteslf() {
+  function rx_deleteSlf() {
     let w = ""
     let h = 0
     for (let i = 0; i < arr_brkSlf.length; i++) {
@@ -1506,25 +1510,14 @@ async function procBrackets(src, type) {
       }
     }
   }
-  function rx_deleteInc() {
-    let w = ""
-    let h = 0
-    for (let i = 0; i < arr_brkInc.length; i++) {
-      w += esc(arr_brkInc[i]["before"]) + ".*?" + esc(arr_brkInc[i]["after"]) + "|"
-      h++
-      if (h === arr_brkInc.length) {
-        return RegExp("(" + w + ")", "g")
-      }
-    }
-  }
-  function markupslf(r) {
+  function markupSlf(r) {
     let g = 0
     let rx_brkBefore = RegExp(esc(arr_brkSlf[g]["before"]), "g")
     let rx_brkAfter = RegExp(esc(arr_brkSlf[g]["after"]), "g")
     let w = unEsc(r.replace(rx_brkBefore, arr_brkSlf[g]["replaceBefore"] + esc(arr_brkSlf[g]["before"]) + arr_brkSlf[g]["replaceAfter"]).replace(rx_brkAfter, arr_brkSlf[g]["replaceBefore"] + esc(arr_brkSlf[g]["after"]) + arr_brkSlf[g]["replaceAfter"]))
     g++
     if (g < arr_brkSlf.length) {
-      markupslf(w)
+      markupSlf(w)
     } else {
       return w
     }
