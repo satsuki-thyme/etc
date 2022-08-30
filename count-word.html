@@ -67,130 +67,92 @@ body {
 let baseDir = "/scribe"
 let indexFile = "index.json"
 let listFile = "README.md"
-let waitingTime = 0
 // 定義
-let arr_listOv = []
 let totalWork = 0
-let progress = 0
+let progDeg = 0
+// 始める
 document.addEventListener("DOMContentLoaded", () => {
   nod_num = document.getElementById("num")
   nod_progress = document.getElementById("progress-inner")
   nod_message = document.getElementById("progress-message")
+  sumLength()
 })
 /*
 
-  実行
+  主部
 
 */
-loadIndex()
-.then(r => {
-  getTotalWork(r)
-  // 各物語ごとの目次を抽出する
-  for (let i in r) {
-    let prm_makeList = new Promise(resolve => {
-      loadList(r[i]["op"])
-      .then(r2 => {
-        // 目次を抽出する
-        let list = r2
-        .replace(/^[\s\S]*?#+[ \t]*(?:目次|本文).*\r?\n([\s\S]*)(?:#[\s\S]*|$)/g, "$1")
-        .replace(/^(?:[*+-] ?|\d+\. ?)(.*?)(?:[ \t]*[:：][ \t]*.*)*$/gm, "$1")
-        .split(/\r?\n/)
-        .filter(r => r !== "")
-        arr_listOv.push({
-          "op": r[i]["op"],
-          "list": list
-        })
-        if (i >= r.length - 1) {
-          // 全物語の目次が抽出されたら resolve() する
-          resolve(arr_listOv)
-        }
-      })
-    })
-    // Promise.then()
-    prm_makeList
-    .then(r => {
-// 次の段階へ移行
-      countWord(r)
-    })
-  }
-})
-// 第 2 段階
-function countWord(r) {
-  // 各物語ごとに処理する
-  for (let i in r) {
-    progres()
-    // 目次が空でなければ
-    if (r[i]["list"].length !== 0) {
-      let subSumLen = 0
-      // 各エピソードごとに処理する
-      for (let j in r[i]["list"]) {
-        let prm_countWord = new Promise(resolve => {
-          // 各エピソードの本文をロードする
-          loadWord(r[i]["op"], r[i]["list"][j])
-          .then(r2 => {
-            let prm_len = new Promise(resolve1 => {
-              let w = r2.replace(/｜([^｜]*?)《.*?》/g, "$1")
-              .replace(/[々〇〻\u3400-\u9FFF\uF900-\uFAFF\uD840-\uD87F\uDC00-\uDFFF]+（(.*?)）/g, "$1")
-              .replace(/｜(（.*?）)/g, "$1")
-              .replace(/^[ \t]*[#*+\-_~=`>|].*\r?\n/gm, "")
-              .replace(/[\r\n 　\t]/g, "")
-              .length
-              resolve1(w)
-            })
-            prm_len
-            .then(r3 => {
-              console.log(r3)
-              subSumLen += r3
-              resolve(subSumLen)
-            })
+function sumLength() {
+  loadIndex()
+  .then(r => {
+    // 各物語ごとの目次を抽出する
+    let listOv = []
+    for (let i in r) {
+      listOv.push(
+        loadList(r[i]["op"])
+        .then(r2 => {
+          // 目次を抽出する
+          let list = r2
+          .replace(/^[\s\S]*?#+[ \t]*(?:目次|本文).*\r?\n([\s\S]*)(?:#[\s\S]*|$)/g, "$1")
+          .replace(/^(?:[*+-] ?|\d+\. ?)(.*?)(?:[ \t]*[:：][ \t]*.*)*$/gm, "$1")
+          .split(/\r?\n/)
+          .filter(r => r !== "")
+          return ({
+            "op": r[i]["op"],
+            "list": list
           })
         })
-        prm_countWord
-        .then(r3 => {
-          r[i]["len"] = r3
-          if (i >= r.length - 1) {
-            // 次の段階へ移行
-            sumLength(r)
-          }
-        })
-      }
+      )
     }
-    // 目次が空であれば
-    else {
-      r[i]["len"] = 0
-      if (i >= r.length - 1) {
-        // 次の段階へ移行
-        sumLength(r)
-      }
-    }
-  }
-}
-// 第 3 段階
-function sumLength(listOv) {
-  let sumLen = 0
-  let prm_sumLength = new Promise(resolve => {
-    // 各物語について処理する
+    return Promise.all(listOv)
+  })
+  .then(listOv => {
+    listOv = listOv.filter(r => r.list.length !== 0)
+    getTotalWork(listOv)
+    let lenSet = []
     for (let i in listOv) {
-      setTimeout(() => {
-        progres()
-        sumLen += listOv[i]["len"]
-        if (i >= listOv.length - 1) {
-          // 全物語について処理したら resolve()
-          resolve(sumLen)
-        }
-      }, waitingTime)
+      progress()
+      lenSet.push(
+        new Promise((resolve, reject) => {
+          let subLenSet = []
+          for (let j in listOv[i].list) {
+            subLenSet.push(
+              // 各エピソードの本文をロードする
+              loadWord(listOv[i]["op"], listOv[i].list[j])
+              .then(r => {
+                return r.replace(/｜([^｜]*?)《.*?》/g, "$1")
+                .replace(/[々〇〻\u3400-\u9FFF\uF900-\uFAFF\uD840-\uD87F\uDC00-\uDFFF]+（(.*?)）/g, "$1")
+                .replace(/｜(（.*?）)/g, "$1")
+                .replace(/^[ \t]*[#*+\-_~=`>|].*\r?\n/gm, "")
+                .replace(/[\r\n 　\t]/g, "")
+                .length
+              })
+            )
+          }
+          resolve(Promise.all(subLenSet))
+          setTimeout(() => {
+            reject()
+          }, 1000)
+        })
+        .catch(() => {
+          console.log("失敗しました＞＜")
+        })
+      )
     }
+    return Promise.all(lenSet)
   })
-  prm_sumLength
   .then(r => {
-// 次の段階へ移行
-    writeNum(r)
+    let sum = 0
+    for (let i in r) {
+      let subSum = 0
+      for (let j in r[i]) {
+        subSum += r[i][j]
+      }
+      sum += subSum
+    }
+    nod_num.innerText = sum
+    nod_message.innerText = "Count done."
   })
-}
-// 第 4 段階
-function writeNum(num) {
-  nod_num.innerText = num
-  nod_message.innerText = "Count done."
 }
 /*
 
@@ -232,9 +194,9 @@ function getTotalWork(index) {
   totalWork = index.length
 }
 // プログレスバーを進める
-function progres() {
-  progress += 1 / (totalWork * 2)
-  nod_progress.style.width = progress * 100 + "%"
+function progress() {
+  progDeg += 1 / totalWork
+  nod_progress.style.width = progDeg * 100 + "%"
 }
 </script>
 <div id="container">
