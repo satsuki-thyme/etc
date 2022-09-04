@@ -872,8 +872,7 @@ let arr_proc = {
     }).then(r => {
       return addTitle(r)
     }).then(async r => {
-      let r1 = await r.replace(/<p><div/g, '<div').replace(/\/div><\/p>/g, '/div>')
-      return writeText(r1)
+      return writeText(r)
     }).then(() => {
       afterLoading()
     })
@@ -900,36 +899,31 @@ let arr_proc = {
   },
   pickup: src => {
     let monoLine = removeMd(src).replace(/\r?\n/g, "")
-    let h = 0
-    pick("")
-    function pick(w0) {
-      let w = w0
-      let rx_w0 = RegExp(".{0,30}" + esc(arr_brkSlf[h]["before"]) + ".*?" + esc(arr_brkSlf[h]["after"]) + ".{0,30}" + "(.{0,30}" + esc(arr_brkSlf[h]["after"]) + ")?", "g")
-      let rx_w1 = RegExp(".{0,30}" + esc(arr_brkInc[h]["before"]) + ".*?" + esc(arr_brkInc[h]["after"]) + ".{0,30}" + "(.{0,30}" + esc(arr_brkInc[h]["after"]) + ")?", "g")
-      let arr_pickup0 = monoLine.match(rx_w0)
-      let arr_pickup1 = monoLine.match(rx_w1)
-      if (arr_pickup0 === null) {
-        arr_pickup0 = []
+    let arr_pickup0 = []
+    let arr_pickup1 = []
+    for (let i in arr_brkSlf) {
+      let rx_w0 = RegExp(".{0,30}" + arr_brkSlf[i]["before"] + ".*?" + arr_brkSlf[i]["after"] + ".{0,30}" + "(.{0,30}" + arr_brkSlf[i]["after"] + ")?", "g")
+      let w = monoLine.match(rx_w0)
+      if (w !== null) {
+        arr_pickup0 = w
       }
-      if (arr_pickup1 === null) {
-        arr_pickup1 = []
-      }
-      let arr_pickupAll = arr_pickup0.concat(arr_pickup1)
-      procBrackets(arr_pickupAll.join(eol).replace(/^(.*)$/gm, '<li>$1</li>'), 1)
-      .then(r => {
-        return parseRuby(r)
-      }).then(r => {
-        w += r
-        h++
-        if (h < arr_brkSlf) {
-          pick(w)
-        } else {
-          writeText(w.replace(/((.*(\r?\n)?)+)/gm, '<ul id="pickup-list">$1</ul>'))
-        }
-      }).then(() => {
-        afterLoading()
-      })
     }
+    for (let i in arr_brkInc) {
+      let rx_w1 = RegExp(".{0,30}" + arr_brkInc[i]["before"] + ".*?" + arr_brkInc[i]["after"] + ".{0,30}" + "(.{0,30}" + arr_brkInc[i]["after"] + ")?", "g")
+      let w = monoLine.match(rx_w1)
+      if (w !== null) {
+        arr_pickup1 = w
+      }
+    }
+    let arr_pickupAll = arr_pickup0.concat(arr_pickup1)
+    procBrackets(arr_pickupAll.join(eol).replace(/^(.*)$/gm, '<li>$1</li>'), 1)
+    .then(r => {
+      return parseRuby(r)
+    }).then(r => {
+      writeText(r.replace(/((.*(\r?\n)?)+)/gm, '<ul id="pickup-list">$1</ul>'))
+    }).then(() => {
+      afterLoading()
+    })
   },
   odt: src => {
     let zip = new JSZip()
@@ -1490,48 +1484,65 @@ function writeText(src) {
   nod_text.innerHTML = src
   nod_html.classList.remove("reading", "plot", "no-ruby", "pickup", "odt")
   nod_html.classList.add(arr_option["format"])
-  return false
+  return true
 }
 // タグを処理する type=0 消去、tyep=1 色づけ
 async function procBrackets(src, type) {
-  if (type === 1) {
-    return markupInc(markupSlf(src))
-  } else {
-    return src.replace(rx_deleteSlf(), "")
-  }
+  return new Promise(resolve => {
+    if (type === 1) {
+      markupSlf(src)
+      .then(r => {
+        resolve(markupInc(r))
+      })
+    } else {
+      resolve(src.replace(rx_deleteSlf(), ""))
+    }
+  })
   function rx_deleteSlf() {
     let w = ""
-    let h = 0
     for (let i = 0; i < arr_brkSlf.length; i++) {
       w += esc(arr_brkSlf[i]["before"]) + esc(arr_brkSlf[i]["after"])
-      h++
-      if (h === arr_brkSlf.length) {
-        return RegExp("[" + w + "]", "g")
+      console.log(w)
+    }
+    return RegExp("[" + w + "]", "g")
+  }
+  async function markupSlf(r) {
+    return new Promise(resolve => {
+      let i = 0
+      f(r)
+      function f(w) {
+        let rx_b = RegExp(esc(arr_brkSlf[i]["before"]), "g")
+        let rx_a = RegExp(esc(arr_brkSlf[i]["after"]), "g")
+        let rp_b = arr_brkSlf[i]["replaceBefore"] + arr_brkSlf[i]["before"] + arr_brkSlf[i]["replaceAfter"]
+        let rp_a = arr_brkSlf[i]["replaceBefore"] + arr_brkSlf[i]["after"] + arr_brkSlf[i]["replaceAfter"]
+        w = w.replace(rx_b, rp_b).replace(rx_a, rp_a)
+        if (i < arr_brkSlf.length - 1) {
+          i++
+          f(w)
+        }
+        else {
+          resolve(w)
+        }
       }
-    }
+    })
   }
-  function markupSlf(r) {
-    let g = 0
-    let rx_brkBefore = RegExp(esc(arr_brkSlf[g]["before"]), "g")
-    let rx_brkAfter = RegExp(esc(arr_brkSlf[g]["after"]), "g")
-    let w = unEsc(r.replace(rx_brkBefore, arr_brkSlf[g]["replaceBefore"] + esc(arr_brkSlf[g]["before"]) + arr_brkSlf[g]["replaceAfter"]).replace(rx_brkAfter, arr_brkSlf[g]["replaceBefore"] + esc(arr_brkSlf[g]["after"]) + arr_brkSlf[g]["replaceAfter"]))
-    g++
-    if (g < arr_brkSlf.length) {
-      markupSlf(w)
-    } else {
-      return w
-    }
-  }
-  function markupInc(r) {
-    let f = 0
-    let rx_brk = RegExp(esc(arr_brkInc[f]["before"]) + "(.*?)" + esc(arr_brkInc[f]["after"]), "g")
-    let w = unEsc(r.replace(rx_brk, arr_brkInc[f]["replaceBefore"] + esc(arr_brkInc[f]["before"]) + "$1" + esc(arr_brkInc[f]["after"]) + arr_brkInc[f]["replaceAfter"]))
-    f++
-    if (f < arr_brkInc.length) {
-      markupInc(w)
-    } else {
-      return w
-    }
+  async function markupInc(r) {
+    return new Promise(resolve => {
+      let i = 0
+      f(r)
+      function f(w) {
+        let rx = RegExp(esc(arr_brkInc[i]["before"]) + "(.*?)" + esc(arr_brkInc[i]["after"]), "g")
+        let rp = arr_brkInc[i]["replaceBefore"] + arr_brkInc[i]["before"] + "$1" + arr_brkInc[i]["after"] + arr_brkInc[i]["replaceAfter"]
+        w = w.replace(rx, rp)
+        if (i < arr_brkInc.length - 1) {
+          i++
+          f(w)
+        }
+        else {
+          resolve(w)
+        }
+      }
+    })
   }
 }
 // 全体の文字数を数える処理
@@ -1718,8 +1729,8 @@ function writeBrackets() {
     ndl_brkSlf[i].innerHTML = brk0Joined
   }
 }
-function esc(data) {
-  return data
+function esc(r) {
+  return r
   .replace(/\//g, "\\/")
   .replace(/\\/g, "\\\\")
   .replace(/\^/g, "\\^")
@@ -1729,10 +1740,14 @@ function esc(data) {
   .replace(/\?/g, "\\?")
   .replace(/\./g, "\\.")
   .replace(/\(/g, "\\(")
+  .replace(/\)/g, "\\)")
   .replace(/\[/g, "\\[")
+  .replace(/\]/g, "\\]")
+  .replace(/\{/g, "\\{")
+  .replace(/\}/g, "\\}")
 }
-function unEsc(data) {
-  return data
+function unEsc(r) {
+  return r
   .replace(/\\\//g, "/")
   .replace(/\\\\/g, "\\")
   .replace(/\\\^/g, "^")
@@ -1742,7 +1757,11 @@ function unEsc(data) {
   .replace(/\\\?/g, "?")
   .replace(/\\\./g, ".")
   .replace(/\\\(/g, "(")
+  .replace(/\\\)/g, ")")
   .replace(/\\\[/g, "[")
+  .replace(/\\\]/g, "]")
+  .replace(/\\\{/g, "{")
+  .replace(/\\\}/g, "}")
 }
 // odt が包含するファイルの中身
 let arr_odt = {
