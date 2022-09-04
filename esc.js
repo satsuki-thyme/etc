@@ -9,7 +9,11 @@ function esc(r) {
   .replace(/\?/g, "\\?")
   .replace(/\./g, "\\.")
   .replace(/\(/g, "\\(")
+  .replace(/\)/g, "\\)")
   .replace(/\[/g, "\\[")
+  .replace(/\]/g, "\\]")
+  .replace(/\{/g, "\\{")
+  .replace(/\}/g, "\\}")
 }
 function unEsc(r) {
   return r
@@ -22,5 +26,9 @@ function unEsc(r) {
   .replace(/\\\?/g, "?")
   .replace(/\\\./g, ".")
   .replace(/\\\(/g, "(")
+  .replace(/\\\)/g, ")")
   .replace(/\\\[/g, "[")
+  .replace(/\\\]/g, "]")
+  .replace(/\\\{/g, "{")
+  .replace(/\\\}/g, "}")
 }
