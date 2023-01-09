@@ -15,143 +15,166 @@ body {
   width: 300px;
   height: 60px;
   margin: auto;
+  text-align: center;
 }
 #display {
   height: 20px;
   margin: 0;
   padding: 0;
-  text-align: center;
   line-height: 20px;
 }
-#progress-outer {
-  position: relative;
-  width: 200px;
-  height: 20px;
-  margin: 20px auto 0;
-  padding: 0;
-  border-width: 1px;
-  border-style: solid;
-  border-color: #1e1f1c;
+#num {
+  display: inline-block;
+  width: 65px;
 }
-#progress-inner {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  background-color: #1e1e7a;
-}
-#progress-message {
-  position: absolute;
-  width: 200px;
-  margin: 0;
-  padding: 0;
-  font-size: 16px;
-  text-align: center;
-  line-height: 20px;
-  color: #fff;
+#reload {
+  margin-top: 20px;
 }
 @media (prefers-color-scheme: dark) {
   body {
     color: #f1eee9;
     background-color: #1e1f1c;
   }
-  #progress-outer {
-    border-color: #f1eee9;
-  }
-  #progress-inner {
-    background-color: #3b3ba0;
-  }
 }
 </style>
+<div id="container">
+  <p id="display">総文字数 : <span id="num"></span> 文字</p>
+  <input id="reload" type="button" value="更新">
+</div>
 <script>
 // 設定
 let baseDir = "/scribe"
 let indexFile = "index.json"
 let listFile = "README.md"
-// 定義
-let totalWork = 0
-let progDeg = 0
+// ノード
+let nod_num = document.getElementById("num")
+let nod_rel = document.getElementById("reload")
 // 始める
-document.addEventListener("DOMContentLoaded", () => {
-  nod_num = document.getElementById("num")
-  nod_progress = document.getElementById("progress-inner")
-  nod_message = document.getElementById("progress-message")
-  sumLength()
-})
+sumLength()
+// 更新
+nod_rel.onclick = () => {
+  location.reload()
+}
 /*
 
   主部
 
 */
 function sumLength() {
-  loadIndex()
-  .then(r => {
-    // 各物語ごとの目次を抽出する
-    let listOv = []
-    for (let i in r) {
-      listOv.push(
-        loadList(r[i]["op"])
-        .then(r2 => {
-          // 目次を抽出する
-          let list = r2
-          .replace(/^[\s\S]*?#+[ \t]*(?:目次|本文).*\r?\n([\s\S]*)(?:#[\s\S]*|$)/g, "$1")
-          .replace(/^(?:[*+-] ?|\d+\. ?)(.*?)(?:[ \t]*[:：][ \t]*.*)*$/gm, "$1")
-          .split(/\r?\n/)
-          .filter(r => r !== "")
-          return ({
-            "op": r[i]["op"],
-            "list": list
-          })
-        })
-      )
+  // 作品群のインデックスを読み込む
+  fetch(`${baseDir}/${indexFile}`)
+  .then(rly => {
+    if (rly.ok) {
+      return rly.json()
     }
-    return Promise.all(listOv)
+    else {
+      console.error(`${indexFile} の取得に失敗しました。`)
+    }
   })
-  .then(listOv => {
-    listOv = listOv.filter(r => r.list.length !== 0)
-    getTotalWork(listOv)
+  .then(rly => {
+    // 各物語ごとの目次を抽出する
+    let i = 0
+    let work = []
+    return new Promise(resolve => {
+      // エピソード群の目次を読み込む
+      fn()
+      function fn() {
+        fetch(`${baseDir}/op${rly[i].op}/${listFile}`)
+        .then(rly => {
+          if (rly.ok) {
+            return rly.text()
+          }
+          else {
+            console.error(`${listFile} の取得に失敗しました。`)
+          }
+        })
+        .then(rly2 => {
+          work.push({
+            "op": rly[i].op,
+            "list": rly2 // 目次を抽出する
+            .replace(/^[\s\S]*?#+[ \t]*(?:目次|本文).*\r?\n([\s\S]*)(?:#[\s\S]*|$)/g, "$1")
+            .replace(/^(?:[*+-] ?|\d+\. ?)(.*?)(?:[ \t]*[:：][ \t]*.*)*$/gm, "$1")
+            .split(/\r?\n/)
+            .filter(rly => rly !== "")
+          })
+          if (i < rly.length - 1) {
+            i++
+            fn()
+          }
+          else {
+            resolve(work)
+          }
+        })
+      }
+    })
+  })
+  .then(work => {
+    work = work.filter(rly => rly.list.length !== 0)
+    fileNum(work)
+    let i = 0
     let lenSet = []
-    for (let i in listOv) {
-      progress()
-      lenSet.push(
-        new Promise((resolve, reject) => {
-          let subLenSet = []
-          for (let j in listOv[i].list) {
-            subLenSet.push(
-              // 各エピソードの本文をロードする
-              loadWord(listOv[i]["op"], listOv[i].list[j])
-              .then(r => {
-                return r.replace(/｜([^｜]*?)《.*?》/g, "$1")
+    return new Promise(resolve => {
+      fn()
+      function fn() {
+        let j = 0
+        let subLenSet = []
+        new Promise(resolve => {
+          fn()
+          function fn() {
+            // 各エピソードの本文をロードする
+            fetch(`${baseDir}/op${work[i].op}/${work[i].list[j]}`)
+            .then(rly => {
+              if (rly.ok) {
+                return rly.text()
+              }
+              else {
+                console.error(`${wordFile} の取得に失敗しました。`)
+              }
+            })
+            .then(rly => {
+              subLenSet
+              .push(
+                rly
+                .replace(/｜([^｜]*?)《.*?》/g, "$1")
                 .replace(/[々〇〻\u3400-\u9FFF\uF900-\uFAFF\uD840-\uD87F\uDC00-\uDFFF]+（(.*?)）/g, "$1")
                 .replace(/｜(（.*?）)/g, "$1")
                 .replace(/^[ \t]*[#*+\-_~=`>|].*\r?\n/gm, "")
                 .replace(/[\r\n 　\t]/g, "")
                 .length
-              })
-            )
+              )
+              if (j < work[i].list.length - 1) {
+                j++
+                fn()
+              }
+              else {
+                resolve(subLenSet)
+              }
+            })
           }
-          resolve(Promise.all(subLenSet))
-          setTimeout(() => {
-            reject()
-          }, 1000)
         })
-        .catch(() => {
-          console.log("失敗しました＞＜")
+        .then(rly => {
+          lenSet.push(rly)
+          if (i < work.length - 1) {
+            i++
+            fn()
+          }
+          else {
+            resolve(lenSet)
+          }
         })
-      )
-    }
-    return Promise.all(lenSet)
+      }
+    })
   })
-  .then(r => {
+  .then(rly => {
     let sum = 0
-    for (let i in r) {
+    for (let i in rly) {
       let subSum = 0
-      for (let j in r[i]) {
-        subSum += r[i][j]
+      for (let j in rly[i]) {
+        subSum += rly[i][j]
       }
       sum += subSum
     }
     nod_num.innerText = sum
-    nod_message.innerText = "Count done."
   })
 }
 /*
@@ -159,51 +182,9 @@ function sumLength() {
   副次的な関数
 
 */
-// 作品群のインデックスを読み込む
-async function loadIndex() {
-  let w = await fetch(`${baseDir}/${indexFile}`)
-  if (w.ok) {
-    return w.json()
-  }
-  else {
-    console.error(`${indexFile} の取得に失敗しました。`)
-  }
-}
-// エピソード群の目次を読み込む
-async function loadList(op) {
-  let w = await fetch(`${baseDir}/op${op}/${listFile}`)
-  if (w.ok) {
-    return w.text()
-  }
-  else {
-    console.error(`${listFile} の取得に失敗しました。`)
-  }
-}
-// エピソード自体を読み込む
-async function loadWord(op, wordFile) {
-  let w = await fetch(`${baseDir}/op${op}/${wordFile}`)
-  if (w.ok) {
-    return w.text()
-  }
-  else {
-    console.error(`${wordFile} の取得に失敗しました。`)
-  }
-}
-// プログレスバーのために全仕事量を算出する
-function getTotalWork(index) {
-  totalWork = index.length
-}
-// プログレスバーを進める
-function progress() {
-  progDeg += 1 / totalWork
-  nod_progress.style.width = progDeg * 100 + "%"
+function fileNum(work) {
+  let fileNum = 0
+  work.map(r => fileNum += r.list.length)
+  console.log(`ファイル数 : ${fileNum}`)
 }
 </script>
-<div id="container">
-  <p id="display">総文字数 : <span id="num"></span> 文字</p>
-  <div id="progress-outer">
-    <div id="progress-inner" style="width: 0;">
-      <p id="progress-message">Count in progress.</p>
-    </div><!-- #progress-innner -->
-  </div><!-- #progress-outer -->
-</div><!-- #container -->
