@@ -6,25 +6,28 @@
 html,
 body,
 textarea {
-  height: 100%;
+  height: 100%
 }
 body {
   margin: 0;
   padding: 0;
+  overflow: hidden;
 }
 textarea {
   width: 100%;
   margin: 0;
   padding: 10px;
   font-family: serif;
-  text-align: justify;
   text-justify: inter-ideograph;
-  line-height: 1.1;
   box-sizing: border-box;
   border-width: 0;
   outline: none;
   overflow: auto;
   resize: none;
+}
+span {
+  word-wrap: none;
+  word-break: keep-all;
 }
 @media (prefers-color-scheme: dark) {
   textarea {
@@ -34,31 +37,62 @@ textarea {
 }
 </style>
 <textarea></textarea>
+<span></span>
 <script>
-let nod_textarea = document.querySelector("textarea")
+let nod_textarea = document.getElementsByTagName("textarea")[0]
+let nod_span = document.getElementsByTagName("span")[0]
+let fontSizeDef = 150 // およその font-size
 window.addEventListener("DOMContentLoaded", () => {
+  nod_textarea.textContent = localStorage.getItem("contents")
   setFontSize()
+  setletterSpacing()
 })
 window.onresize = () => {
   setFontSize()
+  setletterSpacing()
 }
 window.onunload = () => {
   localStorage.setItem("contents", nod_textarea.value)
 }
-window.onload = () => {
-  nod_textarea.textContent = localStorage.getItem("contents")
+nod_textarea.onkeyup = () => {
+  setletterSpacing()
 }
+/*
+
+  font-size と line-height
+
+*/
 function setFontSize() {
+  let fontSizeTolerance = 0.99 // 固定値
+  let lineHeight = 1.1  // 固定値
   let windowHeight = window.innerHeight
-  let lineHeight = 1.1
   let frameHeight = Number(window.getComputedStyle(nod_textarea).paddingTop.slice(0, -2)) + Number(window.getComputedStyle(nod_textarea).paddingBottom.slice(0, -2))
-  let fontSize = 120 // およその font-size
-  let lineN = (windowHeight - frameHeight) / (fontSize * lineHeight)
-  if (windowHeight - fontSize * lineHeight * lineN < 10) {
-    lineN = lineN - 1
+  let lineNum = (windowHeight - frameHeight) / (fontSizeDef * lineHeight)
+  if (windowHeight - fontSizeDef * lineHeight * lineNum < 10) {
+    lineNum = lineNum - 1
   }
-  fontSize = (windowHeight - frameHeight) / Math.floor(lineN) / lineHeight
-  nod_textarea.style.fontSize = fontSize * 0.99 + "px"
+  fontSize = (windowHeight - frameHeight) / Math.floor(lineNum) / lineHeight * fontSizeTolerance
+  nod_textarea.style.lineHeight = `${lineHeight}em`
+  nod_textarea.style.fontSize = `${fontSize}px`
+  nod_span.style.fontSize = `${fontSize}px`
+}
+/*
+
+  letter-spacing
+
+*/
+function setletterSpacing() {
+  let scrollBar = 20 // 固定値
+  let windowWidth = window.innerWidth
+  let frameWidth = Number(window.getComputedStyle(nod_textarea).paddingRight.slice(0, -2)) + Number(window.getComputedStyle(nod_textarea).paddingLeft.slice(0, -2))
+  let word = nod_textarea.value
+    if (word === "") {
+      word = "　"
+    }
+  nod_span.innerText = word
+  let letterNum = Math.floor((windowWidth - frameWidth) / (fontSize))
+  let letterSpacing = ((windowWidth - frameWidth - scrollBar) / letterNum - nod_span.offsetWidth / word.length) * 0.5
+  nod_textarea.style.letterSpacing = `${letterSpacing}px`
 }
 </script>
 </html>
