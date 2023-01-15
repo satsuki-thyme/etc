@@ -393,6 +393,42 @@ a:hover {
   overflow-x: hidden;
   overflow-y: auto;
 }
+table + table {
+  margin-top: 20px;
+}
+table,
+td,
+th {
+  border-style: solid;
+  border-color: #686662;
+}
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+  border-width: 1px;
+}
+td,
+th {
+  padding: 5px 10px;
+  vertical-align: top;
+  border-width: 1px 0 0 1px;
+}
+tr:first-child td,
+tr:first-child th {
+  border-top-width: 0;
+}
+td:first-child,
+th:first-child {
+  border-left-width: 0;
+}
+thead + tbody tr:first-child td,
+thead + tbody tr:first-child th {
+  border-top-width: 1px;
+}
+tfoot tr:first-child td,
+tfoot tr:first-child th {
+  border-top-width: 1px;
+}
 @media (max-width: 586px) {
   html.v #frame {
     padding-top: 60px;
@@ -669,7 +705,6 @@ html.dark #copy-button {
 <div id="post-output-outer" class="hidden">
   <pre id="post-output"></pre>
 </div>
-<script src="https://etc.satsuki.me/mdparse.js"></script>
 <script src="https://etc.satsuki.me/lib/jszip.min.js"></script>
 <script src="https://etc.satsuki.me/lib/FileSaver.min.js"></script>
 <script>
@@ -969,20 +1004,46 @@ let arr_proc = {
     }
   },
   readme: () => {
-    makeReadme().then(async r => {
-      nod_text.innerHTML = await addTitle(`<p>全体 : ${r[1]} 文字</p>${eol}<ol>${eol}${r[0].join(eol)}${eol}</ol>`)
+    makeReadme()
+    .then(async r => {
+      nod_text.innerHTML = await addTitle(
+`<p>全体 : ${r[1]} 文字</p>${eol}
+<table>
+  <thead>
+    <tr>
+      <td style="text-align: center;">章</td>
+      <td style="text-aling: left">章タイトル</td>
+      <td style="text-align: right;">文字数</td>
+      <td style="text-align: center;">地の文 : 台詞</td>
+    </tr>
+  </thead>
+  <tbody>${eol}${r[0].join(eol)}${eol}</tbody>
+</table>`)
     })
     async function makeReadme() {
-      let w = []
-      let w1 = 0
+      let cont = []
+      let allLen = 0
       for (let i in arr_toc) {
-        await loadContent(`${arr_url[currOrigin]["backhost"]}${arr_toc[i][0]}?${now}`).then(async r => {
-          let w2 = await removeRuby(removeMd(r)).replace(/[ 　\t\r\n]/g, "").length
-          w1 += await w2
-          w.push(`<li><a href="${arr_toc[i][2]}&format=reading">${arr_toc[i][1]}</a> : ${w2} 文字</li>`)
+        await loadContent(`${arr_url[currOrigin]["backhost"]}${arr_toc[i][0]}?${now}`)
+        .then(async r => {
+          let chapWord = await removeRuby(removeMd(r)).replace(/[ 　\t\r\n]/g, "")
+          let chapLen = chapWord.length
+          let descLen = chapWord.replace(/「.*?」/g, "").length
+          let dialLen = chapWord.match(/「.*?」/g).join("").length
+          let descPar = Math.round(descLen / chapLen * 100)
+          let dialPar = Math.round(dialLen / chapLen * 100)
+          allLen += chapLen
+          cont.push(
+`<tr>
+  <td style="text-align: center">${Number(i) + 1}. </td>
+  <td style="text-align: left"><a href="${arr_toc[i][2]}&format=reading">${arr_toc[i][1]}</a></td>
+  <td style="text-align: right">${chapLen}</td>
+  <td style="text-align: center">${descPar} : ${dialPar}</td>
+</tr>`
+          )
         })
       }
-      return [w, w1]
+      return [cont, allLen]
     }
   }
 }
@@ -1502,7 +1563,6 @@ async function procBrackets(src, type) {
     let w = ""
     for (let i = 0; i < arr_brkSlf.length; i++) {
       w += esc(arr_brkSlf[i]["before"]) + esc(arr_brkSlf[i]["after"])
-      console.log(w)
     }
     return RegExp("[" + w + "]", "g")
   }
