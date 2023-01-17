@@ -393,6 +393,9 @@ a:hover {
   overflow-x: hidden;
   overflow-y: auto;
 }
+#content {
+  margin: 50px auto 0;
+}
 table + table {
   margin-top: 20px;
 }
@@ -1007,18 +1010,24 @@ let arr_proc = {
     makeReadme()
     .then(async r => {
       nod_text.innerHTML = await addTitle(
-`<p>全体 : ${r[1]} 文字</p>${eol}
-<table>
-  <thead>
-    <tr>
-      <td style="text-align: center;">章</td>
-      <td style="text-aling: left">章タイトル</td>
-      <td style="text-align: right;">文字数</td>
-      <td style="text-align: center;">地の文 : 台詞</td>
-    </tr>
-  </thead>
-  <tbody>${eol}${r[0].join(eol)}${eol}</tbody>
-</table>`)
+`<div id="content">
+  <p>全体 : ${r[1]} 文字</p>${eol}
+  <table id="chapter-table">
+    <thead>
+      <tr>
+        <td style="text-align: center;">章</td>
+        <td style="text-aling: left">章タイトル</td>
+        <td style="text-align: right;">文字数</td>
+        <td style="text-align: center;">地の文 : 台詞</td>
+      </tr>
+    </thead>
+    <tbody>${eol}${r[0].join(eol)}${eol}</tbody>
+  </table>
+</div>`
+      )
+    })
+    .then(() => {
+      document.querySelector("#content").style.width = Number(window.getComputedStyle(document.querySelector("#chapter-table")).getPropertyValue("width").slice(0, -2))
     })
     async function makeReadme() {
       let cont = []
@@ -1030,12 +1039,12 @@ let arr_proc = {
           let chapLen = chapWord.length
           let descLen = chapWord.replace(/「.*?」/g, "").length
           let dialLen = chapWord.match(/「.*?」/g).join("").length
-          let descPar = Math.round(descLen / chapLen * 100)
-          let dialPar = Math.round(dialLen / chapLen * 100)
+          let descPar = Math.round(descLen / chapLen * 10)
+          let dialPar = Math.round(dialLen / chapLen * 10)
           allLen += chapLen
           cont.push(
 `<tr>
-  <td style="text-align: center">${Number(i) + 1}. </td>
+  <td style="text-align: center">${Number(i) + 1}</td>
   <td style="text-align: left"><a href="${arr_toc[i][2]}&format=reading">${arr_toc[i][1]}</a></td>
   <td style="text-align: right">${chapLen}</td>
   <td style="text-align: center">${descPar} : ${dialPar}</td>
