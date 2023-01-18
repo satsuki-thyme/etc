@@ -1,6 +1,6 @@
 <html>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>漢字調べるやつ</title>
 <style>
 html,
@@ -41,7 +41,7 @@ span {
 <script>
 let nod_textarea = document.getElementsByTagName("textarea")[0]
 let nod_span = document.getElementsByTagName("span")[0]
-let fontSizeDef = 150 // およその font-size
+let fontSizeDef = 140 // およその font-size
 window.addEventListener("DOMContentLoaded", () => {
   nod_textarea.textContent = localStorage.getItem("contents")
   setFontSize()
