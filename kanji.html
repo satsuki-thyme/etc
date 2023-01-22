@@ -32,7 +32,7 @@ span {
 @media (prefers-color-scheme: dark) {
   textarea {
     color: #fff;
-    background-color: #00f;
+    background-color: #000;
   }
 }
 </style>
@@ -82,6 +82,7 @@ function setFontSize() {
 
 */
 function setletterSpacing() {
+  let letterSpacingTolerance = 0.99 // 固定値
   let scrollBar = 20 // 固定値
   let windowWidth = window.innerWidth
   let frameWidth = Number(window.getComputedStyle(nod_textarea).paddingRight.slice(0, -2)) + Number(window.getComputedStyle(nod_textarea).paddingLeft.slice(0, -2))
@@ -91,7 +92,7 @@ function setletterSpacing() {
     }
   nod_span.innerText = word
   let letterNum = Math.floor((windowWidth - frameWidth) / (fontSize))
-  let letterSpacing = ((windowWidth - frameWidth - scrollBar) / letterNum - nod_span.offsetWidth / word.length) * 0.5
+  let letterSpacing = ((windowWidth - frameWidth - scrollBar) / letterNum - nod_span.offsetWidth / word.length) * 0.5 * letterSpacingTolerance
   nod_textarea.style.letterSpacing = `${letterSpacing}px`
 }
 </script>
