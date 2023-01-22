@@ -719,111 +719,111 @@ html.dark #copy-button {
 // URL の search の処理
 let srcText = ""
 let currOrigin = location.origin
-let arr_search = location.search.slice(1).split("&")
-let arr_param = {}
-for (let i = 0; i < arr_search.length; i++) {
-  let w = arr_search[i].split("=")
-  arr_param[w[0]] = w[1]
+let search = location.search.slice(1).split("&")
+let param = {}
+for (let i = 0; i < search.length; i++) {
+  let w = search[i].split("=")
+  param[w[0]] = w[1]
 }
-let op = arr_param["op"]
-delete arr_param["op"]
-let arr_repoFile = []
+let op = param["op"]
+delete param["op"]
+let repoFile = []
 let opSign = "op"
 let prevFile = ""
 let nextFile = ""
-let arr_url = {}
+let url = {}
 if (op !== undefined) {
-  arr_repoFile = op.split("/")
-  opSign = arr_repoFile[0].replace(/(.*?)\d+/, "$1")
-  prevFile = arr_repoFile[1].replace(/(\[.+\]).+/, "$1") + ("00" + (Number(arr_repoFile[1].replace(/\[.+\](\d+)\..+/, "$1")) - 1)).slice(-3) + arr_repoFile[1].replace(/\[.+\]\d+(\..+)/, "$1")
-  nextFile = arr_repoFile[1].replace(/(\[.+\]).+/, "$1") + ("00" + (Number(arr_repoFile[1].replace(/\[.+\](\d+)\..+/, "$1")) + 1)).slice(-3) + arr_repoFile[1].replace(/\[.+\]\d+(\..+)/, "$1")
+  repoFile = op.split("/")
+  opSign = repoFile[0].replace(/(.*?)\d+/, "$1")
+  prevFile = repoFile[1].replace(/(\[.+\]).+/, "$1") + ("00" + (Number(repoFile[1].replace(/\[.+\](\d+)\..+/, "$1")) - 1)).slice(-3) + repoFile[1].replace(/\[.+\]\d+(\..+)/, "$1")
+  nextFile = repoFile[1].replace(/(\[.+\]).+/, "$1") + ("00" + (Number(repoFile[1].replace(/\[.+\](\d+)\..+/, "$1")) + 1)).slice(-3) + repoFile[1].replace(/\[.+\]\d+(\..+)/, "$1")
 }
-arr_url = {
+url = {
   "http://etc.satsuki.c": {
     "backhostRoot": "http://etc.satsuki.c/scribe/",
-    "backhost": "http://etc.satsuki.c/scribe/" + arr_repoFile[0] + "/",
+    "backhost": "http://etc.satsuki.c/scribe/" + repoFile[0] + "/",
     "linkRoot": "http://etc.satsuki.c/novel-parse.html",
-    "linkBase": "http://etc.satsuki.c/novel-parse.html?op=" + arr_repoFile[0] + "/",
+    "linkBase": "http://etc.satsuki.c/novel-parse.html?op=" + repoFile[0] + "/",
     "private": true
   },
   "http://satsuki.c": {
     "backhostRoot": "http://etc.satsuki.c/scribe/",
-    "backhost": "http://etc.satsuki.c/scribe/" + arr_repoFile[0] + "/",
+    "backhost": "http://etc.satsuki.c/scribe/" + repoFile[0] + "/",
     "linkRoot": "http://etc.satsuki.c/novel-parse.html",
-    "linkBase": "http://etc.satsuki.c/novel-parse.html?op=" + arr_repoFile[0] + "/",
+    "linkBase": "http://etc.satsuki.c/novel-parse.html?op=" + repoFile[0] + "/",
     "private": true
   },
   "https://etc.satsuki.me": {
     "backhostRoot": "https://raw.gitbuusercontent.com/",
-    "backhost": "https://raw.githubusercontent.com/satsuki-thyme/" + arr_repoFile[0] + "/master/",
-    "linkBase": "https://etc.satsuki.me/novel-parse.html?op=" + arr_repoFile[0] + "/",
+    "backhost": "https://raw.githubusercontent.com/satsuki-thyme/" + repoFile[0] + "/master/",
+    "linkBase": "https://etc.satsuki.me/novel-parse.html?op=" + repoFile[0] + "/",
     "private": false
   },
   "https://satsuki.me": {
     "backhostRoot": "https://raw.gitbuusercontent.com/",
-    "backhost": "https://raw.githubusercontent.com/satsuki-thyme/" + arr_repoFile[0] + "/master/",
-    "linkBase": "https://satsuki.me/novel-parse.html?op=" + arr_repoFile[0] + "/",
+    "backhost": "https://raw.githubusercontent.com/satsuki-thyme/" + repoFile[0] + "/master/",
+    "linkBase": "https://satsuki.me/novel-parse.html?op=" + repoFile[0] + "/",
     "private": false
   }
 }
-let arr_option = {
+let option = {
   "format": undefined,
   "orient": undefined,
   "theme": undefined,
   "mode": undefined,
   "url": undefined
 }
-let arr_optionDefault = {
+let optionDefault = {
   "format": "reading",
   "orient": "h",
   "theme": "auto",
   "mode": "half"
 }
-let arr_optionStorage = []
-let keys_arr_option = []
+let optionStorage = []
+let keys_option = []
 // DOM
-let nod_title = document.querySelector("title")
-let nod_input = document.querySelector("#input")
-let nod_formatReading = document.querySelector("#format-reading")
-let nod_formatPlot = document.querySelector("#format-plot")
-let nod_formatNoRuby = document.querySelector("#format-no-ruby")
-let nod_formatPickup = document.querySelector("#format-pickup")
-let nod_formatOdt = document.querySelector("#format-odt")
-let nod_orientH = document.querySelector("#orient-h")
-let nod_orientV = document.querySelector("#orient-v")
-let nod_themeLight = document.querySelector("#theme-light")
-let nod_themeDark = document.querySelector("#theme-dark")
-let nod_html = document.querySelector("html")
-let nod_frame = document.querySelector("#frame")
-let nod_text = document.querySelector("#text")
-let nod_countChip = document.querySelector("#count-chip")
-let nod_countChipFull = document.querySelector("#count-chip-full")
-let nod_countChipSelect = document.querySelector("#count-chip-select")
+let elm_title = document.querySelector("title")
+let elm_input = document.querySelector("#input")
+let elm_formatReading = document.querySelector("#format-reading")
+let elm_formatPlot = document.querySelector("#format-plot")
+let elm_formatNoRuby = document.querySelector("#format-no-ruby")
+let elm_formatPickup = document.querySelector("#format-pickup")
+let elm_formatOdt = document.querySelector("#format-odt")
+let elm_orientH = document.querySelector("#orient-h")
+let elm_orientV = document.querySelector("#orient-v")
+let elm_themeLight = document.querySelector("#theme-light")
+let elm_themeDark = document.querySelector("#theme-dark")
+let elm_html = document.querySelector("html")
+let elm_frame = document.querySelector("#frame")
+let elm_text = document.querySelector("#text")
+let elm_countChip = document.querySelector("#count-chip")
+let elm_countChipFull = document.querySelector("#count-chip-full")
+let elm_countChipSelect = document.querySelector("#count-chip-select")
 let ndl_prev = document.querySelectorAll(".prev")
 let ndl_next = document.querySelectorAll(".next")
 let ndl_brk = document.querySelectorAll(".brk")
 let ndl_brkInc = document.querySelectorAll(".brk-include")
 let ndl_brkSlf = document.querySelectorAll(".brk-itself")
-let nod_defaultDisplayContainer = document.querySelector("#default-display-container")
-let nod_topBar = document.querySelector("#top-bar")
-let nod_opSelectorChip = document.querySelector("#op-selector-chip")
-let nod_public = document.querySelector("#public")
-let nod_opSelector = document.querySelector("#op-selector")
-let nod_formatChip = document.querySelector("#format-chip")
-let nod_formatSelector = document.querySelector("#format-selector")
-let nod_orientChip = document.querySelector("#orient-chip")
-let nod_orientChipH = document.querySelector("#orient-chip-h")
-let nod_orientChipV = document.querySelector("#orient-chip-v")
-let nod_themeChip = document.querySelector("#theme-chip")
-let nod_themeChipDark = document.querySelector("#theme-chip-dark")
-let nod_themeChipLight = document.querySelector("#theme-chip-light")
-let nod_modeChip = document.querySelector("#mode-chip")
-let nod_modeChipNormal = document.querySelector("#mode-chip-normal")
-let nod_modeChipHalf = document.querySelector("#mode-chip-half")
-let nod_copyChip = document.querySelector("#copy-chip")
-let nod_copyButton = document.querySelector("#copy-button")
-let nod_postOutput = document.querySelector("#post-output")
-let nod_postOutputOuter = document.querySelector("#post-output-outer")
+let elm_defaultDisplayContainer = document.querySelector("#default-display-container")
+let elm_topBar = document.querySelector("#top-bar")
+let elm_opSelectorChip = document.querySelector("#op-selector-chip")
+let elm_public = document.querySelector("#public")
+let elm_opSelector = document.querySelector("#op-selector")
+let elm_formatChip = document.querySelector("#format-chip")
+let elm_formatSelector = document.querySelector("#format-selector")
+let elm_orientChip = document.querySelector("#orient-chip")
+let elm_orientChipH = document.querySelector("#orient-chip-h")
+let elm_orientChipV = document.querySelector("#orient-chip-v")
+let elm_themeChip = document.querySelector("#theme-chip")
+let elm_themeChipDark = document.querySelector("#theme-chip-dark")
+let elm_themeChipLight = document.querySelector("#theme-chip-light")
+let elm_modeChip = document.querySelector("#mode-chip")
+let elm_modeChipNormal = document.querySelector("#mode-chip-normal")
+let elm_modeChipHalf = document.querySelector("#mode-chip-half")
+let elm_copyChip = document.querySelector("#copy-chip")
+let elm_copyButton = document.querySelector("#copy-button")
+let elm_postOutput = document.querySelector("#post-output")
+let elm_postOutputOuter = document.querySelector("#post-output-outer")
 let ndl_linkGroup = document.querySelectorAll(".link-group")
 let ndl_toc = document.querySelectorAll(".toc")
 let currOp = ""
@@ -833,7 +833,7 @@ let readmeContent = ""
 // 改行の種類
 let eol = "\n"
 // モード = 同一行の処理と、改行の読み取り
-let arr_mode = {
+let mode = {
   normal: src => {
     return src.replace(/\r?\n/g, eol)
               .replace(/(\r?\n){5,}/g, "")
@@ -851,7 +851,7 @@ let trgFile = null
 // URL の search で作品が指定されていた場合の作品のホスト
 let now = Date()
 // タグの定義（タグを最終的な本文に含めない＝削除する）
-let arr_brkSlf = [
+let brkSlf = [
 {
     "before": "{",
     "after": "}",
@@ -866,7 +866,7 @@ let arr_brkSlf = [
   }
 ]
 // タグの定義（タグを最終的な本文に含める＝削除しない）
-let arr_brkInc = [
+let brkInc = [
   {
     "before": "〈",
     "after": "〉",
@@ -875,9 +875,9 @@ let arr_brkInc = [
   }
 ]
 // 目次
-let arr_toc = []
+let toc = []
 // 変換先フォーマット毎の処理
-let arr_proc = {
+let proc = {
   reading: src => {
     procBrackets(src)
     .then(r => {
@@ -885,7 +885,7 @@ let arr_proc = {
     }).then(r => {
       return removeMd(r)
     }).then(r => {
-      return arr_mode[arr_option["mode"]](r)
+      return mode[option["mode"]](r)
     }).then(r => {
       return parseParagraph(r)
     }).then(r => {
@@ -904,12 +904,12 @@ let arr_proc = {
     }).then(r => {
       return procMd(r)
     }).then(r => {
-      return arr_mode[arr_option["mode"]](r)
+      return mode[option["mode"]](r)
     }).then(r => {
       return parseParagraph(r)
     }).then(r => {
       return addTitle(r)
-    }).then(async r => {
+    }).then(r => {
       return writeText(r)
     }).then(() => {
       afterLoading()
@@ -923,7 +923,7 @@ let arr_proc = {
     }).then(r => {
       return removeMd(r)
     }).then(r => {
-      return arr_mode[arr_option["mode"]](r)
+      return mode[option["mode"]](r)
     }).then(r => {
       return parseParagraph(r)
     }).then(r => {
@@ -937,24 +937,24 @@ let arr_proc = {
   },
   pickup: src => {
     let monoLine = removeMd(src).replace(/\r?\n/g, "")
-    let arr_pickup0 = []
-    let arr_pickup1 = []
-    for (let i in arr_brkSlf) {
-      let rx_w0 = RegExp(".{0,30}" + arr_brkSlf[i]["before"] + ".*?" + arr_brkSlf[i]["after"] + ".{0,30}" + "(.{0,30}" + arr_brkSlf[i]["after"] + ")?", "g")
+    let pickup0 = []
+    let pickup1 = []
+    for (let i in brkSlf) {
+      let rx_w0 = RegExp(".{0,30}" + brkSlf[i]["before"] + ".*?" + brkSlf[i]["after"] + ".{0,30}" + "(.{0,30}" + brkSlf[i]["after"] + ")?", "g")
       let w = monoLine.match(rx_w0)
       if (w !== null) {
-        arr_pickup0 = w
+        pickup0 = w
       }
     }
-    for (let i in arr_brkInc) {
-      let rx_w1 = RegExp(".{0,30}" + arr_brkInc[i]["before"] + ".*?" + arr_brkInc[i]["after"] + ".{0,30}" + "(.{0,30}" + arr_brkInc[i]["after"] + ")?", "g")
+    for (let i in brkInc) {
+      let rx_w1 = RegExp(".{0,30}" + brkInc[i]["before"] + ".*?" + brkInc[i]["after"] + ".{0,30}" + "(.{0,30}" + brkInc[i]["after"] + ")?", "g")
       let w = monoLine.match(rx_w1)
       if (w !== null) {
-        arr_pickup1 = w
+        pickup1 = w
       }
     }
-    let arr_pickupAll = arr_pickup0.concat(arr_pickup1)
-    procBrackets(arr_pickupAll.join(eol).replace(/^(.*)$/gm, '<li>$1</li>'), 1)
+    let pickupAll = pickup0.concat(pickup1)
+    procBrackets(pickupAll.join(eol).replace(/^(.*)$/gm, '<li>$1</li>'), 1)
     .then(r => {
       return parseRuby(r)
     }).then(r => {
@@ -972,14 +972,14 @@ let arr_proc = {
     }).then(r => {
       return removeMd(r)
     }).then(r => {
-      return arr_mode[arr_option["mode"]](r)
+      return mode[option["mode"]](r)
     }).then(r => {
       zip.file("content.xml", parseOdt(r))
     }).then(() => {
-      for (let i = 0; i < arr_odt["files"].length; i++) {
-        let odtFileName = arr_odt["files"][i][0]
-        let odtDirName = arr_odt["files"][i][1]
-        let odtContent = arr_odt["files"][i][2]
+      for (let i = 0; i < odt["files"].length; i++) {
+        let odtFileName = odt["files"][i][0]
+        let odtDirName = odt["files"][i][1]
+        let odtContent = odt["files"][i][2]
         if (odtDirName === "/") {
           zip.file(odtFileName, odtContent)
         } else {
@@ -990,7 +990,7 @@ let arr_proc = {
       zip.generateAsync({type: "blob"})
       .then(r => {
         if (op !== undefined) {
-          saveAs(r, makeFileName(arr_repoFile[1]))
+          saveAs(r, makeFileName(repoFile[1]))
         } else {
           saveAs(r, makeFileName(trgFile.name))
         }
@@ -1009,7 +1009,7 @@ let arr_proc = {
   readme: () => {
     makeReadme()
     .then(async r => {
-      nod_text.innerHTML = await addTitle(
+      elm_text.innerHTML = await addTitle(
 `<div id="content">
   <p>全体 : ${r[1]} 文字</p>${eol}
   <table id="chapter-table">
@@ -1032,8 +1032,8 @@ let arr_proc = {
     async function makeReadme() {
       let cont = []
       let allLen = 0
-      for (let i in arr_toc) {
-        await loadContent(`${arr_url[currOrigin]["backhost"]}${arr_toc[i][0]}?${now}`)
+      for (let i in toc) {
+        await loadContent(`${url[currOrigin]["backhost"]}${toc[i][0]}?${now}`)
         .then(async r => {
           let chapWord = await removeRuby(removeMd(r)).replace(/[ 　\t\r\n]/g, "")
           let chapLen = chapWord.length
@@ -1045,7 +1045,7 @@ let arr_proc = {
           cont.push(
 `<tr>
   <td style="text-align: center">${Number(i) + 1}</td>
-  <td style="text-align: left"><a href="${arr_toc[i][2]}&format=reading">${arr_toc[i][1]}</a></td>
+  <td style="text-align: left"><a href="${toc[i][2]}&format=reading">${toc[i][1]}</a></td>
   <td style="text-align: right">${chapLen}</td>
   <td style="text-align: center">${descPar} : ${dialPar}</td>
 </tr>`
@@ -1066,11 +1066,11 @@ window.onunload = () => {
   localStorage.setItem("scroll_top", document.body.scrollTop)
   localStorage.setItem("scroll_left", document.body.scrollLeft)
   // リロード後にスクロール量を再現するか否かを判断するために今の話のリポジトリとファイルを記録する
-  localStorage.setItem("repoFile", arr_repoFile)
+  localStorage.setItem("repoFile", repoFile)
   // 表示オプション
-  localStorage.setItem("option", JSON.stringify(arr_option))
+  localStorage.setItem("option", JSON.stringify(option))
   // public/private
-  localStorage.setItem("public", nod_public.checked)
+  localStorage.setItem("public", elm_public.checked)
 }
 /*
 
@@ -1079,45 +1079,45 @@ window.onunload = () => {
 */
 window.addEventListener("DOMContentLoaded", () => {
   if (location.search !== undefined) {
-    nod_defaultDisplayContainer.classList.remove("hidden")
+    elm_defaultDisplayContainer.classList.remove("hidden")
   }
   async function procOption() {
-    let arr_optionStorage = JSON.parse(localStorage.getItem("option"))
-    let keys_arr_option = Object.keys(arr_option)
-    for (let i in keys_arr_option) {
-      if (arr_param[keys_arr_option[i]] !== null && arr_param[keys_arr_option[i]] !== undefined) {
-        arr_option[keys_arr_option[i]] = arr_param[keys_arr_option[i]]
+    let optionStorage = JSON.parse(localStorage.getItem("option"))
+    let keys_option = Object.keys(option)
+    for (let i in keys_option) {
+      if (param[keys_option[i]] !== null && param[keys_option[i]] !== undefined) {
+        option[keys_option[i]] = param[keys_option[i]]
       }
-      else if (arr_optionStorage !== null && arr_optionStorage[keys_arr_option[i]] !== undefined) {
-        arr_option[keys_arr_option[i]] = arr_optionStorage[keys_arr_option[i]]
+      else if (optionStorage !== null && optionStorage[keys_option[i]] !== undefined) {
+        option[keys_option[i]] = optionStorage[keys_option[i]]
       }
       else {
-        arr_option[keys_arr_option[i]] = arr_optionDefault[keys_arr_option[i]]
+        option[keys_option[i]] = optionDefault[keys_option[i]]
       }
     }
-    return arr_option
+    return option
   }
   procOption().then(r => {
     // ホストで opSelector 周りを表示するかどうか選択する
-    for (let i in arr_url) {
-      if (arr_url[i]["private"] === true) {
-        nod_opSelectorChip.classList.remove("hidden")
+    for (let i in url) {
+      if (url[i]["private"] === true) {
+        elm_opSelectorChip.classList.remove("hidden")
       }
     }
     // op で作品が指定されていた場合の処理
     if (op !== undefined) {
-      if (arr_repoFile[1] !== "README.md") {
-        nod_topBar.classList.remove("hidden")
-        nod_countChip.classList.remove("hidden")
-        nod_formatChip.classList.remove("hidden")
-        nod_orientChip.classList.remove("hidden")
-        nod_themeChip.classList.remove("hidden")
-        nod_modeChip.classList.remove("hidden")
-        nod_copyChip.classList.remove("hidden")
-        loadContent(arr_url[currOrigin]["backhost"] + arr_repoFile[1]).then(r1 => {
-          loadContent(arr_url[currOrigin]["backhost"] + "README.md").then(r2 => {
+      if (repoFile[1] !== "README.md") {
+        elm_topBar.classList.remove("hidden")
+        elm_countChip.classList.remove("hidden")
+        elm_formatChip.classList.remove("hidden")
+        elm_orientChip.classList.remove("hidden")
+        elm_themeChip.classList.remove("hidden")
+        elm_modeChip.classList.remove("hidden")
+        elm_copyChip.classList.remove("hidden")
+        loadContent(url[currOrigin]["backhost"] + repoFile[1]).then(r1 => {
+          loadContent(url[currOrigin]["backhost"] + "README.md").then(r2 => {
             makeToc(r2).then(()=> {
-              if (arr_repoFile[1].match(/\d+\.[^.]+$/)) {
+              if (repoFile[1].match(/\d+\.[^.]+$/)) {
                 setLink()
               }
               exec(r1)
@@ -1126,26 +1126,26 @@ window.addEventListener("DOMContentLoaded", () => {
           })
         })
       }
-      else /* if (arr_repoFile[1] === "README.md") */{
-        nod_opSelectorChip.classList.remove("hidden")
+      else /* if (repoFile[1] === "README.md") */{
+        elm_opSelectorChip.classList.remove("hidden")
         r["format"] = "readme"
-        loadContent(arr_url[currOrigin]["backhost"] + arr_repoFile[1]).then(r1 => {
+        loadContent(url[currOrigin]["backhost"] + repoFile[1]).then(r1 => {
           readmeContent = r1
           makeToc(r1).then(() => {
             exec(r1)
           })
         })
       }
-      if (arr_repoFile[1] !== "README.md") {
+      if (repoFile[1] !== "README.md") {
         for (let i = 0; i < ndl_toc.length; i++) {
           ndl_toc[i].classList.remove("hidden")
-          ndl_toc[i].firstChild.href = arr_url[currOrigin]["linkBase"] + "README.md"
+          ndl_toc[i].firstChild.href = url[currOrigin]["linkBase"] + "README.md"
         }
       }
     }
     else if (r["url"] !== "" && r["url"] !== undefined) {
       loadContent(r["url"]).then(r1 => {
-        delete arr_option["url"]
+        delete option["url"]
         if (r["format"] === "" || r["format"] === "readme") {
           r["format"] = "reading"
         }
@@ -1194,113 +1194,113 @@ window.onresize = () => {
 
 */
 // デフォルト画面の変更
-nod_public.onchange = () => {
-  if (nod_public.checked === true) {
+elm_public.onchange = () => {
+  if (elm_public.checked === true) {
    public = true
   } else {
     public = false
   }
   procNovelIndex(novelIndex).then(() => {
-    let trgOp = nod_opSelector.value
-    if (arr_repoFile.length !== 0) {
-      if (trgOp !== arr_repoFile[0].replace(/.*?(\d+).*/, "$1") && trgOp !== "-") {
-        location = arr_url[currOrigin]["linkRoot"] + "?op=" + opSign + trgOp + "/README.md"
+    let trgOp = elm_opSelector.value
+    if (repoFile.length !== 0) {
+      if (trgOp !== repoFile[0].replace(/.*?(\d+).*/, "$1") && trgOp !== "-") {
+        location = url[currOrigin]["linkRoot"] + "?op=" + opSign + trgOp + "/README.md"
       } else if (trgOp === "-") {
-        location = arr_url[currOrigin]["linkRoot"]
+        location = url[currOrigin]["linkRoot"]
       }
     } else {
-      location = arr_url[currOrigin]["linkRoot"]
+      location = url[currOrigin]["linkRoot"]
     }
   })
 }
-nod_opSelector.onchange = () => {
-  let trgOp = nod_opSelector.options[nod_opSelector.selectedIndex].value
+elm_opSelector.onchange = () => {
+  let trgOp = elm_opSelector.options[elm_opSelector.selectedIndex].value
   if (trgOp !== "-") {
     location = `${currOrigin}/novel-parse.html?op=op${trgOp}/README.md`
   } else {
-    location = arr_url[currOrigin]["linkRoot"]
+    location = url[currOrigin]["linkRoot"]
   }
 }
-nod_formatReading.onchange = () => {
-  arr_option["format"] = "reading"
+elm_formatReading.onchange = () => {
+  option["format"] = "reading"
 }
-nod_formatPlot.onchange = () => {
-  arr_option["format"] = "plot"
+elm_formatPlot.onchange = () => {
+  option["format"] = "plot"
 }
-nod_formatNoRuby.onchange = () => {
-  arr_option["format"] = "noRuby"
+elm_formatNoRuby.onchange = () => {
+  option["format"] = "noRuby"
 }
-nod_formatPickup.onchange = () => {
-  arr_option["format"] = "pickup"
+elm_formatPickup.onchange = () => {
+  option["format"] = "pickup"
 }
-nod_formatOdt.onchange = () => {
-  arr_option["format"] = "odt"
+elm_formatOdt.onchange = () => {
+  option["format"] = "odt"
 }
-nod_orientH.onchange = () => {
-  arr_option["orient"] = "h"
-  toggleOrient(arr_option["orient"]).then(() => {
+elm_orientH.onchange = () => {
+  option["orient"] = "h"
+  toggleOrient(option["orient"]).then(() => {
     afterLoading()
   })
 }
-nod_orientV.onchange = () => {
-  arr_option["orient"] = "v"
-  toggleOrient(arr_option["orient"]).then(() => {
+elm_orientV.onchange = () => {
+  option["orient"] = "v"
+  toggleOrient(option["orient"]).then(() => {
     afterLoading()
   })
 }
-nod_themeLight.onchange = () => {
-  arr_option["theme"] = "light"
-  toggleTheme(arr_option["theme"])
+elm_themeLight.onchange = () => {
+  option["theme"] = "light"
+  toggleTheme(option["theme"])
 }
-nod_themeDark.onchange = () => {
-  arr_option["theme"] = "dark"
-  toggleTheme(arr_option["theme"])
+elm_themeDark.onchange = () => {
+  option["theme"] = "dark"
+  toggleTheme(option["theme"])
 }
-nod_modeChipNormal.onchange = () => {
-  arr_option["mode"] = "normal"
+elm_modeChipNormal.onchange = () => {
+  option["mode"] = "normal"
 }
-nod_modeChipHalf.onchange = () => {
-  arr_option["mode"] = "half"
+elm_modeChipHalf.onchange = () => {
+  option["mode"] = "half"
 }
 // top-bar の中の変更
-nod_formatSelector.onchange = () => {
-  arr_option["format"] = nod_formatSelector.options[nod_formatSelector.selectedIndex].value
+elm_formatSelector.onchange = () => {
+  option["format"] = elm_formatSelector.options[elm_formatSelector.selectedIndex].value
   exec(srcText)
 }
-nod_orientChipH.onchange = () => {
-  arr_option["orient"] = nod_orientChipH.value
-  toggleOrient(arr_option["orient"]).then(() => {
+elm_orientChipH.onchange = () => {
+  option["orient"] = elm_orientChipH.value
+  toggleOrient(option["orient"]).then(() => {
     afterLoading()
   })
 }
-nod_orientChipV.onchange = () => {
-  arr_option["orient"] = nod_orientChipV.value
-  toggleOrient(arr_option["orient"]).then(() => {
+elm_orientChipV.onchange = () => {
+  option["orient"] = elm_orientChipV.value
+  toggleOrient(option["orient"]).then(() => {
     afterLoading()
   })
 }
-nod_themeChipDark.onchange = () => {
-  arr_option["theme"] = nod_themeChipDark.value
-  toggleTheme(arr_option["theme"])
+elm_themeChipDark.onchange = () => {
+  option["theme"] = elm_themeChipDark.value
+  toggleTheme(option["theme"])
 }
-nod_themeChipLight.onchange = () => {
-  arr_option["theme"] = nod_themeChipLight.value
-  toggleTheme(arr_option["theme"])
+elm_themeChipLight.onchange = () => {
+  option["theme"] = elm_themeChipLight.value
+  toggleTheme(option["theme"])
 }
-nod_modeChipNormal.onchange = () => {
-  arr_option["mode"] = nod_modeChipNormal.value
-  toggleMode(arr_option["mode"])
+elm_modeChipNormal.onchange = () => {
+  option["mode"] = elm_modeChipNormal.value
+  toggleMode(option["mode"])
 }
-nod_modeChipHalf.onchange = () => {
-  arr_option["mode"] = nod_modeChipHalf.value
-  toggleMode(arr_option["mode"])
+elm_modeChipHalf.onchange = () => {
+  option["mode"] = elm_modeChipHalf.value
+  toggleMode(option["mode"])
 }
 /*
 
   フォームからファイルが入力されたときの処理
 
 */
-nod_input.onchange = () => {
+elm_input.onchange = () => {
   let fr = new FileReader()
   trgFile = input.files[0]
   fr.readAsText(trgFile)
@@ -1350,10 +1350,10 @@ window.onkeyup = (e) => {
   文字列を選択したことで文字数を数えるときの処理
 
 */
-nod_text.addEventListener('mouseup', src => {
+elm_text.addEventListener('mouseup', src => {
   countChipSelect(src)
 })
-nod_text.addEventListener('touched', src => {
+elm_text.addEventListener('touched', src => {
   countChipSelect(src)
 })
 /*
@@ -1361,15 +1361,15 @@ nod_text.addEventListener('touched', src => {
   「本文コピー」ボタンがクリックされたときの処理
 
 */
-nod_copyButton.onclick = () => {
+elm_copyButton.onclick = () => {
   copyPost()
 }
-if (nod_postOutputOuter !== null) {
-  nod_postOutputOuter.onclick = (e) => {
+if (elm_postOutputOuter !== null) {
+  elm_postOutputOuter.onclick = (e) => {
     let wh = window.innerHeight
     let ww = window.innerWidth
     if (e.target.id === "post-output-outer") {
-      nod_postOutputOuter.classList.add("hidden")
+      elm_postOutputOuter.classList.add("hidden")
       document.scrollingElement.style.overflowY = "unset"
     }
   }
@@ -1380,7 +1380,7 @@ if (nod_postOutputOuter !== null) {
 
 */
 window.onwheel = (e) => {
-  if (arr_option["orient"] === "v") {
+  if (option["orient"] === "v") {
     document.body.scrollLeft += - e.deltaY
   }
 }
@@ -1392,7 +1392,7 @@ window.onwheel = (e) => {
 // キーになる処理
 function exec(src) {
   setEol(src)
-  arr_proc[arr_option["format"]](src)
+  proc[option["format"]](src)
 }
 // opSelector のために op のリストを読み込む
 async function loadNovelIndex() {
@@ -1403,7 +1403,7 @@ async function procNovelIndex(r) {
   makeOpSelector(r).then(r => {
     for (let i in r) {
       if (r[i]["op"] === currOp) {
-        nod_opSelector.options[Number(i) + 1].selected = true
+        elm_opSelector.options[Number(i) + 1].selected = true
       }
     }
   })
@@ -1413,23 +1413,23 @@ async function procNovelIndex(r) {
       w = r1.filter(w1 => w1["destination"] === "public")
     } else {
       w = r1
-      nod_public.checked = false
+      elm_public.checked = false
     }
     if (op !== undefined) {
       currOp = op.replace(/op(\d+).*/, "$1")
     }
-    while (nod_opSelector.firstChild) {
-      nod_opSelector.removeChild(nod_opSelector.firstChild)
+    while (elm_opSelector.firstChild) {
+      elm_opSelector.removeChild(elm_opSelector.firstChild)
     }
     let w2 = document.createElement("option")
     w2.value = "-"
     w2.append("-")
-    nod_opSelector.appendChild(w2)
+    elm_opSelector.appendChild(w2)
     for (let i in w) {
       let w1 = document.createElement("option")
       w1.value = w[i]["op"]
       w1.append(`op${w[i]["op"]} - ${w[i]["title"]}`)
-      nod_opSelector.appendChild(w1)
+      elm_opSelector.appendChild(w1)
     }
     return w
   }
@@ -1438,7 +1438,7 @@ async function procNovelIndex(r) {
 function copyPost() {
   procBrackets(srcText)
   .then(r => {
-    if (arr_option["format"] !== "noRuby") {
+    if (option["format"] !== "noRuby") {
       return r
     } else {
       return removeRuby(r)
@@ -1446,20 +1446,20 @@ function copyPost() {
   }).then(r => {
     return removeMd(r)
   }).then(r => {
-    return arr_mode[arr_option["mode"]](r)
+    return mode[option["mode"]](r)
   }).then(r => {
     if (location.protocol === "http:") {
-      nod_postOutput.textContent = r
+      elm_postOutput.textContent = r
       document.scrollingElement.style.overflowY = "hidden"
       let wh = window.innerHeight
-      nod_postOutput.style.height = wh * 0.7
-      nod_postOutput.style.top = wh * 0.15
-      nod_postOutput.style.left = window.innerWidth * 0.15
-      nod_postOutputOuter.style.height = document.body.innerHeight
-      nod_postOutputOuter.classList.remove("hidden")
+      elm_postOutput.style.height = wh * 0.7
+      elm_postOutput.style.top = wh * 0.15
+      elm_postOutput.style.left = window.innerWidth * 0.15
+      elm_postOutputOuter.style.height = document.body.innerHeight
+      elm_postOutputOuter.classList.remove("hidden")
       let copyRange = document.createRange()
-      copyRange.setStart(nod_postOutput, 0)
-      copyRange.setEnd(nod_postOutput, nod_postOutput.childNodes.length)
+      copyRange.setStart(elm_postOutput, 0)
+      copyRange.setEnd(elm_postOutput, elm_postOutput.childNodes.length)
       document.getSelection().removeAllRanges()
       document.getSelection().addRange(copyRange)
     } else {
@@ -1484,7 +1484,7 @@ async function loadContent(url) {
 // 変換の実処理
 async function addTitle(src) {
   let w = ""
-  if (arr_repoFile[1].match(/\d+/) !== null) {
+  if (repoFile[1].match(/\d+/) !== null) {
     await getTitle().then(r => {
       w = '<h1>' + r + '</h1>' + eol + src
     })
@@ -1493,13 +1493,13 @@ async function addTitle(src) {
       w = '<h1>' + r + '</h1>' + eol + src
     })
   }
-  nod_title.textContent = title
+  elm_title.textContent = title
   return w
   // 子関数
   async function getTitle() {
-    for (let i in arr_toc) {
-      if (arr_toc[i][0] === arr_repoFile[1]) {
-        title = arr_toc[i][1]
+    for (let i in toc) {
+      if (toc[i][0] === repoFile[1]) {
+        title = toc[i][1]
         return title
       }
     }
@@ -1544,16 +1544,16 @@ function parseOdt(src) {
   let titleOdt = ""
   if (title.length >= 1) {
     titleOdt = '<text:p text:style-name="Title">' + title + '</text:p>\n'
-    return (titleOdt + w).replace(/([\s\S]*)/m, arr_odt["content"]["start"] + "$1" + arr_odt["content"]["end"])
+    return (titleOdt + w).replace(/([\s\S]*)/m, odt["content"]["start"] + "$1" + odt["content"]["end"])
   } else {
-    return w.replace(/([\s\S]*)/m, arr_odt["content"]["start"] + "$1" + arr_odt["content"]["end"])
+    return w.replace(/([\s\S]*)/m, odt["content"]["start"] + "$1" + odt["content"]["end"])
   }
 }
 // 書き出しとその後の処理
 function writeText(src) {
-  nod_text.innerHTML = src
-  nod_html.classList.remove("reading", "plot", "no-ruby", "pickup", "odt")
-  nod_html.classList.add(arr_option["format"])
+  elm_text.innerHTML = src
+  elm_html.classList.remove("reading", "plot", "no-ruby", "pickup", "odt")
+  elm_html.classList.add(option["format"])
   return true
 }
 // タグを処理する type=0 消去、tyep=1 色づけ
@@ -1570,8 +1570,8 @@ async function procBrackets(src, type) {
   })
   function rx_deleteSlf() {
     let w = ""
-    for (let i = 0; i < arr_brkSlf.length; i++) {
-      w += esc(arr_brkSlf[i]["before"]) + esc(arr_brkSlf[i]["after"])
+    for (let i = 0; i < brkSlf.length; i++) {
+      w += esc(brkSlf[i]["before"]) + esc(brkSlf[i]["after"])
     }
     return RegExp("[" + w + "]", "g")
   }
@@ -1580,12 +1580,12 @@ async function procBrackets(src, type) {
       let i = 0
       f(r)
       function f(w) {
-        let rx_b = RegExp(esc(arr_brkSlf[i]["before"]), "g")
-        let rx_a = RegExp(esc(arr_brkSlf[i]["after"]), "g")
-        let rp_b = arr_brkSlf[i]["replaceBefore"] + arr_brkSlf[i]["before"] + arr_brkSlf[i]["replaceAfter"]
-        let rp_a = arr_brkSlf[i]["replaceBefore"] + arr_brkSlf[i]["after"] + arr_brkSlf[i]["replaceAfter"]
+        let rx_b = RegExp(esc(brkSlf[i]["before"]), "g")
+        let rx_a = RegExp(esc(brkSlf[i]["after"]), "g")
+        let rp_b = brkSlf[i]["replaceBefore"] + brkSlf[i]["before"] + brkSlf[i]["replaceAfter"]
+        let rp_a = brkSlf[i]["replaceBefore"] + brkSlf[i]["after"] + brkSlf[i]["replaceAfter"]
         w = w.replace(rx_b, rp_b).replace(rx_a, rp_a)
-        if (i < arr_brkSlf.length - 1) {
+        if (i < brkSlf.length - 1) {
           i++
           f(w)
         }
@@ -1600,10 +1600,10 @@ async function procBrackets(src, type) {
       let i = 0
       f(r)
       function f(w) {
-        let rx = RegExp(esc(arr_brkInc[i]["before"]) + "(.*?)" + esc(arr_brkInc[i]["after"]), "g")
-        let rp = arr_brkInc[i]["replaceBefore"] + arr_brkInc[i]["before"] + "$1" + arr_brkInc[i]["after"] + arr_brkInc[i]["replaceAfter"]
+        let rx = RegExp(esc(brkInc[i]["before"]) + "(.*?)" + esc(brkInc[i]["after"]), "g")
+        let rp = brkInc[i]["replaceBefore"] + brkInc[i]["before"] + "$1" + brkInc[i]["after"] + brkInc[i]["replaceAfter"]
         w = w.replace(rx, rp)
-        if (i < arr_brkInc.length - 1) {
+        if (i < brkInc.length - 1) {
           i++
           f(w)
         }
@@ -1616,105 +1616,105 @@ async function procBrackets(src, type) {
 }
 // 全体の文字数を数える処理
 function countChipFull(src) {
-  nod_countChipFull.innerHTML = "全文：" + removeRuby(removeMd(src)).replace(/[\s　]/g, "").length + "文字"
-  nod_countChipFull.classList.remove("hidden")
+  elm_countChipFull.innerHTML = "全文：" + removeRuby(removeMd(src)).replace(/[\s　]/g, "").length + "文字"
+  elm_countChipFull.classList.remove("hidden")
 }
 // 選択範囲の文字数を数える処理
 function countChipSelect(src) {
   setTimeout(() => {
     let selected = document.getSelection()
     if (selected.isCollapsed === false) {
-      nod_countChipSelect.innerHTML = "選択：" + removeRuby(removeMd(selected.getRangeAt(0).toString())).replace(/[\s　]/g, "").length + "文字"
-      nod_countChipSelect.classList.remove("hidden")
+      elm_countChipSelect.innerHTML = "選択：" + removeRuby(removeMd(selected.getRangeAt(0).toString())).replace(/[\s　]/g, "").length + "文字"
+      elm_countChipSelect.classList.remove("hidden")
     } else {
-      nod_countChipSelect.classList.add("hidden")
+      elm_countChipSelect.classList.add("hidden")
     }
   }, 3)
 }
 // 前の・次の作品へのリンクを表示する
 function setLink() {
   let currEpisode = 0
-  let arr_adjacentProc = {
+  let adjacentProc = {
     prev: () => {
       ndl_prev.forEach((r) => {
-        r.href = arr_url[currOrigin]["linkBase"] + prevFile
-        r.innerHTML = "<< " + arr_toc[currEpisode - 2][1]
+        r.href = url[currOrigin]["linkBase"] + prevFile
+        r.innerHTML = "<< " + toc[currEpisode - 2][1]
       })
     },
     next: () => {
       ndl_next.forEach((r) => {
-        r.href = arr_url[currOrigin]["linkBase"] + nextFile
-        r.innerHTML = arr_toc[currEpisode][1] + " >>"
+        r.href = url[currOrigin]["linkBase"] + nextFile
+        r.innerHTML = toc[currEpisode][1] + " >>"
       })
     }
   }
-  currEpisode = Number(arr_repoFile[1].match(/\d+\..*$/)[0].replace(/(\d+).*/, "$1"))
+  currEpisode = Number(repoFile[1].match(/\d+\..*$/)[0].replace(/(\d+).*/, "$1"))
   if (
     currEpisode !== 1
     &&
-    currEpisode !== arr_toc.length
+    currEpisode !== toc.length
   ) {
-    arr_adjacentProc["prev"]()
-    arr_adjacentProc["next"]()
+    adjacentProc["prev"]()
+    adjacentProc["next"]()
   } else if (
     currEpisode !== 1
     &&
-    arr_toc.length !== 1
+    toc.length !== 1
   ) {
-    arr_adjacentProc["prev"]()
+    adjacentProc["prev"]()
   } else if (
     currEpisode === 1
     &&
-    arr_toc.length >= 2
+    toc.length >= 2
   ) {
-    arr_adjacentProc["next"]()
+    adjacentProc["next"]()
   }
 }
-// arr_option の内容を画面に反映
+// option の内容を画面に反映
 function applyOption(r) {
   // フォーマット
   if (r["format"] === "reading") {
-    nod_formatReading.checked = true
-    nod_formatSelector.options[0].selected = true
+    elm_formatReading.checked = true
+    elm_formatSelector.options[0].selected = true
   } else if (r["format"] === "plot") {
-    nod_formatPlot.checked = true
-    nod_formatSelector.options[1].selected = true
+    elm_formatPlot.checked = true
+    elm_formatSelector.options[1].selected = true
   } else if (r["format"] === "noRuby") {
-    nod_formatNoRuby.checked = true
-    nod_formatSelector.options[2].selected = true
+    elm_formatNoRuby.checked = true
+    elm_formatSelector.options[2].selected = true
   } else if (r["format"] === "pickup") {
-    nod_formatPickup.checked = true
-    nod_formatSelector.options[3].selected = true
+    elm_formatPickup.checked = true
+    elm_formatSelector.options[3].selected = true
   } else if (r["format"] === "odt") {
-    nod_formatOdt.checked = true
-    nod_formatSelector.options[4].selected = true
+    elm_formatOdt.checked = true
+    elm_formatSelector.options[4].selected = true
   }
   // 書き方向
   toggleOrient(r["orient"])
   if (r["orient"] === "h") {
-    nod_orientH.checked = true
-    nod_orientChipH.checked = true
+    elm_orientH.checked = true
+    elm_orientChipH.checked = true
   } else if (r["orient"] === "v") {
-    nod_orientV.checked = true
-    nod_orientChipV.checked = true
+    elm_orientV.checked = true
+    elm_orientChipV.checked = true
   }
   // テーマ
   toggleTheme(r["theme"])
   if (r["theme"] === "light") {
-    nod_themeLight.checked = true
-    nod_themeChipLight.checked = true
+    elm_themeLight.checked = true
+    elm_themeChipLight.checked = true
   } else if (r["theme"] === "dark") {
-    nod_themeDark.checked = true
-    nod_themeChipDark.checked = true
+    elm_themeDark.checked = true
+    elm_themeChipDark.checked = true
   }
   // モード
   if (r["mode"] !== "half") {
     r["mode"] = "normal"
-    nod_modeChipNormal.checked = true
-    nod_modeChipNormal.checked = true
+    elm_modeChipNormal.checked = true
+    elm_modeChipNormal.checked = true
   } else {
-    nod_modeChipHalf.checked = true
-    nod_modeChipHalf.checked = true
+    elm_modeChipHalf.checked = true
+    elm_modeChipHalf.checked = true
   }
 }
 // 目次の作成
@@ -1726,26 +1726,26 @@ async function makeToc(src) {
   for (let i in w) {
     w[i] = w[i].replace(/^(?:\*|\+|-|\d+\.) (.*)/, "$1")
                .split(/[ \t]*[:：][ \t]*/)
-    w[i].push(arr_url[currOrigin]["linkBase"] + w[i][0])
+    w[i].push(url[currOrigin]["linkBase"] + w[i][0])
     if (w[i].length === 1) {
       w[i].push(w[i][0])
     }
   }
-  arr_toc = await w
+  toc = await w
   return await w
 }
 // 書き方向の変更処理
 async function toggleOrient(orient) {
-  nod_html.classList.remove("h", "v")
-  nod_html.classList.add(orient)
-  if (arr_option["orient"] === "v") {
+  elm_html.classList.remove("h", "v")
+  elm_html.classList.add(orient)
+  if (option["orient"] === "v") {
     document.body.scrollLeft = 100000
   }
 }
 // 色テーマの変更処理
 function toggleTheme(theme) {
-  nod_html.classList.remove("light", "dark" ,"auto")
-  nod_html.classList.add(theme)
+  elm_html.classList.remove("light", "dark" ,"auto")
+  elm_html.classList.add(theme)
 }
 // モードの変更処理
 function toggleMode(mode) {
@@ -1753,20 +1753,20 @@ function toggleMode(mode) {
 }
 // レイアウトの調整
 async function layoutAdjustment() {
-  if (arr_option["orient"] === "h") {
-    nod_frame.removeAttribute("style")
+  if (option["orient"] === "h") {
+    elm_frame.removeAttribute("style")
     ndl_linkGroup[0].removeAttribute("style")
   }
-  if (arr_option["orient"] === "v") {
-    let textWidth = window.getComputedStyle(nod_text).getPropertyValue("width")
-    nod_frame.style.width = textWidth
+  if (option["orient"] === "v") {
+    let textWidth = window.getComputedStyle(elm_text).getPropertyValue("width")
+    elm_frame.style.width = textWidth
     ndl_linkGroup[0].style.marginLeft = Number(textWidth.slice(0, -2)) + 85 - Number(window.getComputedStyle(document.body).getPropertyValue("width").slice(0, -2))
   }
 }
 //  真のロード後の処理
 function afterLoading() {
   layoutAdjustment().then(() => {
-    if (localStorage.getItem("repoFile") === arr_repoFile.join(",")) {
+    if (localStorage.getItem("repoFile") === repoFile.join(",")) {
       document.body.scrollTop = localStorage.getItem("scroll_top")
       document.body.scrollLeft = localStorage.getItem("scroll_left")
       if (localStorage.getItem("scroll_left") === null || localStorage.getItem("scroll_left") == 0) {
@@ -1777,16 +1777,16 @@ function afterLoading() {
 }
 //  括弧を書き出す
 function writeBrackets() {
-  let arr_brk0 = []
-  let arr_brk1 = []
-  for (let i = 0; i < arr_brkSlf.length; i++) {
-    arr_brk0.push(arr_brkSlf[i]["before"] + arr_brkSlf[i]["after"])
+  let brk0 = []
+  let brk1 = []
+  for (let i = 0; i < brkSlf.length; i++) {
+    brk0.push(brkSlf[i]["before"] + brkSlf[i]["after"])
   }
-  for (let i = 0; i < arr_brkInc.length; i++) {
-    arr_brk1.push(arr_brkInc[i]["before"] + arr_brkInc[i]["after"])
+  for (let i = 0; i < brkInc.length; i++) {
+    brk1.push(brkInc[i]["before"] + brkInc[i]["after"])
   }
-  let brk0Joined = arr_brk0.join(", ")
-  let brk1Joined = arr_brk1.join(", ")
+  let brk0Joined = brk0.join(", ")
+  let brk1Joined = brk1.join(", ")
   let brkJoined = brk0Joined + ", " + brk1Joined
   for (let i = 0; i < ndl_brk.length; i++) {
     ndl_brk[i].innerHTML = brkJoined
@@ -1833,7 +1833,7 @@ function unEsc(r) {
   .replace(/\\\}/g, "}")
 }
 // odt が包含するファイルの中身
-let arr_odt = {
+let odt = {
   "content": {
     "start": `<?xml version="1.0" encoding="UTF-8"?>
 <office:document-content xmlns:meta="urn:oasis:names:tc:opendocument:xmlns:meta:1.0" xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:fo="urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0" xmlns:ooo="http://openoffice.org/2004/office" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0" xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0" xmlns:draw="urn:oasis:names:tc:opendocument:xmlns:drawing:1.0" xmlns:dr3d="urn:oasis:names:tc:opendocument:xmlns:dr3d:1.0" xmlns:svg="urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0" xmlns:chart="urn:oasis:names:tc:opendocument:xmlns:chart:1.0" xmlns:rpt="http://openoffice.org/2005/report" xmlns:table="urn:oasis:names:tc:opendocument:xmlns:table:1.0" xmlns:number="urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0" xmlns:ooow="http://openoffice.org/2004/writer" xmlns:oooc="http://openoffice.org/2004/calc" xmlns:of="urn:oasis:names:tc:opendocument:xmlns:of:1.2" xmlns:tableooo="http://openoffice.org/2009/table" xmlns:calcext="urn:org:documentfoundation:names:experimental:calc:xmlns:calcext:1.0" xmlns:drawooo="http://openoffice.org/2010/draw" xmlns:loext="urn:org:documentfoundation:names:experimental:office:xmlns:loext:1.0" xmlns:field="urn:openoffice:names:experimental:ooo-ms-interop:xmlns:field:1.0" xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:form="urn:oasis:names:tc:opendocument:xmlns:form:1.0" xmlns:script="urn:oasis:names:tc:opendocument:xmlns:script:1.0" xmlns:dom="http://www.w3.org/2001/xml-events" xmlns:xforms="http://www.w3.org/2002/xforms" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:formx="urn:openoffice:names:experimental:ooxml-odf-interop:xmlns:form:1.0" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:grddl="http://www.w3.org/2003/g/data-view#" xmlns:css3t="http://www.w3.org/TR/css3-text/" xmlns:officeooo="http://openoffice.org/2009/office" office:version="1.3"><office:scripts/><office:font-face-decls><style:font-face style:name="Arial1" svg:font-family="Arial" style:font-family-generic="swiss"/><style:font-face style:name="Liberation Serif" svg:font-family="&apos;Liberation Serif&apos;" style:font-family-generic="roman" style:font-pitch="variable"/><style:font-face style:name="Liberation Sans" svg:font-family="&apos;Liberation Sans&apos;" style:font-family-generic="swiss" style:font-pitch="variable"/><style:font-face style:name="Arial" svg:font-family="Arial" style:font-family-generic="system" style:font-pitch="variable"/><style:font-face style:name="游ゴシック" svg:font-family="游ゴシック" style:font-family-generic="system" style:font-pitch="variable"/><style:font-face style:name="游明朝" svg:font-family="游明朝" style:font-family-generic="system" style:font-pitch="variable"/></office:font-face-decls><office:automatic-styles><style:style style:name="Ru1" style:family="ruby"><style:ruby-properties style:ruby-align="left" style:ruby-position="above" loext:ruby-position="above"/></style:style></office:automatic-styles><office:body><office:text><text:sequence-decls><text:sequence-decl text:display-outline-level="0" text:name="Illustration"/><text:sequence-decl text:display-outline-level="0" text:name="Table"/><text:sequence-decl text:display-outline-level="0" text:name="Text"/><text:sequence-decl text:display-outline-level="0" text:name="Drawing"/><text:sequence-decl text:display-outline-level="0" text:name="Figure"/></text:sequence-decls>`,
@@ -1870,10 +1870,10 @@ let arr_odt = {
  <manifest:file-entry manifest:full-path="Thumbnails/thumbnail.png" manifest:media-type="image/png"/>
 </manifest:manifest>`],
     ["meta.xml", "/", `<?xml version="1.0" encoding="UTF-8"?>
-<office:document-meta xmlns:grddl="http://www.w3.org/2003/g/data-view#" xmlns:meta="urn:oasis:names:tc:opendocument:xmlns:meta:1.0" xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:ooo="http://openoffice.org/2004/office" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" office:version="1.3"><office:meta><meta:creation-date>2021-09-08T09:36:03.123000000</meta:creation-date><meta:generator>LibreOffice/7.1.5.2$Windows_X86_64 LibreOffice_project/85f04e9f809797b8199d13c421bd8a2b025d52b5</meta:generator><dc:date>2021-09-08T14:45:22.466000000</dc:date><meta:editing-duration>PT1M16S</meta:editing-duration><meta:editing-cycles>2</meta:editing-cycles><meta:document-statistic meta:table-count="0" meta:image-count="0" arr_meta:ect-count="0" meta:page-count="1" meta:paragraph-count="1" meta:word-count="15" meta:character-count="15" meta:non-whitespace-character-count="15"/></office:meta></office:document-meta>`],
+<office:document-meta xmlns:grddl="http://www.w3.org/2003/g/data-view#" xmlns:meta="urn:oasis:names:tc:opendocument:xmlns:meta:1.0" xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:ooo="http://openoffice.org/2004/office" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" office:version="1.3"><office:meta><meta:creation-date>2021-09-08T09:36:03.123000000</meta:creation-date><meta:generator>LibreOffice/7.1.5.2$Windows_X86_64 LibreOffice_project/85f04e9f809797b8199d13c421bd8a2b025d52b5</meta:generator><dc:date>2021-09-08T14:45:22.466000000</dc:date><meta:editing-duration>PT1M16S</meta:editing-duration><meta:editing-cycles>2</meta:editing-cycles><meta:document-statistic meta:table-count="0" meta:image-count="0" meta:ect-count="0" meta:page-count="1" meta:paragraph-count="1" meta:word-count="15" meta:character-count="15" meta:non-whitespace-character-count="15"/></office:meta></office:document-meta>`],
     ["mimetype", "/", `application/vnd.oasis.opendocument.text`],
     ["settings.xml", "/", `<?xml version="1.0" encoding="UTF-8"?>
-<office:document-settings xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:ooo="http://openoffice.org/2004/office" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:config="urn:oasis:names:tc:opendocument:xmlns:config:1.0" office:version="1.3"><office:settings><config:config-item-set config:name="ooo:view-settings"><config:config-item config:name="ViewAreaTop" config:type="long">0</config:config-item><config:config-item config:name="ViewAreaLeft" config:type="long">0</config:config-item><config:config-item config:name="ViewAreaWidth" config:type="long">36356</config:config-item><config:config-item config:name="ViewAreaHeight" config:type="long">18496</config:config-item><config:config-item config:name="ShowRedlineChanges" config:type="boolean">true</config:config-item><config:config-item config:name="InBrowseMode" config:type="boolean">false</config:config-item><config:config-item-map-indexed config:name="Views"><config:config-item-map-entry><config:config-item config:name="ViewId" config:type="string">view2</config:config-item><config:config-item config:name="ViewLeft" config:type="long">9677</config:config-item><config:config-item config:name="ViewTop" config:type="long">2501</config:config-item><config:config-item config:name="VisibleLeft" config:type="long">0</config:config-item><config:config-item config:name="VisibleTop" config:type="long">0</config:config-item><config:config-item config:name="VisibleRight" config:type="long">36354</config:config-item><config:config-item config:name="VisibleBottom" config:type="long">18494</config:config-item><config:config-item config:name="ZoomType" config:type="short">0</config:config-item><config:config-item config:name="ViewLayoutColumns" config:type="short">1</config:config-item><config:config-item config:name="ViewLayoutBookMode" config:type="boolean">false</config:config-item><config:config-item config:name="ZoomFactor" config:type="short">100</config:config-item><config:config-item config:name="IsSelectedFrame" config:type="boolean">false</config:config-item><config:config-item config:name="AnchoredTextOverflowLegacy" config:type="boolean">false</config:config-item></config:config-item-map-entry></config:config-item-map-indexed></config:config-item-set><config:config-item-set config:name="ooo:configuration-settings"><config:config-item config:name="ProtectForm" config:type="boolean">false</config:config-item><config:config-item config:name="PrinterName" config:type="string"/><config:config-item config:name="EmbeddedDatabaseName" config:type="string"/><config:config-item config:name="CurrentDatabaseDataSource" config:type="string"/><config:config-item config:name="LinkUpdateMode" config:type="short">1</config:config-item><config:config-item config:name="AddParaTableSpacingAtStart" config:type="boolean">true</config:config-item><config:config-item config:name="FloattableNomargins" config:type="boolean">false</config:config-item><config:config-item config:name="UnbreakableNumberings" config:type="boolean">false</config:config-item><config:config-item config:name="FieldAutoUpdate" config:type="boolean">true</config:config-item><config:config-item config:name="AddVerticalFrameOffsets" config:type="boolean">false</config:config-item><config:config-item config:name="BackgroundParaOverDrawings" config:type="boolean">false</config:config-item><config:config-item config:name="AddParaTableSpacing" config:type="boolean">true</config:config-item><config:config-item config:name="ChartAutoUpdate" config:type="boolean">true</config:config-item><config:config-item config:name="CurrentDatabaseCommand" config:type="string"/><config:config-item config:name="PrinterSetup" config:type="base64Binary"/><config:config-item config:name="AlignTabStopPosition" config:type="boolean">true</config:config-item><config:config-item config:name="PrinterPaperFromSetup" config:type="boolean">false</config:config-item><config:config-item config:name="IsKernAsianPunctuation" config:type="boolean">false</config:config-item><config:config-item config:name="CharacterCompressionType" config:type="short">0</config:config-item><config:config-item config:name="ApplyUserData" config:type="boolean">true</config:config-item><config:config-item config:name="DoNotJustifyLinesWithManualBreak" config:type="boolean">true</config:config-item><config:config-item config:name="SaveThumbnail" config:type="boolean">true</config:config-item><config:config-item config:name="SaveGlobalDocumentLinks" config:type="boolean">false</config:config-item><config:config-item config:name="SmallCapsPercentage66" config:type="boolean">false</config:config-item><config:config-item config:name="CurrentDatabaseCommandType" config:type="int">0</config:config-item><config:config-item config:name="SaveVersionOnClose" config:type="boolean">false</config:config-item><config:config-item config:name="UpdateFromTemplate" config:type="boolean">true</config:config-item><config:config-item arr_config:name="DoNotCaptureDrawsOnPage" config:type="boolean">false</config:config-item><config:config-item arr_config:name="UseFormerectPositioning" config:type="boolean">false</config:config-item><config:config-item config:name="PrintSingleJobs" config:type="boolean">false</config:config-item><config:config-item config:name="EmbedSystemFonts" config:type="boolean">false</config:config-item><config:config-item config:name="PrinterIndependentLayout" config:type="string">high-resolution</config:config-item><config:config-item config:name="IsLabelDocument" config:type="boolean">false</config:config-item><config:config-item config:name="AddFrameOffsets" config:type="boolean">false</config:config-item><config:config-item config:name="AddExternalLeading" config:type="boolean">true</config:config-item><config:config-item config:name="MsWordCompMinLineHeightByFly" config:type="boolean">false</config:config-item><config:config-item config:name="UseoldNumbering" config:type="boolean">false</config:config-item><config:config-item config:name="OutlineLevelYieldsNumbering" config:type="boolean">false</config:config-item><config:config-item config:name="DoNotResetParaAttrsForNumFont" config:type="boolean">false</config:config-item><config:config-item config:name="IgnoreFirstLineIndentInNumbering" config:type="boolean">false</config:config-item><config:config-item config:name="AllowPrintJobCancel" config:type="boolean">true</config:config-item><config:config-item config:name="UseFormerLineSpacing" config:type="boolean">false</config:config-item><config:config-item config:name="AddParaSpacingToTableCells" config:type="boolean">true</config:config-item><config:config-item config:name="AddParaLineSpacingToTableCells" config:type="boolean">true</config:config-item><config:config-item config:name="UseFormerTextWrapping" config:type="boolean">false</config:config-item><config:config-item config:name="RedlineProtectionKey" config:type="base64Binary"/><config:config-item arr_config:name="ConsiderTextWrapOnPos" config:type="boolean">false</config:config-item><config:config-item config:name="TableRowKeep" config:type="boolean">false</config:config-item><config:config-item config:name="TabsRelativeToIndent" config:type="boolean">true</config:config-item><config:config-item config:name="IgnoreTabsAndBlanksForLineCalculation" config:type="boolean">false</config:config-item><config:config-item config:name="RsidRoot" config:type="int">312482</config:config-item><config:config-item config:name="LoadReadonly" config:type="boolean">false</config:config-item><config:config-item config:name="ClipAsCharacterAnchoredWriterFlyFrames" config:type="boolean">false</config:config-item><config:config-item config:name="UnxForceZeroExtLeading" config:type="boolean">false</config:config-item><config:config-item config:name="UseoldPrinterMetrics" config:type="boolean">false</config:config-item><config:config-item config:name="TabAtLeftIndentForParagraphsInList" config:type="boolean">false</config:config-item><config:config-item config:name="Rsid" config:type="int">522415</config:config-item><config:config-item config:name="MsWordCompTrailingBlanks" config:type="boolean">false</config:config-item><config:config-item config:name="MathBaselineAlignment" config:type="boolean">true</config:config-item><config:config-item config:name="InvertBorderSpacing" config:type="boolean">false</config:config-item><config:config-item config:name="CollapseEmptyCellPara" config:type="boolean">true</config:config-item><config:config-item config:name="TabOverflow" config:type="boolean">true</config:config-item><config:config-item config:name="StylesNoDefault" config:type="boolean">false</config:config-item><config:config-item config:name="ClippedPictures" config:type="boolean">false</config:config-item><config:config-item config:name="EmbedFonts" config:type="boolean">false</config:config-item><config:config-item config:name="EmbedOnlyUsedFonts" config:type="boolean">false</config:config-item><config:config-item config:name="EmbedLatinScriptFonts" config:type="boolean">true</config:config-item><config:config-item config:name="EmbedAsianScriptFonts" config:type="boolean">true</config:config-item><config:config-item config:name="EmptyDbFieldHidesPara" config:type="boolean">true</config:config-item><config:config-item config:name="EmbedComplexScriptFonts" config:type="boolean">true</config:config-item><config:config-item config:name="TabOverMargin" config:type="boolean">false</config:config-item><config:config-item config:name="TreatSingleColumnBreakAsPageBreak" config:type="boolean">false</config:config-item><config:config-item config:name="SurroundTextWrapSmall" config:type="boolean">false</config:config-item><config:config-item config:name="ApplyParagraphMarkFormatToNumbering" config:type="boolean">false</config:config-item><config:config-item config:name="PropLineSpacingShrinksFirstLine" config:type="boolean">true</config:config-item><config:config-item config:name="SubtractFlysAnchoredAtFlys" config:type="boolean">false</config:config-item><config:config-item config:name="DisableOffPagePositioning" config:type="boolean">false</config:config-item><config:config-item config:name="ContinuousEndnotes" config:type="boolean">false</config:config-item><config:config-item config:name="ProtectBookmarks" config:type="boolean">false</config:config-item><config:config-item config:name="ProtectFields" config:type="boolean">false</config:config-item><config:config-item config:name="HeaderSpacingBelowLastPara" config:type="boolean">false</config:config-item><config:config-item config:name="FrameAutowidthWithMorePara" config:type="boolean">false</config:config-item><config:config-item config:name="PrintAnnotationMode" config:type="short">0</config:config-item><config:config-item config:name="PrintGraphics" config:type="boolean">true</config:config-item><config:config-item config:name="PrintBlackFonts" config:type="boolean">false</config:config-item><config:config-item config:name="PrintLeftPages" config:type="boolean">true</config:config-item><config:config-item config:name="PrintControls" config:type="boolean">true</config:config-item><config:config-item config:name="PrintPageBackground" config:type="boolean">true</config:config-item><config:config-item config:name="PrintTextPlaceholder" config:type="boolean">false</config:config-item><config:config-item config:name="PrintDrawings" config:type="boolean">true</config:config-item><config:config-item config:name="PrinthiddenText" config:type="boolean">false</config:config-item><config:config-item config:name="PrintProspect" config:type="boolean">false</config:config-item><config:config-item config:name="PrintTables" config:type="boolean">true</config:config-item><config:config-item config:name="PrintProspectRTL" config:type="boolean">false</config:config-item><config:config-item config:name="PrintReversed" config:type="boolean">false</config:config-item><config:config-item config:name="PrintRightPages" config:type="boolean">true</config:config-item><config:config-item config:name="PrintFaxName" config:type="string"/><config:config-item config:name="PrintPaperFromSetup" config:type="boolean">false</config:config-item><config:config-item config:name="PrintEmptyPages" config:type="boolean">true</config:config-item></config:config-item-set></office:settings></office:document-settings>`],
+<office:document-settings xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:ooo="http://openoffice.org/2004/office" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:config="urn:oasis:names:tc:opendocument:xmlns:config:1.0" office:version="1.3"><office:settings><config:config-item-set config:name="ooo:view-settings"><config:config-item config:name="ViewAreaTop" config:type="long">0</config:config-item><config:config-item config:name="ViewAreaLeft" config:type="long">0</config:config-item><config:config-item config:name="ViewAreaWidth" config:type="long">36356</config:config-item><config:config-item config:name="ViewAreaHeight" config:type="long">18496</config:config-item><config:config-item config:name="ShowRedlineChanges" config:type="boolean">true</config:config-item><config:config-item config:name="InBrowseMode" config:type="boolean">false</config:config-item><config:config-item-map-indexed config:name="Views"><config:config-item-map-entry><config:config-item config:name="ViewId" config:type="string">view2</config:config-item><config:config-item config:name="ViewLeft" config:type="long">9677</config:config-item><config:config-item config:name="ViewTop" config:type="long">2501</config:config-item><config:config-item config:name="VisibleLeft" config:type="long">0</config:config-item><config:config-item config:name="VisibleTop" config:type="long">0</config:config-item><config:config-item config:name="VisibleRight" config:type="long">36354</config:config-item><config:config-item config:name="VisibleBottom" config:type="long">18494</config:config-item><config:config-item config:name="ZoomType" config:type="short">0</config:config-item><config:config-item config:name="ViewLayoutColumns" config:type="short">1</config:config-item><config:config-item config:name="ViewLayoutBookMode" config:type="boolean">false</config:config-item><config:config-item config:name="ZoomFactor" config:type="short">100</config:config-item><config:config-item config:name="IsSelectedFrame" config:type="boolean">false</config:config-item><config:config-item config:name="AnchoredTextOverflowLegacy" config:type="boolean">false</config:config-item></config:config-item-map-entry></config:config-item-map-indexed></config:config-item-set><config:config-item-set config:name="ooo:configuration-settings"><config:config-item config:name="ProtectForm" config:type="boolean">false</config:config-item><config:config-item config:name="PrinterName" config:type="string"/><config:config-item config:name="EmbeddedDatabaseName" config:type="string"/><config:config-item config:name="CurrentDatabaseDataSource" config:type="string"/><config:config-item config:name="LinkUpdateMode" config:type="short">1</config:config-item><config:config-item config:name="AddParaTableSpacingAtStart" config:type="boolean">true</config:config-item><config:config-item config:name="FloattableNomargins" config:type="boolean">false</config:config-item><config:config-item config:name="UnbreakableNumberings" config:type="boolean">false</config:config-item><config:config-item config:name="FieldAutoUpdate" config:type="boolean">true</config:config-item><config:config-item config:name="AddVerticalFrameOffsets" config:type="boolean">false</config:config-item><config:config-item config:name="BackgroundParaOverDrawings" config:type="boolean">false</config:config-item><config:config-item config:name="AddParaTableSpacing" config:type="boolean">true</config:config-item><config:config-item config:name="ChartAutoUpdate" config:type="boolean">true</config:config-item><config:config-item config:name="CurrentDatabaseCommand" config:type="string"/><config:config-item config:name="PrinterSetup" config:type="base64Binary"/><config:config-item config:name="AlignTabStopPosition" config:type="boolean">true</config:config-item><config:config-item config:name="PrinterPaperFromSetup" config:type="boolean">false</config:config-item><config:config-item config:name="IsKernAsianPunctuation" config:type="boolean">false</config:config-item><config:config-item config:name="CharacterCompressionType" config:type="short">0</config:config-item><config:config-item config:name="ApplyUserData" config:type="boolean">true</config:config-item><config:config-item config:name="DoNotJustifyLinesWithManualBreak" config:type="boolean">true</config:config-item><config:config-item config:name="SaveThumbnail" config:type="boolean">true</config:config-item><config:config-item config:name="SaveGlobalDocumentLinks" config:type="boolean">false</config:config-item><config:config-item config:name="SmallCapsPercentage66" config:type="boolean">false</config:config-item><config:config-item config:name="CurrentDatabaseCommandType" config:type="int">0</config:config-item><config:config-item config:name="SaveVersionOnClose" config:type="boolean">false</config:config-item><config:config-item config:name="UpdateFromTemplate" config:type="boolean">true</config:config-item><config:config-item config:name="DoNotCaptureDrawsOnPage" config:type="boolean">false</config:config-item><config:config-item config:name="UseFormerectPositioning" config:type="boolean">false</config:config-item><config:config-item config:name="PrintSingleJobs" config:type="boolean">false</config:config-item><config:config-item config:name="EmbedSystemFonts" config:type="boolean">false</config:config-item><config:config-item config:name="PrinterIndependentLayout" config:type="string">high-resolution</config:config-item><config:config-item config:name="IsLabelDocument" config:type="boolean">false</config:config-item><config:config-item config:name="AddFrameOffsets" config:type="boolean">false</config:config-item><config:config-item config:name="AddExternalLeading" config:type="boolean">true</config:config-item><config:config-item config:name="MsWordCompMinLineHeightByFly" config:type="boolean">false</config:config-item><config:config-item config:name="UseoldNumbering" config:type="boolean">false</config:config-item><config:config-item config:name="OutlineLevelYieldsNumbering" config:type="boolean">false</config:config-item><config:config-item config:name="DoNotResetParaAttrsForNumFont" config:type="boolean">false</config:config-item><config:config-item config:name="IgnoreFirstLineIndentInNumbering" config:type="boolean">false</config:config-item><config:config-item config:name="AllowPrintJobCancel" config:type="boolean">true</config:config-item><config:config-item config:name="UseFormerLineSpacing" config:type="boolean">false</config:config-item><config:config-item config:name="AddParaSpacingToTableCells" config:type="boolean">true</config:config-item><config:config-item config:name="AddParaLineSpacingToTableCells" config:type="boolean">true</config:config-item><config:config-item config:name="UseFormerTextWrapping" config:type="boolean">false</config:config-item><config:config-item config:name="RedlineProtectionKey" config:type="base64Binary"/><config:config-item config:name="ConsiderTextWrapOnPos" config:type="boolean">false</config:config-item><config:config-item config:name="TableRowKeep" config:type="boolean">false</config:config-item><config:config-item config:name="TabsRelativeToIndent" config:type="boolean">true</config:config-item><config:config-item config:name="IgnoreTabsAndBlanksForLineCalculation" config:type="boolean">false</config:config-item><config:config-item config:name="RsidRoot" config:type="int">312482</config:config-item><config:config-item config:name="LoadReadonly" config:type="boolean">false</config:config-item><config:config-item config:name="ClipAsCharacterAnchoredWriterFlyFrames" config:type="boolean">false</config:config-item><config:config-item config:name="UnxForceZeroExtLeading" config:type="boolean">false</config:config-item><config:config-item config:name="UseoldPrinterMetrics" config:type="boolean">false</config:config-item><config:config-item config:name="TabAtLeftIndentForParagraphsInList" config:type="boolean">false</config:config-item><config:config-item config:name="Rsid" config:type="int">522415</config:config-item><config:config-item config:name="MsWordCompTrailingBlanks" config:type="boolean">false</config:config-item><config:config-item config:name="MathBaselineAlignment" config:type="boolean">true</config:config-item><config:config-item config:name="InvertBorderSpacing" config:type="boolean">false</config:config-item><config:config-item config:name="CollapseEmptyCellPara" config:type="boolean">true</config:config-item><config:config-item config:name="TabOverflow" config:type="boolean">true</config:config-item><config:config-item config:name="StylesNoDefault" config:type="boolean">false</config:config-item><config:config-item config:name="ClippedPictures" config:type="boolean">false</config:config-item><config:config-item config:name="EmbedFonts" config:type="boolean">false</config:config-item><config:config-item config:name="EmbedOnlyUsedFonts" config:type="boolean">false</config:config-item><config:config-item config:name="EmbedLatinScriptFonts" config:type="boolean">true</config:config-item><config:config-item config:name="EmbedAsianScriptFonts" config:type="boolean">true</config:config-item><config:config-item config:name="EmptyDbFieldHidesPara" config:type="boolean">true</config:config-item><config:config-item config:name="EmbedComplexScriptFonts" config:type="boolean">true</config:config-item><config:config-item config:name="TabOverMargin" config:type="boolean">false</config:config-item><config:config-item config:name="TreatSingleColumnBreakAsPageBreak" config:type="boolean">false</config:config-item><config:config-item config:name="SurroundTextWrapSmall" config:type="boolean">false</config:config-item><config:config-item config:name="ApplyParagraphMarkFormatToNumbering" config:type="boolean">false</config:config-item><config:config-item config:name="PropLineSpacingShrinksFirstLine" config:type="boolean">true</config:config-item><config:config-item config:name="SubtractFlysAnchoredAtFlys" config:type="boolean">false</config:config-item><config:config-item config:name="DisableOffPagePositioning" config:type="boolean">false</config:config-item><config:config-item config:name="ContinuousEndnotes" config:type="boolean">false</config:config-item><config:config-item config:name="ProtectBookmarks" config:type="boolean">false</config:config-item><config:config-item config:name="ProtectFields" config:type="boolean">false</config:config-item><config:config-item config:name="HeaderSpacingBelowLastPara" config:type="boolean">false</config:config-item><config:config-item config:name="FrameAutowidthWithMorePara" config:type="boolean">false</config:config-item><config:config-item config:name="PrintAnnotationMode" config:type="short">0</config:config-item><config:config-item config:name="PrintGraphics" config:type="boolean">true</config:config-item><config:config-item config:name="PrintBlackFonts" config:type="boolean">false</config:config-item><config:config-item config:name="PrintLeftPages" config:type="boolean">true</config:config-item><config:config-item config:name="PrintControls" config:type="boolean">true</config:config-item><config:config-item config:name="PrintPageBackground" config:type="boolean">true</config:config-item><config:config-item config:name="PrintTextPlaceholder" config:type="boolean">false</config:config-item><config:config-item config:name="PrintDrawings" config:type="boolean">true</config:config-item><config:config-item config:name="PrinthiddenText" config:type="boolean">false</config:config-item><config:config-item config:name="PrintProspect" config:type="boolean">false</config:config-item><config:config-item config:name="PrintTables" config:type="boolean">true</config:config-item><config:config-item config:name="PrintProspectRTL" config:type="boolean">false</config:config-item><config:config-item config:name="PrintReversed" config:type="boolean">false</config:config-item><config:config-item config:name="PrintRightPages" config:type="boolean">true</config:config-item><config:config-item config:name="PrintFaxName" config:type="string"/><config:config-item config:name="PrintPaperFromSetup" config:type="boolean">false</config:config-item><config:config-item config:name="PrintEmptyPages" config:type="boolean">true</config:config-item></config:config-item-set></office:settings></office:document-settings>`],
     ["styles.xml", "/", `<?xml version="1.0" encoding="UTF-8"?>
 <office:document-styles xmlns:meta="urn:oasis:names:tc:opendocument:xmlns:meta:1.0" xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:fo="urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0" xmlns:ooo="http://openoffice.org/2004/office" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0" xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0" xmlns:draw="urn:oasis:names:tc:opendocument:xmlns:drawing:1.0" xmlns:dr3d="urn:oasis:names:tc:opendocument:xmlns:dr3d:1.0" xmlns:svg="urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0" xmlns:chart="urn:oasis:names:tc:opendocument:xmlns:chart:1.0" xmlns:rpt="http://openoffice.org/2005/report" xmlns:table="urn:oasis:names:tc:opendocument:xmlns:table:1.0" xmlns:number="urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0" xmlns:ooow="http://openoffice.org/2004/writer" xmlns:oooc="http://openoffice.org/2004/calc" xmlns:of="urn:oasis:names:tc:opendocument:xmlns:of:1.2" xmlns:tableooo="http://openoffice.org/2009/table" xmlns:calcext="urn:org:documentfoundation:names:experimental:calc:xmlns:calcext:1.0" xmlns:drawooo="http://openoffice.org/2010/draw" xmlns:loext="urn:org:documentfoundation:names:experimental:office:xmlns:loext:1.0" xmlns:field="urn:openoffice:names:experimental:ooo-ms-interop:xmlns:field:1.0" xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:form="urn:oasis:names:tc:opendocument:xmlns:form:1.0" xmlns:script="urn:oasis:names:tc:opendocument:xmlns:script:1.0" xmlns:dom="http://www.w3.org/2001/xml-events" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:grddl="http://www.w3.org/2003/g/data-view#" xmlns:css3t="http://www.w3.org/TR/css3-text/" xmlns:officeooo="http://openoffice.org/2009/office" office:version="1.3"><office:font-face-decls><style:font-face style:name="Arial1" svg:font-family="Arial" style:font-family-generic="swiss"/><style:font-face style:name="Liberation Serif" svg:font-family="&apos;Liberation Serif&apos;" style:font-family-generic="roman" style:font-pitch="variable"/><style:font-face style:name="Liberation Sans" svg:font-family="&apos;Liberation Sans&apos;" style:font-family-generic="swiss" style:font-pitch="variable"/><style:font-face style:name="Arial" svg:font-family="Arial" style:font-family-generic="system" style:font-pitch="variable"/><style:font-face style:name="游ゴシック" svg:font-family="游ゴシック" style:font-family-generic="system" style:font-pitch="variable"/><style:font-face style:name="游明朝" svg:font-family="游明朝" style:font-family-generic="system" style:font-pitch="variable"/></office:font-face-decls><office:styles><style:default-style style:family="graphic"><style:graphic-properties svg:stroke-color="#3465a4" draw:fill-color="#729fcf" fo:wrap-option="no-wrap" draw:shadow-offset-x="0.3cm" draw:shadow-offset-y="0.3cm" draw:start-line-spacing-horizontal="0.283cm" draw:start-line-spacing-vertical="0.283cm" draw:end-line-spacing-horizontal="0.283cm" draw:end-line-spacing-vertical="0.283cm" style:flow-with-text="false"/><style:paragraph-properties style:text-autospace="ideograph-alpha" style:line-break="strict" style:font-independent-line-spacing="false"><style:tab-stops/></style:paragraph-properties><style:text-properties style:use-window-font-color="true" loext:opacity="0%" style:font-name="Liberation Serif" fo:font-size="12pt" fo:language="en" fo:country="US" style:letter-kerning="true" style:font-name-asian="游明朝" style:font-size-asian="10.5pt" style:language-asian="ja" style:country-asian="JP" style:font-name-complex="Arial" style:font-size-complex="12pt" style:language-complex="hi" style:country-complex="IN"/></style:default-style><style:default-style style:family="paragraph"><style:paragraph-properties fo:orphans="2" fo:widows="2" fo:hyphenation-ladder-count="no-limit" style:text-autospace="ideograph-alpha" style:punctuation-wrap="hanging" style:line-break="strict" style:tab-stop-distance="1.251cm" style:writing-mode="page"/><style:text-properties style:use-window-font-color="true" loext:opacity="0%" style:font-name="Liberation Serif" fo:font-size="12pt" fo:language="en" fo:country="US" style:letter-kerning="true" style:font-name-asian="游明朝" style:font-size-asian="10.5pt" style:language-asian="ja" style:country-asian="JP" style:font-name-complex="Arial" style:font-size-complex="12pt" style:language-complex="hi" style:country-complex="IN" fo:hyphenate="false" fo:hyphenation-remain-char-count="2" fo:hyphenation-push-char-count="2" loext:hyphenation-no-caps="false"/></style:default-style><style:default-style style:family="table"><style:table-properties table:border-model="collapsing"/></style:default-style><style:default-style style:family="table-row"><style:table-row-properties fo:keep-together="auto"/></style:default-style><style:style style:name="Standard" style:family="paragraph" style:class="text"/><style:style style:name="Heading" style:family="paragraph" style:parent-style-name="Standard" style:next-style-name="Text_20_body" style:class="text"><style:paragraph-properties fo:margin-top="0.423cm" fo:margin-bottom="0.212cm" style:contextual-spacing="false" fo:keep-with-next="always"/><style:text-properties style:font-name="Liberation Sans" fo:font-family="&apos;Liberation Sans&apos;" style:font-family-generic="swiss" style:font-pitch="variable" fo:font-size="14pt" style:font-name-asian="游ゴシック" style:font-family-asian="游ゴシック" style:font-family-generic-asian="system" style:font-pitch-asian="variable" style:font-size-asian="14pt" style:font-name-complex="Arial" style:font-family-complex="Arial" style:font-family-generic-complex="system" style:font-pitch-complex="variable" style:font-size-complex="14pt"/></style:style><style:style style:name="Text_20_body" style:display-name="Text body" style:family="paragraph" style:parent-style-name="Standard" style:class="text"><style:paragraph-properties fo:margin-top="0cm" fo:margin-bottom="0.247cm" style:contextual-spacing="false" fo:line-height="115%"/></style:style><style:style style:name="List" style:family="paragraph" style:parent-style-name="Text_20_body" style:class="list"><style:text-properties style:font-size-asian="12pt" style:font-name-complex="Arial1" style:font-family-complex="Arial" style:font-family-generic-complex="swiss"/></style:style><style:style style:name="Caption" style:family="paragraph" style:parent-style-name="Standard" style:class="extra"><style:paragraph-properties fo:margin-top="0.212cm" fo:margin-bottom="0.212cm" style:contextual-spacing="false" text:number-lines="false" text:line-number="0"/><style:text-properties fo:font-size="12pt" fo:font-style="italic" style:font-size-asian="12pt" style:font-style-asian="italic" style:font-name-complex="Arial1" style:font-family-complex="Arial" style:font-family-generic-complex="swiss" style:font-size-complex="12pt" style:font-style-complex="italic"/></style:style><style:style style:name="Index" style:family="paragraph" style:parent-style-name="Standard" style:class="index"><style:paragraph-properties text:number-lines="false" text:line-number="0"/><style:text-properties style:font-size-asian="12pt" style:font-name-complex="Arial1" style:font-family-complex="Arial" style:font-family-generic-complex="swiss"/></style:style><style:style style:name="Rubies" style:family="text"><style:text-properties fo:font-size="6pt" style:text-underline-style="none" style:font-size-asian="6pt" style:font-size-complex="6pt" style:text-emphasize="none"/></style:style><text:outline-style style:name="Outline"><text:outline-level-style text:level="1" style:num-format=""><style:list-level-properties text:list-level-position-and-space-mode="label-alignment"><style:list-level-label-alignment text:label-followed-by="listtab"/></style:list-level-properties></text:outline-level-style><text:outline-level-style text:level="2" style:num-format=""><style:list-level-properties text:list-level-position-and-space-mode="label-alignment"><style:list-level-label-alignment text:label-followed-by="listtab"/></style:list-level-properties></text:outline-level-style><text:outline-level-style text:level="3" style:num-format=""><style:list-level-properties text:list-level-position-and-space-mode="label-alignment"><style:list-level-label-alignment text:label-followed-by="listtab"/></style:list-level-properties></text:outline-level-style><text:outline-level-style text:level="4" style:num-format=""><style:list-level-properties text:list-level-position-and-space-mode="label-alignment"><style:list-level-label-alignment text:label-followed-by="listtab"/></style:list-level-properties></text:outline-level-style><text:outline-level-style text:level="5" style:num-format=""><style:list-level-properties text:list-level-position-and-space-mode="label-alignment"><style:list-level-label-alignment text:label-followed-by="listtab"/></style:list-level-properties></text:outline-level-style><text:outline-level-style text:level="6" style:num-format=""><style:list-level-properties text:list-level-position-and-space-mode="label-alignment"><style:list-level-label-alignment text:label-followed-by="listtab"/></style:list-level-properties></text:outline-level-style><text:outline-level-style text:level="7" style:num-format=""><style:list-level-properties text:list-level-position-and-space-mode="label-alignment"><style:list-level-label-alignment text:label-followed-by="listtab"/></style:list-level-properties></text:outline-level-style><text:outline-level-style text:level="8" style:num-format=""><style:list-level-properties text:list-level-position-and-space-mode="label-alignment"><style:list-level-label-alignment text:label-followed-by="listtab"/></style:list-level-properties></text:outline-level-style><text:outline-level-style text:level="9" style:num-format=""><style:list-level-properties text:list-level-position-and-space-mode="label-alignment"><style:list-level-label-alignment text:label-followed-by="listtab"/></style:list-level-properties></text:outline-level-style><text:outline-level-style text:level="10" style:num-format=""><style:list-level-properties text:list-level-position-and-space-mode="label-alignment"><style:list-level-label-alignment text:label-followed-by="listtab"/></style:list-level-properties></text:outline-level-style></text:outline-style><text:notes-configuration text:note-class="footnote" style:num-format="1" text:start-value="0" text:footnotes-position="page" text:start-numbering-at="document"/><text:notes-configuration text:note-class="endnote" style:num-format="i" text:start-value="0"/><text:linenumbering-configuration text:number-lines="false" text:offset="0.499cm" style:num-format="1" text:number-position="left" text:increment="5"/></office:styles><office:automatic-styles><style:page-layout style:name="Mpm1"><style:page-layout-properties fo:page-width="21.001cm" fo:page-height="29.7cm" style:num-format="1" style:print-orientation="portrait" fo:margin-top="2cm" fo:margin-bottom="2cm" fo:margin-left="2cm" fo:margin-right="2cm" style:writing-mode="lr-tb" style:layout-grid-color="#c0c0c0" style:layout-grid-lines="20" style:layout-grid-base-height="0.706cm" style:layout-grid-ruby-height="0.353cm" style:layout-grid-mode="none" style:layout-grid-ruby-below="false" style:layout-grid-print="false" style:layout-grid-display="false" style:footnote-max-height="0cm"><style:footnote-sep style:width="0.018cm" style:distance-before-sep="0.101cm" style:distance-after-sep="0.101cm" style:line-style="solid" style:adjustment="left" style:rel-width="25%" style:color="#000000"/></style:page-layout-properties><style:header-style/><style:footer-style/></style:page-layout></office:automatic-styles><office:master-styles><style:master-page style:name="Standard" style:page-layout-name="Mpm1"/></office:master-styles></office:document-styles>`]
   ]
