@@ -36,7 +36,7 @@ span {
   }
 }
 </style>
-<textarea></textarea>
+<textarea>a</textarea>
 <span></span>
 <script>
 let nod_textarea = document.getElementsByTagName("textarea")[0]
@@ -82,7 +82,7 @@ function setFontSize() {
 
 */
 function setletterSpacing() {
-  let letterSpacingTolerance = 0.7 // 固定値
+  let letterSpacingTolerance = 0 // 固定値
   let scrollBar = 20 // 固定値
   let windowWidth = window.innerWidth
   let frameWidth = Number(window.getComputedStyle(nod_textarea).paddingRight.slice(0, -2)) + Number(window.getComputedStyle(nod_textarea).paddingLeft.slice(0, -2))
