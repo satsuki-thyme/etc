@@ -1,0 +1,169 @@
+<html lang="ja-JP">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Photo Rand</title>
+<img id="pictframe">
+<p id="message">画像をロード中です。</p>
+<p id="caution">データの取得を失敗したため停止しました。<br>再開するにはタップ・クリック・キー押下してください。</p>
+<style>
+body {
+  margin: 0;
+  padding: 0;
+  color: #1e1f1c;
+  background-color: #f1eee9;
+  overflow: hidden;
+}
+@media (prefers-color-scheme: dark) {
+  body {
+    color: #f1eee9;
+    background-color: #1e1f1c;
+  }
+}
+#pictframe {
+  position: relative;
+  z-index: 1;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+#message,
+#caution {
+  position: absolute;
+  z-index: 0;
+  margin: auto;
+}
+#message {
+  display: inline-block;
+}
+#caution {
+  display: none;
+}
+</style>
+<script>
+/*
+
+  主たる部分
+
+*/
+let timeInterval = 10000
+let srcUrl = "https://picsum.photos"
+let startDate = Date.now()
+let markDate = startDate
+let suspendDate = startDate
+let winWidth = window.innerWidth
+let winHeight = window.innerHeight
+let currAspect = 0
+let mode = "initial"
+let retry = 0
+let blob = ""
+let repeat = null
+let timeout = null
+let elm_pictframe = document.getElementById("pictframe")
+ctrl()
+window.onkeydown = () => ctrl("manipulated")
+window.onmousedown = () => ctrl("manipulated")
+window.ontouchstart = () => ctrl("manipulated")
+window.onresize = () => ctrl("resize")
+function ctrl(event) {
+  if (mode === "initial") start()
+  else if (mode === "normal" && event === "manipulated") suspend()
+  else if (mode === "suspend" && event === "manipulated") restart()
+  else if (mode === "error" && event === "manipulated") start()
+  else if (event === "resize") sizing()
+}
+function load() {
+  currAspect = winHeight / winWidth
+  return fetch(`${srcUrl}/${winWidth}/${winHeight}`)
+  .then(async rly => {
+    if (rly.ok) {
+      retry = 0
+      return await rly.blob()
+    }
+    else if (retry < 10) {
+      setTimeout(load(), 300)
+      console.log(`データの取得に ${retry + 1} 回失敗しました。`)
+      retry++
+    }
+    else {
+      retry = 0
+      mode = "error"
+      caution()
+    }
+  })
+}
+function start() {
+  load()
+  .then(rly => {
+    blob = rly
+    interval()
+    elm_message.style.display = "none"
+  })
+  mode = "transition"
+}
+function restart() {
+  load()
+  .then(rly => blob = rly)
+  timeout = setTimeout(() => {
+    interval()
+  }, time(mode))
+  mode = "transition"
+}
+function suspend() {
+  suspendDate = Date.now()
+  clearInterval(repeat)
+  mode = "suspend"
+}
+function interval() {
+  mode = "normal"
+  repeat = setInterval(() => {
+    markDate = Date.now()
+    elm_pictframe.src = window.URL.createObjectURL(blob)
+    sizing()
+    load()
+    .then(rly => blob = rly)
+  }, time(mode))
+}
+function time() {
+  if (mode === "initial" || mode === "normal") {
+    return timeInterval
+  }
+  if (mode === "suspend") {
+    let dif = suspendDate - markDate
+    if (dif < 200) dif = 200
+    return timeInterval - dif
+  }
+}
+function sizing() {
+  winWidth = window.innerWidth
+  winHeight = window.innerHeight
+  if (winHeight / winWidth < currAspect) {
+    elm_pictframe.style.width = winWidth
+    elm_pictframe.style.height = winWidth * currAspect
+  }
+  else if (winHeight / winWidth > currAspect) {
+    elm_pictframe.style.width = winHeight / currAspect
+    elm_pictframe.style.height = winHeight
+  }
+  else {
+    elm_pictframe.style.width = winWidth
+    elm_pictframe.style.height = winHeight
+  }
+}
+/*
+
+  副たる部分
+
+*/
+function caution() {
+  elm_message.style.display = "none"
+  let elm_caution = document.getElementById("caution")
+  elm_caution.style.display = "inline-block"
+  elm_caution.style.width = Number(window.getComputedStyle(elm_caution).getPropertyValue("width").slice(0, -2))
+  elm_caution.style.height = Number(window.getComputedStyle(elm_caution).getPropertyValue("height").slice(0, -2))
+  elm_caution.style.inset = 0
+}
+let elm_message = document.getElementById("message")
+elm_message.style.width = Number(window.getComputedStyle(elm_message).getPropertyValue("width").slice(0, -2))
+elm_message.style.height = Number(window.getComputedStyle(elm_message).getPropertyValue("height").slice(0, -2))
+elm_message.style.inset = 0
+</script>
