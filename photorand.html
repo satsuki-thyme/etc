@@ -30,7 +30,9 @@ body {
 #caution {
   position: absolute;
   z-index: 0;
+  width: 100%;
   margin: auto;
+  text-align: center;
 }
 #message {
   display: inline-block;
@@ -54,6 +56,7 @@ let winWidth = window.innerWidth
 let winHeight = window.innerHeight
 let currAspect = 0
 let mode = "initial"
+let resizeSwitch = false
 let retry = 0
 let blob = ""
 let repeat = null
@@ -61,7 +64,7 @@ let timeout = null
 let elm_pictframe = document.getElementById("pictframe")
 ctrl()
 window.onkeydown = () => ctrl("manipulated")
-window.onmousedown = () => ctrl("manipulated")
+window.onclick = () => ctrl("manipulated")
 window.ontouchstart = () => ctrl("manipulated")
 window.onresize = () => ctrl("resize")
 function ctrl(event) {
@@ -69,7 +72,7 @@ function ctrl(event) {
   else if (mode === "normal" && event === "manipulated") suspend()
   else if (mode === "suspend" && event === "manipulated") restart()
   else if (mode === "error" && event === "manipulated") start()
-  else if (event === "resize") sizing()
+  else if (event === "resize") {sizing(); resizeSwitch = true}
 }
 function load() {
   currAspect = winHeight / winWidth
@@ -85,6 +88,7 @@ function load() {
       retry++
     }
     else {
+      clearInterval(repeat)
       retry = 0
       mode = "error"
       caution()
@@ -95,6 +99,7 @@ function start() {
   load()
   .then(rly => {
     blob = rly
+    elm_pictframe.src = window.URL.createObjectURL(blob)
     interval()
     elm_message.style.display = "none"
   })
@@ -115,10 +120,15 @@ function suspend() {
 }
 function interval() {
   mode = "normal"
+  load()
+  .then(rly => blob = rly)
   repeat = setInterval(() => {
     markDate = Date.now()
     elm_pictframe.src = window.URL.createObjectURL(blob)
-    sizing()
+    if (resizeSwitch === true) {
+      resizeSwitch = false
+      sizing()
+    }
     load()
     .then(rly => blob = rly)
   }, time(mode))
@@ -156,14 +166,12 @@ function sizing() {
 */
 function caution() {
   elm_message.style.display = "none"
-  let elm_caution = document.getElementById("caution")
   elm_caution.style.display = "inline-block"
-  elm_caution.style.width = Number(window.getComputedStyle(elm_caution).getPropertyValue("width").slice(0, -2))
   elm_caution.style.height = Number(window.getComputedStyle(elm_caution).getPropertyValue("height").slice(0, -2))
-  elm_caution.style.inset = 0
 }
 let elm_message = document.getElementById("message")
-elm_message.style.width = Number(window.getComputedStyle(elm_message).getPropertyValue("width").slice(0, -2))
+let elm_caution = document.getElementById("caution")
 elm_message.style.height = Number(window.getComputedStyle(elm_message).getPropertyValue("height").slice(0, -2))
 elm_message.style.inset = 0
+elm_caution.style.inset = 0
 </script>
