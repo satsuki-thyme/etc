@@ -7,21 +7,12 @@ function dimensionBreaker(multidimArray) {
   function breaker(target, id) {
     return new Promise(resolve => {
       if (!Array.isArray(target)) {
-        resolve(
-          row.push(
-            {
-              "id": id,
-              "not": target
-            }
-          )
-        )
+        resolve(row.push({"id": id, "not": target}))
       }
       else {
         let promiseArray = []
         for (let i in target) {
-          promiseArray.push(
-            breaker(target[i], id.concat(i.toString()))
-          )
+          promiseArray.push(breaker(target[i], id.concat(i.toString())))
         }
         Promise.all(promiseArray)
         .then(() => {
