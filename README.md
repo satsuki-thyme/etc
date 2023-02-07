@@ -6,6 +6,8 @@
   Amaozn.co.jp の商品ページの URL から余分なものを取り除きます。
 * anagram.html  
   作りかけ。
+* dimensionBreaker.js  
+  多次元配列を一次元配列にします。連想配列には対応していません。
 * esc.js  
   正規表現のためのエスケープをするライブラリ。
 * kanji.html  
