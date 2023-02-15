@@ -1,0 +1,490 @@
+.revert html,
+.revert head,
+.revert title,
+.revert base,
+.revert link,
+.revert style,
+.revert meta,
+.revert body,
+.revert article,
+.revert section,
+.revert nav,
+.revert aside,
+.revert h1,
+.revert h2,
+.revert h3,
+.revert h4,
+.revert h5,
+.revert h6,
+.revert header,
+.revert footer,
+.revert address,
+.revert p,
+.revert hr,
+.revert pre,
+.revert blockquote,
+.revert ol,
+.revert ul,
+.revert li,
+.revert dl,
+.revert dt,
+.revert dd,
+.revert figure,
+.revert figcaption,
+.revert main,
+.revert div,
+.revert a,
+.revert em,
+.revert strong,
+.revert small,
+.revert s,
+.revert cite,
+.revert q,
+.revert dfn,
+.revert abbr,
+.revert code,
+.revert var,
+.revert samp,
+.revert kbd,
+.revert data,
+.revert sub,
+.revert sup,
+.revert time,
+.revert i,
+.revert b,
+.revert u,
+.revert mark,
+.revert ruby,
+.revert rb,
+.revert rt,
+.revert rtc,
+.revert rp,
+.revert bdi,
+.revert bdo,
+.revert span,
+.revert br,
+.revert wbr,
+.revert ins,
+.revert del,
+.revert img,
+.revert picture,
+.revert iframe,
+.revert embed,
+.revert object,
+.revert param,
+.revert video,
+.revert audio,
+.revert track,
+.revert source,
+.revert map,
+.revert area,
+.revert table,
+.revert caption,
+.revert colgroup,
+.revert col,
+.revert tbody,
+.revert thead,
+.revert tfoot,
+.revert tr,
+.revert td,
+.revert th,
+.revert form,
+.revert fieldset,
+.revert legend,
+.revert label,
+.revert input,
+.revert select,
+.revert option,
+.revert optgroup,
+.revert textarea,
+.revert button,
+.revert datalist,
+.revert output,
+.revert progress,
+.revert meter,
+.revert script,
+.revert noscript,
+.revert template,
+.revert canvas,
+.revert details,
+.revert summary,
+.revert menu,
+.revert menuitem {
+  color: revert;
+  opacity: revert;
+  font: revert;
+  font-family: revert;
+  font-feature-settings: revert;
+  font-kerning: revert;
+  font-language-override: revert;
+  font-size: revert;
+  font-size-adjust: revert;
+  font-stretch: revert;
+  font-style: revert;
+  font-synthesis: revert;
+  font-variant: revert;
+  font-variant-alternates: revert;
+  font-variant-caps: revert;
+  font-variant-east-asian: revert;
+  font-variant-ligatures: revert;
+  font-variant-numeric: revert;
+  font-variant-position: revert;
+  font-weight: revert;
+  hanging-punctuation: revert;
+  hyphens: revert;
+  letter-spacing: revert;
+  line-break: revert;
+  line-height: revert;
+  overflow-wrap: revert;
+  tab-size: revert;
+  text-align: revert;
+  text-align-last: revert;
+  text-decoration: revert;
+  text-decoration-line: revert;
+  text-decoration-style: revert;
+  text-decoration-color: revert;
+  text-emphasis: revert;
+  text-emphasis-color: revert;
+  text-emphasis-position: revert;
+  text-emphasis-style: revert;
+  text-indent: revert;
+  text-justify: revert;
+  text-shadow: revert;
+  text-transform: revert;
+  text-underline-position: revert;
+  vertical-align: revert;
+  white-space: revert;
+  word-break: revert;
+  word-spacing: revert;
+  word-wrap: revert;
+  text-decoration: revert;
+  text-shadow: revert;
+  direction: revert;
+  unicode-bidi: revert;
+  writing-mode: revert;
+  ruby-align: revert;
+  ruby-merge: revert;
+  ruby-position: revert;
+  break-after: revert;
+  break-before: revert;
+  break-inside: revert;
+  page-break-after: revert;
+  page-break-before: revert;
+  page-break-inside: revert;
+  list-style: revert;
+  list-style-image: revert;
+  list-style-position: revert;
+  list-style-type: revert;
+  border-collapse: revert;
+  border-spacing: revert;
+  caption-side: revert;
+  empty-cells: revert;
+  table-layout: revert;
+  content: revert;
+  counter-increment: revert;
+  counter-reset: revert;
+  quotes: revert;
+  image-orientation: revert;
+  marks: revert;
+  orphans: revert;
+  page-break-after: revert;
+  page-break-before: revert;
+  page-break-inside: revert;
+  size: revert;
+  widows: revert;
+  background-blend-mode: revert;
+  mix-blend-mode: revert;
+  bottom: revert;
+  break-after: revert;
+  break-before: revert;
+  break-inside: revert;
+  caption-side: revert;
+  clear: revert;
+  clip: revert;
+  column-count: revert;
+  column-fill: revert;
+  column-gap: revert;
+  column-rule: revert;
+  column-rule-color: revert;
+  column-rule-style: revert;
+  column-rule-width: revert;
+  columns: revert;
+  column-span: revert;
+  column-width: revert;
+  display: revert;
+  float: revert;
+  hanging-punctuation: revert;
+  height: revert;
+  left: revert;
+  line-height: revert;
+  max-height: revert;
+  max-width: revert;
+  min-height: revert;
+  min-width: revert;
+  orphans: revert;
+  outline: revert;
+  outline-offset: revert;
+  outline-style: revert;
+  outline-width: revert;
+  overflow: revert;
+  overflow-x: revert;
+  overflow-y: revert;
+  position: revert;
+  right: revert;
+  ruby-align: revert;
+  ruby-position: revert;
+  size: revert;
+  table-layout: revert;
+  text-align: revert;
+  text-align-last: revert;
+  top: revert;
+  vertical-align: revert;
+  width: revert;
+  z-index: revert;
+  clear: revert;
+  clip: revert;
+  cursor: revert;
+  display: revert;
+  empty-cells: revert;
+  float: revert;
+  grid-column: revert;
+  grid-row: revert;
+  list-style: revert;
+  list-style-image: revert;
+  list-style-position: revert;
+  list-style-type: revert;
+  opacity: revert;
+  outline-color: revert;
+  overflow: revert;
+  overflow-x: revert;
+  overflow-y: revert;
+  quotes: revert;
+  visibility: revert;
+  z-index: revert;
+  margin: revert;
+  margin-bottom: revert;
+  margin-left: revert;
+  margin-right: revert;
+  margin-top: revert;
+  padding: revert;
+  padding-bottom: revert;
+  padding-left: revert;
+  padding-right: revert;
+  padding-top: revert;
+  box-sizing: revert;
+  height: revert;
+  max-height: revert;
+  max-width: revert;
+  min-height: revert;
+  min-width: revert;
+  width: revert;
+  background: revert;
+  background-attachment: revert;
+  background-clip: revert;
+  background-color: revert;
+  background-image: revert;
+  background-origin: revert;
+  background-position: revert;
+  background-repeat: revert;
+  background-size: revert;
+  border: revert;
+  border-bottom: revert;
+  border-bottom-color: revert;
+  border-bottom-left-radius: revert;
+  border-bottom-right-radius: revert;
+  border-bottom-style: revert;
+  border-bottom-width: revert;
+  border-collapse: revert;
+  border-color: revert;
+  border-image: revert;
+  border-image-outset: revert;
+  border-image-repeat: revert;
+  border-image-slice: revert;
+  border-image-source: revert;
+  border-image-width: revert;
+  border-left: revert;
+  border-left-color: revert;
+  border-left-style: revert;
+  border-left-width: revert;
+  border-radius: revert;
+  border-right: revert;
+  border-right-color: revert;
+  border-right-style: revert;
+  border-right-width: revert;
+  border-spacing: revert;
+  border-style: revert;
+  border-top: revert;
+  border-top-color: revert;
+  border-top-left-radius: revert;
+  border-top-right-radius: revert;
+  border-top-style: revert;
+  border-top-width: revert;
+  border-width: revert;
+  border-bottom-left-radius: revert;
+  border-bottom-right-radius: revert;
+  border-radius: revert;
+  border-top-left-radius: revert;
+  border-top-right-radius: revert;
+  border-image: revert;
+  border-image-outset: revert;
+  border-image-repeat: revert;
+  border-image-slice: revert;
+  border-image-source: revert;
+  border-image-width: revert;
+  box-shadow: revert;
+  outline: revert;
+  outline-color: revert;
+  outline-style: revert;
+  outline-width: revert;
+  clip: revert;
+  clip-path: revert;
+  animation: revert;
+  animation-delay: revert;
+  animation-direction: revert;
+  animation-duration: revert;
+  animation-fill-mode: revert;
+  animation-iteration-count: revert;
+  animation-name: revert;
+  animation-play-state: revert;
+  animation-timing-function: revert;
+  perspective: revert;
+  perspective-origin: revert;
+  transition: revert;
+  transition-delay: revert;
+  transition-duration: revert;
+  transition-property: revert;
+  transition-timing-function: revert;
+  backface-visibility: revert;
+  perspective: revert;
+  perspective-origin: revert;
+  transform: revert;
+  transform-origin: revert;
+  transform-style: revert;
+  transition: revert;
+  transition-delay: revert;
+  transition-duration: revert;
+  transition-property: revert;
+  transition-timing-function: revert;
+  break-after: revert;
+  break-before: revert;
+  break-inside: revert;
+  column-count: revert;
+  column-fill: revert;
+  column-gap: revert;
+  column-rule: revert;
+  column-rule-color: revert;
+  column-rule-style: revert;
+  column-rule-width: revert;
+  columns: revert;
+  column-span: revert;
+  column-width: revert;
+  align-content: revert;
+  align-items: revert;
+  align-self: revert;
+  flex: revert;
+  flex-basis: revert;
+  flex-direction: revert;
+  flex-flow: revert;
+  flex-grow: revert;
+  flex-shrink: revert;
+  flex-wrap: revert;
+  justify-content: revert;
+  order: revert;
+  box-sizing: revert;
+  cursor: revert;
+  ime-mode: revert;
+  nav-down: revert;
+  nav-index: revert;
+  nav-left: revert;
+  nav-right: revert;
+  nav-up: revert;
+  outline: revert;
+  outline-color: revert;
+  outline-style: revert;
+  outline-width: revert;
+  resize: revert;
+  text-overflow: revert;
+  azimuth: revert;
+  speak-as: revert;
+  filter: revert;
+  image-resolution: revert;
+  object-fit: revert;
+  object-position: revert;
+  grid: revert;
+  grid-area: revert;
+  grid-auto-columns: revert;
+  grid-auto-flow: revert;
+  grid-auto-rows: revert;
+  grid-column: revert;
+  grid-column-end: revert;
+  grid-column-start: revert;
+  grid-gap: revert;
+  grid-row: revert;
+  grid-row-end: revert;
+  grid-row-start: revert;
+  grid-template: revert;
+  grid-template-areas: revert;
+  grid-template-columns: revert;
+  grid-template-rows: revert;
+  clear: revert;
+  display: revert;
+  float: revert;
+  height: revert;
+  margin: revert;
+  margin-bottom: revert;
+  margin-left: revert;
+  margin-right: revert;
+  margin-top: revert;
+  max-height: revert;
+  max-width: revert;
+  min-height: revert;
+  min-width: revert;
+  overflow: revert;
+  overflow-x: revert;
+  overflow-y: revert;
+  padding: revert;
+  padding-bottom: revert;
+  padding-left: revert;
+  padding-right: revert;
+  padding-top: revert;
+  visibility: revert;
+  width: revert;
+  line-height: revert;
+  vertical-align: revert;
+  direction: revert;
+  font: revert;
+  font-family: revert;
+  font-size: revert;
+  font-size-adjust: revert;
+  font-stretch: revert;
+  font-style: revert;
+  font-variant: revert;
+  font-weight: revert;
+  hyphens: revert;
+  letter-spacing: revert;
+  text-align: revert;
+  text-align-last: revert;
+  text-decoration: revert;
+  text-emphasis: revert;
+  text-indent: revert;
+  text-justify: revert;
+  text-shadow: revert;
+  text-transform: revert;
+  unicode-bidi: revert;
+  white-space: revert;
+  word-break: revert;
+  word-spacing: revert;
+  word-wrap: revert;
+  box-shadow: revert;
+  box-sizing: revert;
+  image-orientation: revert;
+  image-rendering: revert;
+  image-resolution: revert;
+  bleed: revert;
+  justify-items: revert;
+  pointer-events: revert;
+  scroll-behavior: revert;
+  text-rendering: revert;
+  touch-action: revert;
+  will-change: revert;
+}
