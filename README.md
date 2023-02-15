@@ -28,5 +28,7 @@
   各都道府県のサイトの URL をまとめた JSON 。
 * random.html  
   数字をランダムに表示するページ。
+* revert.css  
+  全ての値をブラウザ既定値に戻す CSS 。
 * 文頭接頭詞.esy  
   EmEditor の文頭接頭詞用強調表示構文。
