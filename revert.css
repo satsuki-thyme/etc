@@ -62,17 +62,17 @@
 .revert *::slotted(*),
 .revert *::spelling-error,
 .revert *::target-text {
-  color: revert;
-  opacity: revert;
+  color: unset;
+  opacity: unset;
   font: unset;
-  font-family: revert;
+  font-family: unset;
   font-feature-settings: unset;
   font-kerning: unset;
   font-language-override: unset;
-  font-size: revert;
+  font-size: unset;
   font-size-adjust: unset;
   font-stretch: unset;
-  font-style: revert;
+  font-style: unset;
   font-synthesis: unset;
   font-variant: unset;
   font-variant-alternates: unset;
@@ -80,43 +80,43 @@
   font-variant-east-asian: unset;
   font-variant-ligatures: unset;
   font-variant-numeric: unset;
-  font-variant-position: revert;
-  font-weight: revert;
+  font-variant-position: unset;
+  font-weight: unset;
   hanging-punctuation: unset;
   hyphens: unset;
-  letter-spacing: revert;
+  letter-spacing: unset;
   line-break: unset;
-  line-height: revert;
+  line-height: unset;
   overflow-wrap: unset;
-  tab-size: revert;
-  text-align: revert;
+  tab-size: unset;
+  text-align: unset;
   text-align-last: unset;
-  text-decoration: revert;
+  text-decoration: unset;
   text-decoration-line: unset;
   text-decoration-style: unset;
-  text-decoration-color: revert;
+  text-decoration-color: unset;
   text-emphasis: unset;
-  text-emphasis-color: revert;
-  text-emphasis-position: revert;
+  text-emphasis-color: unset;
+  text-emphasis-position: unset;
   text-emphasis-style: unset;
-  text-indent: revert;
+  text-indent: unset;
   text-justify: unset;
-  text-shadow: revert;
-  text-transform: revert;
-  text-underline-position: revert;
-  vertical-align: revert;
-  white-space: revert;
+  text-shadow: unset;
+  text-transform: unset;
+  text-underline-position: unset;
+  vertical-align: unset;
+  white-space: unset;
   word-break: unset;
-  word-spacing: revert;
-  word-wrap: revert;
-  text-decoration: revert;
-  text-shadow: revert;
-  direction: revert;
-  unicode-bidi: revert;
+  word-spacing: unset;
+  word-wrap: unset;
+  text-decoration: unset;
+  text-shadow: unset;
+  direction: unset;
+  unicode-bidi: unset;
   writing-mode: unset;
   ruby-align: unset;
   ruby-merge: unset;
-  ruby-position: revert;
+  ruby-position: unset;
   break-after: unset;
   break-before: unset;
   break-inside: unset;
@@ -125,14 +125,14 @@
   page-break-inside: unset;
   list-style: unset;
   list-style-image: unset;
-  list-style-position: revert;
-  list-style-type: revert;
-  border-collapse: revert;
-  border-spacing: revert;
+  list-style-position: unset;
+  list-style-type: unset;
+  border-collapse: unset;
+  border-spacing: unset;
   caption-side: unset;
   empty-cells: unset;
   table-layout: unset;
-  content: revert;
+  content: unset;
   counter-increment: unset;
   counter-reset: unset;
   quotes: unset;
@@ -142,11 +142,11 @@
   page-break-after: unset;
   page-break-before: unset;
   page-break-inside: unset;
-  size: revert;
+  size: unset;
   widows: unset;
   background-blend-mode: unset;
   mix-blend-mode: unset;
-  bottom: revert;
+  bottom: unset;
   break-after: unset;
   break-before: unset;
   break-inside: unset;
@@ -157,124 +157,124 @@
   column-fill: unset;
   column-gap: unset;
   column-rule: unset;
-  column-rule-color: revert;
+  column-rule-color: unset;
   column-rule-style: unset;
-  column-rule-width: revert;
+  column-rule-width: unset;
   columns: unset;
   column-span: unset;
-  column-width: revert;
-  display: revert;
+  column-width: unset;
+  display: unset;
   float: unset;
   hanging-punctuation: unset;
-  height: revert;
-  left: revert;
-  line-height: revert;
-  max-height: revert;
-  max-width: revert;
-  min-height: revert;
-  min-width: revert;
+  height: unset;
+  left: unset;
+  line-height: unset;
+  max-height: unset;
+  max-width: unset;
+  min-height: unset;
+  min-width: unset;
   orphans: unset;
-  outline: revert;
-  outline-offset: revert;
+  outline: unset;
+  outline-offset: unset;
   outline-style: unset;
-  outline-width: revert;
-  overflow: revert;
-  overflow-x: revert;
-  overflow-y: revert;
-  position: revert;
-  right: revert;
+  outline-width: unset;
+  overflow: unset;
+  overflow-x: unset;
+  overflow-y: unset;
+  position: unset;
+  right: unset;
   ruby-align: unset;
-  ruby-position: revert;
-  size: revert;
+  ruby-position: unset;
+  size: unset;
   table-layout: unset;
-  text-align: revert;
+  text-align: unset;
   text-align-last: unset;
-  top: revert;
-  vertical-align: revert;
-  width: revert;
+  top: unset;
+  vertical-align: unset;
+  width: unset;
   z-index: unset;
   clear: unset;
   clip: unset;
-  cursor: revert;
-  display: revert;
+  cursor: unset;
+  display: unset;
   empty-cells: unset;
   float: unset;
   grid-column: unset;
   grid-row: unset;
   list-style: unset;
   list-style-image: unset;
-  list-style-position: revert;
-  list-style-type: revert;
-  opacity: revert;
-  outline-color: revert;
-  overflow: revert;
-  overflow-x: revert;
-  overflow-y: revert;
+  list-style-position: unset;
+  list-style-type: unset;
+  opacity: unset;
+  outline-color: unset;
+  overflow: unset;
+  overflow-x: unset;
+  overflow-y: unset;
   quotes: unset;
-  visibility: revert;
+  visibility: unset;
   z-index: unset;
-  margin: revert;
-  margin-bottom: revert;
-  margin-left: revert;
-  margin-right: revert;
-  margin-top: revert;
-  padding: revert;
-  padding-bottom: revert;
-  padding-left: revert;
-  padding-right: revert;
-  padding-top: revert;
-  box-sizing: revert;
-  height: revert;
-  max-height: revert;
-  max-width: revert;
-  min-height: revert;
-  min-width: revert;
-  width: revert;
-  background: revert;
+  margin: unset;
+  margin-bottom: unset;
+  margin-left: unset;
+  margin-right: unset;
+  margin-top: unset;
+  padding: unset;
+  padding-bottom: unset;
+  padding-left: unset;
+  padding-right: unset;
+  padding-top: unset;
+  box-sizing: unset;
+  height: unset;
+  max-height: unset;
+  max-width: unset;
+  min-height: unset;
+  min-width: unset;
+  width: unset;
+  background: unset;
   background-attachment: unset;
   background-clip: unset;
-  background-color: revert;
-  background-image: revert;
+  background-color: unset;
+  background-image: unset;
   background-origin: unset;
-  background-position: revert;
+  background-position: unset;
   background-repeat: unset;
-  background-size: revert;
-  border: revert;
-  border-bottom: revert;
-  border-bottom-color: revert;
+  background-size: unset;
+  border: unset;
+  border-bottom: unset;
+  border-bottom-color: unset;
   border-bottom-left-radius: unset;
   border-bottom-right-radius: unset;
   border-bottom-style: unset;
-  border-bottom-width: revert;
-  border-collapse: revert;
-  border-color: revert;
+  border-bottom-width: unset;
+  border-collapse: unset;
+  border-color: unset;
   border-image: unset;
   border-image-outset: unset;
   border-image-repeat: unset;
   border-image-slice: unset;
   border-image-source: unset;
-  border-image-width: revert;
-  border-left: revert;
-  border-left-color: revert;
+  border-image-width: unset;
+  border-left: unset;
+  border-left-color: unset;
   border-left-style: unset;
-  border-left-width: revert;
-  border-radius: revert;
-  border-right: revert;
-  border-right-color: revert;
+  border-left-width: unset;
+  border-radius: unset;
+  border-right: unset;
+  border-right-color: unset;
   border-right-style: unset;
-  border-right-width: revert;
-  border-spacing: revert;
-  border-style: revert;
-  border-top: revert;
-  border-top-color: revert;
+  border-right-width: unset;
+  border-spacing: unset;
+  border-style: unset;
+  border-top: unset;
+  border-top-color: unset;
   border-top-left-radius: unset;
   border-top-right-radius: unset;
   border-top-style: unset;
-  border-top-width: revert;
-  border-width: revert;
+  border-top-width: unset;
+  border-width: unset;
   border-bottom-left-radius: unset;
   border-bottom-right-radius: unset;
-  border-radius: revert;
+  border-radius: unset;
   border-top-left-radius: unset;
   border-top-right-radius: unset;
   border-image: unset;
@@ -282,17 +282,17 @@
   border-image-repeat: unset;
   border-image-slice: unset;
   border-image-source: unset;
-  border-image-width: revert;
+  border-image-width: unset;
   box-shadow: unset;
-  outline: revert;
-  outline-color: revert;
+  outline: unset;
+  outline-color: unset;
   outline-style: unset;
-  outline-width: revert;
+  outline-width: unset;
   clip: unset;
   clip-path: unset;
   animation: unset;
   animation-delay: unset;
-  animation-direction: revert;
+  animation-direction: unset;
   animation-duration: unset;
   animation-fill-mode: unset;
   animation-iteration-count: unset;
@@ -306,7 +306,7 @@
   transition-duration: unset;
   transition-property: unset;
   transition-timing-function: unset;
-  backface-visibility: revert;
+  backface-visibility: unset;
   perspective: unset;
   perspective-origin: unset;
   transform: unset;
@@ -324,44 +324,44 @@
   column-fill: unset;
   column-gap: unset;
   column-rule: unset;
-  column-rule-color: revert;
+  column-rule-color: unset;
   column-rule-style: unset;
-  column-rule-width: revert;
+  column-rule-width: unset;
   columns: unset;
   column-span: unset;
-  column-width: revert;
-  align-content: revert;
-  align-items: revert;
-  align-self: revert;
-  flex: revert;
+  column-width: unset;
+  align-content: unset;
+  align-items: unset;
+  align-self: unset;
+  flex: unset;
   flex-basis: unset;
-  flex-direction: revert;
+  flex-direction: unset;
   flex-flow: unset;
   flex-grow: unset;
   flex-shrink: unset;
   flex-wrap: unset;
-  justify-content: revert;
+  justify-content: unset;
   order: unset;
-  box-sizing: revert;
-  cursor: revert;
+  box-sizing: unset;
+  cursor: unset;
   ime-mode: unset;
   nav-down: unset;
   nav-index: unset;
-  nav-left: revert;
-  nav-right: revert;
+  nav-left: unset;
+  nav-right: unset;
   nav-up: unset;
-  outline: revert;
-  outline-color: revert;
+  outline: unset;
+  outline-color: unset;
   outline-style: unset;
-  outline-width: revert;
-  resize: revert;
-  text-overflow: revert;
+  outline-width: unset;
+  resize: unset;
+  text-overflow: unset;
   azimuth: unset;
   speak-as: unset;
   filter: unset;
   image-resolution: unset;
-  object-fit: revert;
-  object-position: revert;
+  object-fit: unset;
+  object-position: unset;
   grid: unset;
   grid-area: unset;
   grid-auto-columns: unset;
@@ -379,64 +379,949 @@
   grid-template-columns: unset;
   grid-template-rows: unset;
   clear: unset;
-  display: revert;
+  display: unset;
   float: unset;
-  height: revert;
-  margin: revert;
-  margin-bottom: revert;
-  margin-left: revert;
-  margin-right: revert;
-  margin-top: revert;
-  max-height: revert;
-  max-width: revert;
-  min-height: revert;
-  min-width: revert;
-  overflow: revert;
-  overflow-x: revert;
-  overflow-y: revert;
-  padding: revert;
-  padding-bottom: revert;
-  padding-left: revert;
-  padding-right: revert;
-  padding-top: revert;
-  visibility: revert;
-  width: revert;
-  line-height: revert;
-  vertical-align: revert;
-  direction: revert;
+  height: unset;
+  margin: unset;
+  margin-bottom: unset;
+  margin-left: unset;
+  margin-right: unset;
+  margin-top: unset;
+  max-height: unset;
+  max-width: unset;
+  min-height: unset;
+  min-width: unset;
+  overflow: unset;
+  overflow-x: unset;
+  overflow-y: unset;
+  padding: unset;
+  padding-bottom: unset;
+  padding-left: unset;
+  padding-right: unset;
+  padding-top: unset;
+  visibility: unset;
+  width: unset;
+  line-height: unset;
+  vertical-align: unset;
+  direction: unset;
   font: unset;
-  font-family: revert;
-  font-size: revert;
+  font-family: unset;
+  font-size: unset;
   font-size-adjust: unset;
   font-stretch: unset;
-  font-style: revert;
+  font-style: unset;
   font-variant: unset;
-  font-weight: revert;
+  font-weight: unset;
   hyphens: unset;
-  letter-spacing: revert;
-  text-align: revert;
+  letter-spacing: unset;
+  text-align: unset;
   text-align-last: unset;
-  text-decoration: revert;
+  text-decoration: unset;
   text-emphasis: unset;
-  text-indent: revert;
+  text-indent: unset;
   text-justify: unset;
-  text-shadow: revert;
-  text-transform: revert;
-  unicode-bidi: revert;
-  white-space: revert;
+  text-shadow: unset;
+  text-transform: unset;
+  unicode-bidi: unset;
+  white-space: unset;
   word-break: unset;
-  word-spacing: revert;
-  word-wrap: revert;
+  word-spacing: unset;
+  word-wrap: unset;
   box-shadow: unset;
-  box-sizing: revert;
+  box-sizing: unset;
   image-orientation: unset;
   image-rendering: unset;
   image-resolution: unset;
   bleed: unset;
   justify-items: unset;
-  pointer-events: revert;
+  pointer-events: unset;
   scroll-behavior: unset;
-  text-rendering: revert;
+  text-rendering: unset;
   touch-action: unset;
   will-change: unset;
+}
+.revert html {
+  display: revert;
+}
+.revert head {
+  display: revert;
+}
+.revert meta {
+  display: revert;
+}
+.revert title {
+  display: revert;
+}
+.revert link {
+  display: revert;
+}
+.revert style {
+  display: revert;
+}
+.revert script {
+  display: revert;
+}
+.revert body {
+  display: revert;
+  margin: revert;
+}
+.revert body:-webkit-full-page-media {
+  background-color: revert;
+}
+.revert p {
+  display: revert;
+  -webkit-margin-before: revert;
+  -webkit-margin-after: revert;
+  -webkit-margin-start: revert;
+  -webkit-margin-end: revert;
+}
+.revert div {
+  display: revert;
+}
+.revert layer {
+  display: revert;
+}
+.revert article, .revert aside, .revert footer, .revert header, .revert hgroup, .revert main, .revert nav, .revert section {
+  display: revert;
+}
+.revert marquee {
+  display: revert;
+}
+.revert address {
+  display: revert;
+}
+.revert blockquote {
+  display: revert;
+  -webkit-margin-before: revert;
+  -webkit-margin-after: revert;
+  -webkit-margin-start: revert;
+  -webkit-margin-end: revert;
+}
+.revert figcaption {
+  display: revert;
+}
+.revert figure {
+  display: revert;
+  -webkit-margin-before: revert;
+  -webkit-margin-after: revert;
+  -webkit-margin-start: revert;
+  -webkit-margin-end: revert;
+}
+.revert q {
+  display: revert;
+}
+.revert q:before {
+  content: revert;
+}
+.revert q:after {
+  content: revert;
+}
+.revert center {
+  display: revert;
+  text-align: revert;
+}
+.revert hr {
+  display: revert;
+  -webkit-margin-before: revert;
+  -webkit-margin-after: revert;
+  -webkit-margin-start: revert;
+  -webkit-margin-end: revert;
+  border-style: revert;
+  border-width: revert;
+}
+.revert map {
+  display: revert;
+}
+.revert video {
+  object-fit: revert;
+}
+.revert h1 {
+  display: revert;
+  font-size: revert;
+  -webkit-margin-before: revert;
+  -webkit-margin-after: revert;
+  -webkit-margin-start: revert;
+  -webkit-margin-end: revert;
+  font-weight: revert;
+}
+.revert :-webkit-any(article,aside,nav,section) h1 {
+  font-size: revert;
+  -webkit-margin-before: revert;
+  -webkit-margin-after: revert;
+}
+.revert :-webkit-any(article,aside,nav,section) :-webkit-any(article,aside,nav,section) h1 {
+  font-size: revert;
+  -webkit-margin-before: revert;
+  -webkit-margin-after: revert;
+}
+.revert :-webkit-any(article,aside,nav,section) :-webkit-any(article,aside,nav,section) :-webkit-any(article,aside,nav,section) h1 {
+  font-size: revert;
+  -webkit-margin-before: revert;
+  -webkit-margin-after: revert;
+}
+.revert :-webkit-any(article,aside,nav,section) :-webkit-any(article,aside,nav,section) :-webkit-any(article,aside,nav,section) :-webkit-any(article,aside,nav,section) h1 {
+  font-size: revert;
+  -webkit-margin-before: revert;
+  -webkit-margin-after: revert;
+}
+.revert :-webkit-any(article,aside,nav,section) :-webkit-any(article,aside,nav,section) :-webkit-any(article,aside,nav,section) :-webkit-any(article,aside,nav,section) :-webkit-any(article,aside,nav,section) h1 {
+  font-size: revert;
+  -webkit-margin-before: revert;
+  -webkit-margin-after: revert;
+}
+.revert h2 {
+  display: revert;
+  font-size: revert;
+  -webkit-margin-before: revert;
+  -webkit-margin-after: revert;
+  -webkit-margin-start: revert;
+  -webkit-margin-end: revert;
+  font-weight: revert;
+}
+.revert h3 {
+  display: revert;
+  font-size: revert;
+  -webkit-margin-before: revert;
+  -webkit-margin-after: revert;
+  -webkit-margin-start: revert;
+  -webkit-margin-end: revert;
+  font-weight: revert;
+}
+.revert h4 {
+  display: revert;
+  -webkit-margin-before: revert;
+  -webkit-margin-after: revert;
+  -webkit-margin-start: revert;
+  -webkit-margin-end: revert;
+  font-weight: revert;
+}
+.revert h5 {
+  display: revert;
+  font-size: revert;
+  -webkit-margin-before: revert;
+  -webkit-margin-after: revert;
+  -webkit-margin-start: revert;
+  -webkit-margin-end: revert;
+  font-weight: revert;
+}
+.revert h6 {
+  display: revert;
+  font-size: revert;
+  -webkit-margin-before: revert;
+  -webkit-margin-after: revert;
+  -webkit-margin-start: revert;
+  -webkit-margin-end: revert;
+  font-weight: revert;
+}
+.revert table {
+  display: revert;
+  border-collapse: revert;
+  border-spacing: revert;
+  border-color: revert;
+}
+.revert thead {
+  display: revert;
+  vertical-align: revert;
+  border-color: revert;
+}
+.revert tbody {
+  display: revert;
+  vertical-align: revert;
+  border-color: revert;
+}
+.revert tfoot {
+  display: revert;
+  vertical-align: revert;
+  border-color: revert;
+}
+.revert table > tr {
+  vertical-align: revert;
+}
+.revert col {
+  display: revert;
+}
+.revert colgroup {
+  display: revert;
+}
+.revert tr {
+  display: revert;
+  vertical-align: revert;
+  border-color: revert;
+}
+.revert td, .revert th {
+  display: revert;
+  vertical-align: revert;
+}
+.revert th {
+  font-weight: revert;
+}
+.revert caption {
+  display: revert;
+  text-align: revert;
+}
+.revert ul, .revert menu, .revert dir {
+  display: revert;
+  list-style-type: revert;
+  -webkit-margin-before: revert;
+  -webkit-margin-after: revert;
+  -webkit-margin-start: revert;
+  -webkit-margin-end: revert;
+  -webkit-padding-start: revert;
+}
+.revert ol {
+  display: revert;
+  list-style-type: revert;
+  -webkit-margin-before: revert;
+  -webkit-margin-after: revert;
+  -webkit-margin-start: revert;
+  -webkit-margin-end: revert;
+  -webkit-padding-start: revert;
+}
+.revert li {
+  display: revert;
+  text-align: revert;
+}
+.revert ul ul, .revert ol ul {
+  list-style-type: revert;
+}
+.revert ol ol ul, .revert ol ul ul, .revert ul ol ul, .revert ul ul ul {
+  list-style-type: revert;
+}
+.revert dd {
+  display: revert;
+  -webkit-margin-start: revert;
+}
+.revert dl {
+  display: revert;
+  -webkit-margin-before: revert;
+  -webkit-margin-after: revert;
+  -webkit-margin-start: revert;
+  -webkit-margin-end: revert;
+}
+.revert dt {
+  display: revert;
+}
+.revert ol ul, .revert ul ol, .revert ul ul, .revert ol ol {
+  -webkit-margin-before: revert;
+  -webkit-margin-after: revert;
+}
+.revert form {
+  display: revert;
+  margin-top: revert;
+}
+.revert label {
+  cursor: revert;
+}
+.revert legend {
+  display: revert;
+  -webkit-padding-start: revert;
+  -webkit-padding-end: revert;
+  border: revert;
+}
+.revert fieldset {
+  display: revert;
+  -webkit-margin-start: revert;
+  -webkit-margin-end: revert;
+  -webkit-padding-before: revert;
+  -webkit-padding-start: revert;
+  -webkit-padding-end: revert;
+  -webkit-padding-after: revert;
+  border: revert;
+  min-width: revert;
+}
+.revert button {
+  -webkit-appearance: revert;
+}
+.revert input, .revert textarea, .revert keygen, .revert select, .revert button, .revert meter, .revert progress {
+  -webkit-writing-mode: revert;
+}
+.revert input, .revert textarea, .revert keygen, .revert select, .revert button {
+  margin: revert;
+  font: revert;
+  text-rendering: revert;
+  color: revert;
+  letter-spacing: revert;
+  word-spacing: revert;
+  line-height: revert;
+  text-transform: revert;
+  text-indent: revert;
+  text-shadow: revert;
+  display: revert;
+  text-align: revert;
+}
+.revert input[type="hidden" i] {
+  display: revert;
+}
+.revert input {
+  -webkit-appearance: revert;
+  padding: revert;
+  background-color: revert;
+  border: revert;
+  -webkit-rtl-ordering: revert;
+  -webkit-user-select: revert;
+  cursor: revert;
+}
+.revert input[type="search" i] {
+  -webkit-appearance: revert;
+  box-sizing: revert;
+}
+.revert input::-webkit-textfield-decoration-container {
+  display: revert;
+  align-items: revert;
+  -webkit-user-modify: revert;
+  content: revert;
+}
+.revert input[type="search" i]::-webkit-textfield-decoration-container {
+  direction: revert;
+}
+.revert input::-webkit-clear-button {
+  -webkit-appearance: revert;
+  display: revert;
+  flex: revert;
+  -webkit-user-modify: revert;
+  -webkit-margin-start: revert;
+  opacity: revert;
+  pointer-events: revert;
+}
+.revert input:enabled:read-write:-webkit-any(:focus,:hover)::-webkit-clear-button {
+  opacity: revert;
+  pointer-events: revert;
+}
+.revert input[type="search" i]::-webkit-search-cancel-button {
+  -webkit-appearance: revert;
+  display: revert;
+  flex: revert;
+  -webkit-user-modify: revert;
+  -webkit-margin-start: revert;
+  opacity: revert;
+  pointer-events: revert;
+}
+.revert input[type="search" i]:enabled:read-write:-webkit-any(:focus,:hover)::-webkit-search-cancel-button {
+  opacity: revert;
+  pointer-events: revert;
+}
+.revert input[type="search" i]::-webkit-search-decoration {
+  -webkit-appearance: revert;
+  display: revert;
+  flex: revert;
+  -webkit-user-modify: revert;
+  -webkit-align-self: revert;
+  margin: revert;
+}
+.revert input[type="search" i]::-webkit-search-results-decoration {
+  -webkit-appearance: revert;
+  display: revert;
+  flex: revert;
+  -webkit-user-modify: revert;
+  -webkit-align-self: revert;
+  margin: revert;
+}
+.revert input::-webkit-inner-spin-button {
+  -webkit-appearance: revert;
+  display: revert;
+  cursor: revert;
+  flex: revert;
+  align-self: revert;
+  -webkit-user-select: revert;
+  -webkit-user-modify: revert;
+  opacity: revert;
+  pointer-events: revert;
+}
+.revert input:enabled:read-write:-webkit-any(:focus,:hover)::-webkit-inner-spin-button {
+  opacity: revert;
+  pointer-events: revert;
+}
+.revert keygen, .revert select {
+  border-radius: revert;
+}
+.revert keygen::-webkit-keygen-select {
+  margin: revert;
+}
+.revert textarea {
+  -webkit-appearance: revert;
+  background-color: revert;
+  border: revert;
+  -webkit-rtl-ordering: revert;
+  -webkit-user-select: revert;
+  flex-direction: revert;
+  resize: revert;
+  cursor: revert;
+  padding: revert;
+  white-space: revert;
+  word-wrap: revert;
+}
+::-webkit-input-placeholder {
+  -webkit-text-security: revert;
+  color: revert;
+  pointer-events: revert;
+}
+.revert input::-webkit-input-placeholder {
+  white-space: revert;
+  word-wrap: revert;
+  overflow: revert;
+  -webkit-user-modify: revert;
+}
+.revert input[type="password" i] {
+  -webkit-text-security: revert;
+}
+.revert input[type="hidden" i], .revert input[type="image" i], .revert input[type="file" i] {
+  -webkit-appearance: revert;
+  padding: revert;
+  background-color: revert;
+  border: revert;
+}
+.revert input[type="file" i] {
+  align-items: revert;
+  color: revert;
+  text-align: revert;
+}
+.revert input:-webkit-autofill, .revert textarea:-webkit-autofill, .revert select:-webkit-autofill {
+  background-color: revert;
+  background-image: revert;
+  color: revert;
+}
+.revert input[type="radio" i], .revert input[type="checkbox" i] {
+  margin: revert;
+  padding: revert;
+  background-color: revert;
+  border: revert;
+}
+.revert input[type="button" i], .revert input[type="submit" i], .revert input[type="reset" i] {
+  -webkit-appearance: revert;
+  -webkit-user-select: revert;
+  white-space: revert;
+}
+.revert input[type="file" i]::-webkit-file-upload-button {
+  -webkit-appearance: revert;
+  -webkit-user-modify: revert;
+  white-space: revert;
+  margin: revert;
+  font-size: revert;
+}
+.revert input[type="button" i], .revert input[type="submit" i], .revert input[type="reset" i], .revert input[type="file" i]::-webkit-file-upload-button, .revert button {
+  align-items: revert;
+  text-align: revert;
+  cursor: revert;
+  color: revert;
+  padding: revert;
+  border: revert;
+  background-color: revert;
+  box-sizing: revert;
+}
+.revert input[type="range" i] {
+  -webkit-appearance: revert;
+  padding: revert;
+  border: revert;
+  margin: revert;
+  color: revert;
+}
+.revert input[type="range" i]::-webkit-slider-container, .revert input[type="range" i]::-webkit-media-slider-container {
+  flex: revert;
+  min-width: revert;
+  box-sizing: revert;
+  -webkit-user-modify: revert;
+  display: revert;
+}
+.revert input[type="range" i]::-webkit-slider-runnable-track {
+  flex: revert;
+  min-width: revert;
+  -webkit-align-self: revert;
+  box-sizing: revert;
+  -webkit-user-modify: revert;
+  display: revert;
+}
+.revert input[type="range" i]::-webkit-slider-thumb, .revert input[type="range" i]::-webkit-media-slider-thumb {
+  -webkit-appearance: revert;
+  box-sizing: revert;
+  -webkit-user-modify: revert;
+  display: revert;
+}
+.revert input[type="button" i]:disabled, .revert input[type="submit" i]:disabled, .revert input[type="reset" i]:disabled,
+.revert input[type="file" i]:disabled::-webkit-file-upload-button, .revert button:disabled,
+.revert select:disabled, .revert keygen:disabled, .revert optgroup:disabled, .revert option:disabled,
+.revert select[disabled]>option {
+  color: revert;
+}
+.revert input[type="button" i]:active, .revert input[type="submit" i]:active, .revert input[type="reset" i]:active, .revert input[type="file" i]:active::-webkit-file-upload-button, .revert button:active {
+  border-style: revert;
+}
+.revert input[type="button" i]:active:disabled, .revert input[type="submit" i]:active:disabled, .revert input[type="reset" i]:active:disabled, .revert input[type="file" i]:active:disabled::-webkit-file-upload-button, .revert button:active:disabled {
+  border-style: revert;
+}
+.revert option:-internal-spatial-navigation-focus {
+  outline: revert;
+  outline-offset: revert;
+}
+.revert datalist {
+  display: revert;
+}
+.revert area {
+  display: revert;
+  cursor: revert;
+}
+.revert param {
+  display: revert;
+}
+.revert input[type="checkbox" i] {
+  -webkit-appearance: revert;
+  box-sizing: revert;
+}
+.revert input[type="radio" i] {
+  -webkit-appearance: revert;
+  box-sizing: revert;
+}
+.revert input[type="color" i] {
+  -webkit-appearance: revert;
+  width: revert;
+  height: revert;
+  background-color: revert;
+  border: revert;
+  padding: revert;
+}
+.revert input[type="color" i]::-webkit-color-swatch-wrapper {
+  display: revert;
+  padding: revert;
+  box-sizing: revert;
+  -webkit-user-modify: revert;
+  width: revert;
+  height: revert;
+}
+.revert input[type="color" i]::-webkit-color-swatch {
+  background-color: revert;
+  border: revert;
+  flex: revert;
+  min-width: revert;
+  -webkit-user-modify: revert;
+}
+.revert input[type="color" i][list] {
+  -webkit-appearance: revert;
+  width: revert;
+  height: revert;
+}
+.revert input[type="color" i][list]::-webkit-color-swatch-wrapper {
+  padding-left: revert;
+  padding-right: revert;
+}
+.revert input[type="color" i][list]::-webkit-color-swatch {
+  border-color: revert;
+}
+.revert input::-webkit-calendar-picker-indicator {
+  display: revert;
+  width: revert;
+  height: revert;
+  padding: revert;
+  -webkit-user-modify: revert;
+  opacity: revert;
+  pointer-events: revert;
+}
+.revert input::-webkit-calendar-picker-indicator:hover {
+  background-color: revert;
+}
+.revert input:enabled:read-write:-webkit-any(:focus,:hover)::-webkit-calendar-picker-indicator,
+.revert input::-webkit-calendar-picker-indicator:focus {
+  opacity: revert;
+  pointer-events: revert;
+}
+.revert input[type="date" i]:disabled::-webkit-clear-button,
+.revert input[type="date" i]:disabled::-webkit-inner-spin-button,
+.revert input[type="datetime-local" i]:disabled::-webkit-clear-button,
+.revert input[type="datetime-local" i]:disabled::-webkit-inner-spin-button,
+.revert input[type="month" i]:disabled::-webkit-clear-button,
+.revert input[type="month" i]:disabled::-webkit-inner-spin-button,
+.revert input[type="week" i]:disabled::-webkit-clear-button,
+.revert input[type="week" i]:disabled::-webkit-inner-spin-button,
+.revert input:disabled::-webkit-calendar-picker-indicator,
+.revert input[type="date" i][readonly]::-webkit-clear-button,
+.revert input[type="date" i][readonly]::-webkit-inner-spin-button,
+.revert input[type="datetime-local" i][readonly]::-webkit-clear-button,
+.revert input[type="datetime-local" i][readonly]::-webkit-inner-spin-button,
+.revert input[type="month" i][readonly]::-webkit-clear-button,
+.revert input[type="month" i][readonly]::-webkit-inner-spin-button,
+.revert input[type="week" i][readonly]::-webkit-clear-button,
+.revert input[type="week" i][readonly]::-webkit-inner-spin-button,
+.revert input[readonly]::-webkit-calendar-picker-indicator {
+  visibility: revert;
+}
+.revert select {
+  -webkit-appearance: revert;
+  box-sizing: revert;
+  align-items: revert;
+  border: revert;
+  white-space: revert;
+  -webkit-rtl-ordering: revert;
+  color: revert;
+  background-color: revert;
+  cursor: revert;
+}
+.revert select:not(:-internal-list-box) {
+  overflow: revert;
+}
+.revert select:-internal-list-box {
+  -webkit-appearance: revert;
+  align-items: revert;
+  border: revert;
+  border-radius: revert;
+  overflow-x: revert;
+  overflow-y: revert;
+  vertical-align: revert;
+  -webkit-user-select: revert;
+  white-space: revert;
+}
+.revert optgroup {
+  font-weight: revert;
+  display: revert;
+}
+.revert option {
+  font-weight: revert;
+  display: revert;
+  padding: revert;
+  white-space: revert;
+  min-height: revert;
+}
+.revert select:-internal-list-box optgroup option:before {
+  content: revert;
+}
+.revert select:-internal-list-box option,
+.revert select:-internal-list-box optgroup {
+  line-height: revert;
+}
+.revert select:-internal-list-box:focus option:checked {
+  background-color: revert;
+  color: revert;
+}
+.revert select:-internal-list-box option:checked {
+  background-color: revert;
+  color: revert;
+}
+.revert select:-internal-list-box:disabled option:checked,
+.revert select:-internal-list-box option:checked:disabled {
+  color: revert;
+}
+.revert select:-internal-list-box hr {
+  border-style: revert;
+}
+.revert output {
+  display: revert;
+}
+.revert meter {
+  -webkit-appearance: revert;
+  box-sizing: revert;
+  display: revert;
+  height: revert;
+  width: revert;
+  vertical-align: revert;
+}
+.revert meter::-webkit-meter-inner-element {
+  -webkit-appearance: revert;
+  box-sizing: revert;
+  -webkit-user-modify: revert;
+  height: revert;
+  width: revert;
+}
+.revert meter::-webkit-meter-bar {
+  background: revert;
+  height: revert;
+  width: revert;
+  -webkit-user-modify: revert;
+  box-sizing: revert;
+}
+.revert meter::-webkit-meter-optimum-value {
+  background: revert;
+  height: revert;
+  -webkit-user-modify: revert;
+  box-sizing: revert;
+}
+.revert meter::-webkit-meter-suboptimum-value {
+  background: revert;
+  height: revert;
+  -webkit-user-modify: revert;
+  box-sizing: revert;
+}
+.revert meter::-webkit-meter-even-less-good-value {
+  background: revert;
+  height: revert;
+  -webkit-user-modify: revert;
+  box-sizing: revert;
+}
+.revert progress {
+  -webkit-appearance: revert;
+  box-sizing: revert;
+  display: revert;
+  height: revert;
+  width: revert;
+  vertical-align: revert;
+}
+.revert progress::-webkit-progress-inner-element {
+  -webkit-appearance: revert;
+  box-sizing: revert;
+  -webkit-user-modify: revert;
+  height: revert;
+  width: revert;
+}
+.revert progress::-webkit-progress-bar {
+  background-color: revert;
+  height: revert;
+  width: revert;
+  -webkit-user-modify: revert;
+  box-sizing: revert;
+}
+.revert progress::-webkit-progress-value {
+  background-color: revert;
+  height: revert;
+  width: revert;
+  -webkit-user-modify: revert;
+  box-sizing: revert;
+}
+.revert u, .revert ins {
+  text-decoration: revert;
+}
+.revert strong, .revert b {
+  font-weight: revert;
+}
+.revert i, .revert cite, .revert em, .revert var, .revert address, .revert dfn {
+  font-style: revert;
+}
+.revert tt, .revert code, .revert kbd, .revert samp {
+  font-family: revert;
+}
+.revert pre, .revert xmp, .revert plaintext, .revert listing {
+  display: revert;
+  font-family: revert;
+  white-space: revert;
+  margin: revert;
+}
+.revert mark {
+  background-color: revert;
+  color: revert;
+}
+.revert big {
+  font-size: revert;
+}
+.revert small {
+  font-size: revert;
+}
+.revert s, .revert strike, .revert del {
+  text-decoration: revert;
+}
+.revert sub {
+  vertical-align: revert;
+  font-size: revert;
+}
+.revert sup {
+  vertical-align: revert;
+  font-size: revert;
+}
+.revert nobr {
+  white-space: revert;
+}
+:focus { 
+  outline: revert;
+}
+.revert html:focus, .revert body:focus, .revert input[readonly]:focus { 
+  outline: revert;
+}
+.revert embed:focus, .revert iframe:focus, .revert object:focus {
+  outline: revert;
+}
+  
+.revert input:focus, .revert textarea:focus, .revert keygen:focus, .revert select:focus {
+  outline-offset: revert;
+}
+.revert input[type="button" i]:focus,
+.revert input[type="checkbox" i]:focus,
+.revert input[type="file" i]:focus,
+.revert input[type="hidden" i]:focus,
+.revert input[type="image" i]:focus,
+.revert input[type="radio" i]:focus,
+.revert input[type="reset" i]:focus,
+.revert input[type="search" i]:focus,
+.revert input[type="submit" i]:focus,
+.revert input[type="file" i]:focus::-webkit-file-upload-button {
+  outline-offset: revert;
+}
+  
+.revert a:-webkit-any-link {
+  color: revert;
+  text-decoration: revert;
+  cursor: revert;
+}
+.revert a:-webkit-any-link:active {
+  color: revert;
+}
+.revert ruby, .revert rt {
+  text-indent: revert;
+}
+.revert rt {
+  line-height: revert;
+  -webkit-text-emphasis: revert;
+}
+.revert ruby > rt {
+  display: revert;
+  font-size: revert;
+  text-align: revert;
+}
+.revert ruby > rp {
+  display: revert;
+}
+.revert noframes {
+  display: revert;
+}
+.revert frameset, .revert frame {
+  display: revert;
+}
+.revert frameset {
+  border-color: revert;
+}
+.revert iframe {
+  border: revert;
+}
+.revert details {
+  display: revert;
+}
+.revert summary {
+  display: revert;
+}
+.revert summary::-webkit-details-marker {
+  display: revert;
+  width: revert;
+  height: revert;
+  -webkit-margin-end: revert;
+}
+.revert template {
+  display: revert;
+}
+.revert bdi, .revert output {
+  unicode-bidi: revert;
+}
+.revert bdo {
+  unicode-bidi: revert;
+}
+.revert textarea[dir=auto i] {
+  unicode-bidi: revert;
+}
+.revert dialog:not([open]) {
+  display: revert;
+}
+.revert dialog {
+  position: revert;
+  left: revert;
+  right: revert;
+  width: revert;
+  height: revert;
+  margin: revert;
+  border: revert;
+  padding: revert;
+  background: revert;
+  color: revert;
+}
+.revert dialog::backdrop {
+  position: revert;
+  top: revert;
+  right: revert;
+  bottom: revert;
+  left: revert;
+  background: revert;
+}
+@media print {
+  .revert * { -webkit-columns: revert;}
 }
