@@ -14,7 +14,7 @@
   正規表現のためのエスケープをするライブラリ。
 * kanji.html  
   入力した文字を大きく表示することで漢字の綴りを確認することのできるページ。
-* markdown.ESY  
+* markdown.esy  
   EmEditor の Markdown 用強調表示構文。
 * md-toc.html  
   Markdown の文書から目次を生成するページ。
@@ -28,5 +28,5 @@
   各都道府県のサイトの URL をまとめた JSON 。
 * random.html  
   数字をランダムに表示するページ。
-* 文頭接頭詞.esy  
-  EmEditor の文頭接頭詞用強調表示構文。
+* 文頭接続詞.esy  
+  EmEditor の文頭接続詞用強調表示構文。
