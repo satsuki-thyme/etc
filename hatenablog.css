@@ -1,0 +1,1640 @@
+/* <system section="theme" selected="neutral"> */
+@import "/css/theme/neutral/neutral.css";
+/* </system> */
+/*
+
+  再定義
+
+*/
+.entry .entry-inner .entry-content section::after {
+  clear: both;
+  content: "";
+  display: block;
+}
+.entry .entry-inner .entry-content h1,
+.entry .entry-inner .entry-content h2,
+.entry .entry-inner .entry-content h3,
+.entry .entry-inner .entry-content h4,
+.entry .entry-inner .entry-content h5,
+.entry .entry-inner .entry-content h6 {
+  margin-bottom: 0;
+}
+.entry .entry-inner .entry-content h1 {
+  font-size: 27px;
+}
+.entry .entry-inner .entry-content h1,
+.entry .entry-inner .entry-content h2 {
+  border-bottom: 1px solid #a8a8a8;
+}
+.entry .entry-inner .entry-content h2 {
+  font-size: 25px;
+  border-bottom: 1px solid #a8a8a8;
+}
+.entry .entry-inner .entry-content h1 ~ h2 {
+  font-size: 24px;
+  border-bottom: 0 none;
+}
+.entry .entry-inner .entry-content h3 {
+  font-size: 21px;
+}
+.entry .entry-inner .entry-content h4 {
+  font-size: 18px;
+}
+.entry .entry-inner .entry-content h5 {
+  font-size: 16px;
+  color: #555;
+}
+.entry .entry-inner .entry-content h6 {
+  font-size: 16px;
+  color: #777;
+}
+.entry .entry-inner .entry-content h1:first-child,
+.entry .entry-inner .entry-content h2:first-child,
+.entry .entry-inner .entry-content h3:first-child,
+.entry .entry-inner .entry-content h4:first-child,
+.entry .entry-inner .entry-content h5:first-child,
+.entry .entry-inner .entry-content h6:first-child {
+  margin-top: 26px;
+}
+.entry .entry-inner .entry-content p,
+.entry .entry-inner .entry-content ol,
+.entry .entry-inner .entry-content ul,
+.entry .entry-inner .entry-content pre,
+.entry .entry-inner .entry-content blockquote,
+.entry .entry-inner .entry-content table {
+  margin-top: 22px;
+  margin-bottom: 0;
+}
+.entry .entry-inner .entry-content p {
+  text-align: justify;
+  text-justify: inter-ideograph;
+}
+.entry .entry-inner .entry-content code {
+    font-family: Consolas, 'Courier New', Courier, monospace;
+}
+.entry .entry-inner .entry-content pre,
+.entry .entry-inner .entry-content code,
+.entry .entry-inner .entry-content code span {
+    background-color: #1e1f1c !important;
+}
+.entry .entry-inner .entry-content pre {
+  padding-left: 13px;
+}
+.entry .entry-inner .entry-content pre code {
+  line-height: 1.8em;
+}
+.entry .entry-inner .entry-content ol,
+.entry .entry-inner .entry-content ul,
+.entry .entry-inner .entry-content table {
+  font-size: 18px;
+  color: #454545;
+}
+.entry .entry-inner .entry-content blockquote p {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.entry .entry-inner .entry-content blockquote p + p {
+  margin-top: 19px;
+}
+.entry .entry-inner .entry-content img {
+  max-width: 100%;
+}
+.entry .entry-inner .entry-content hr {
+  margin-top: 30px;
+  margin-bottom: 30px;
+  border-top: 5px solid #eee;
+}
+.entry .entry-inner .entry-content ol + ol,
+.entry .entry-inner .entry-content ol + ul,
+.entry .entry-inner .entry-content ul + ol,
+.entry .entry-inner .entry-content ul + ul {
+  margin-top: 19px;
+}
+.entry .entry-inner .entry-content li + ol,
+.entry .entry-inner .entry-content li + ul {
+  margin-top: 15px;
+}
+.entry .entry-inner .entry-content ol + li,
+.entry .entry-inner .entry-content ul + li {
+  margin-top: 15px;
+}
+.entry .entry-inner .entry-content li > ol,
+.entry .entry-inner .entry-content li > ul {
+  margin-top: 2px;
+}
+.entry .entry-inner .entry-content li + li:has(ol, ul) {
+  margin-top: 15px;
+}
+.entry .entry-inner .entry-content p + ol,
+.entry .entry-inner .entry-content p + ul {
+  padding-left: 15px;
+}
+.entry .entry-inner .entry-content h1 + p,
+.entry .entry-inner .entry-content h1 + ol,
+.entry .entry-inner .entry-content h1 + ul,
+.entry .entry-inner .entry-content h1 + pre,
+.entry .entry-inner .entry-content h1 + blockquote,
+.entry .entry-inner .entry-content h1 + table,
+.entry .entry-inner .entry-content h2 + p,
+.entry .entry-inner .entry-content h2 + ol,
+.entry .entry-inner .entry-content h2 + ul,
+.entry .entry-inner .entry-content h2 + pre,
+.entry .entry-inner .entry-content h2 + blockquote,
+.entry .entry-inner .entry-content h2 + table,
+.entry .entry-inner .entry-content h3 + p,
+.entry .entry-inner .entry-content h3 + ol,
+.entry .entry-inner .entry-content h3 + ul,
+.entry .entry-inner .entry-content h3 + pre,
+.entry .entry-inner .entry-content h3 + blockquote,
+.entry .entry-inner .entry-content h3 + table,
+.entry .entry-inner .entry-content h4 + p,
+.entry .entry-inner .entry-content h4 + ol,
+.entry .entry-inner .entry-content h4 + ul,
+.entry .entry-inner .entry-content h4 + pre,
+.entry .entry-inner .entry-content h4 + blockquote,
+.entry .entry-inner .entry-content h4 + table,
+.entry .entry-inner .entry-content h5 + p,
+.entry .entry-inner .entry-content h5 + ol,
+.entry .entry-inner .entry-content h5 + ul,
+.entry .entry-inner .entry-content h5 + pre,
+.entry .entry-inner .entry-content h5 + blockquote,
+.entry .entry-inner .entry-content h5 + table,
+.entry .entry-inner .entry-content h6 + p,
+.entry .entry-inner .entry-content h6 + ol,
+.entry .entry-inner .entry-content h6 + ul,
+.entry .entry-inner .entry-content h6 + pre,
+.entry .entry-inner .entry-content h6 + blockquote,
+.entry .entry-inner .entry-content h6 + table {
+    margin-top: 16px;
+}
+.entry .entry-inner .entry-content a:not(.keyword),
+.entry .entry-inner .entry-content a:not(.keyword):visited,
+.entry .entry-inner .entry-content a:not(.keyword):hover {
+  color: #0c6cac;
+}
+.entry .entry-inner .entry-content p .keyword {
+  border-bottom-style: dashed;
+}
+.hatena-module .hatena-module-body .urllist-item .urllist-item-inner .urllist-title-link,
+.hatena-module .hatena-urllist .urllist-item .urllist-item-inner .urllist-title-link {
+  font-size: 17px;
+}
+.hatena-module .hatena-module-body .urllist-item .urllist-item-inner .urllist-entry-body,
+.hatena-module .hatena-urllist .urllist-item .urllist-item-inner .urllist-entry-body {
+  color: #a8a8a8;
+}
+/*
+
+  デザインの追加
+
+*/
+/* 文字のセンタリング */
+.entry .entry-inner .entry-content span.center {
+  display: block;
+  width: 100%;
+  margin: 0;
+  text-align: center;
+}
+/* フロートの簡略設定 */
+.entry .entry-inner .entry-content p.float-left,
+.entry .entry-inner .entry-content p.float-right {
+  width: 40%;
+  margin-top: 0;
+  margin-bottom: 0;
+  line-height: 0;
+}
+.entry .entry-inner .entry-content p.float-left {
+  float: left;
+  margin-right: 15px;
+}
+.entry .entry-inner .entry-content p.float-right {
+  float: right;
+  margin-left: 15px;
+}
+.entry .entry-inner .entry-content p.float-left.narrow,
+.entry .entry-inner .entry-content p.float-right.narrow {
+  width: 25%;
+}
+.entry .entry-inner .entry-content p + p.float-left,
+.entry .entry-inner .entry-content h1 + p.float-left,
+.entry .entry-inner .entry-content h2 + p.float-left,
+.entry .entry-inner .entry-content h3 + p.float-left,
+.entry .entry-inner .entry-content h4 + p.float-left,
+.entry .entry-inner .entry-content h5 + p.float-left,
+.entry .entry-inner .entry-content h6 + p.float-left,
+.entry .entry-inner .entry-content p + p.float-right,
+.entry .entry-inner .entry-content h1 + p.float-right,
+.entry .entry-inner .entry-content h2 + p.float-right,
+.entry .entry-inner .entry-content h3 + p.float-right,
+.entry .entry-inner .entry-content h4 + p.float-right,
+.entry .entry-inner .entry-content h5 + p.float-right,
+.entry .entry-inner .entry-content h6 + p.float-right {
+  margin-top: 26px;
+}
+.entry .entry-inner .entry-content p.float-left img,
+.entry .entry-inner .entry-content p.float-right img {
+  width: 100%;
+}
+.entry .entry-inner .entry-content p.float-left ~ h1,
+.entry .entry-inner .entry-content p.float-left ~ h2,
+.entry .entry-inner .entry-content p.float-left ~ h3,
+.entry .entry-inner .entry-content p.float-left ~ h4,
+.entry .entry-inner .entry-content p.float-left ~ h5,
+.entry .entry-inner .entry-content p.float-left ~ h6,
+.entry .entry-inner .entry-content p.float-right ~ h1,
+.entry .entry-inner .entry-content p.float-right ~ h2,
+.entry .entry-inner .entry-content p.float-right ~ h3,
+.entry .entry-inner .entry-content p.float-right ~ h4,
+.entry .entry-inner .entry-content p.float-right ~ h5,
+.entry .entry-inner .entry-content p.float-right ~ h6 {
+  clear: both;
+}
+/* 「編集見たまま」タブの「見たまま」など */
+.entry .entry-inner .entry-content .s1 {
+  font-size: 0.73em;
+}
+/* もっと小さい（見え方の目視チェックしてない） */
+.entry .entry-inner .entry-content .s2 {
+  font-size: 0.55em;
+}
+/* もっともっと小さい（見え方の目視チェックしてない） */
+.entry .entry-inner .entry-content .s3 {
+  font-size: 0.37em;
+}
+/*
+
+  全ての設定をブラウザ既定値に戻す
+
+*/
+.entry .entry-inner .entry-content .revert html,
+.entry .entry-inner .entry-content .revert head,
+.entry .entry-inner .entry-content .revert title,
+.entry .entry-inner .entry-content .revert base,
+.entry .entry-inner .entry-content .revert link,
+.entry .entry-inner .entry-content .revert style,
+.entry .entry-inner .entry-content .revert meta,
+.entry .entry-inner .entry-content .revert body,
+.entry .entry-inner .entry-content .revert article,
+.entry .entry-inner .entry-content .revert section,
+.entry .entry-inner .entry-content .revert nav,
+.entry .entry-inner .entry-content .revert aside,
+.entry .entry-inner .entry-content .revert h1,
+.entry .entry-inner .entry-content .revert h2,
+.entry .entry-inner .entry-content .revert h3,
+.entry .entry-inner .entry-content .revert h4,
+.entry .entry-inner .entry-content .revert h5,
+.entry .entry-inner .entry-content .revert h6,
+.entry .entry-inner .entry-content .revert header,
+.entry .entry-inner .entry-content .revert footer,
+.entry .entry-inner .entry-content .revert address,
+.entry .entry-inner .entry-content .revert p,
+.entry .entry-inner .entry-content .revert hr,
+.entry .entry-inner .entry-content .revert pre,
+.entry .entry-inner .entry-content .revert blockquote,
+.entry .entry-inner .entry-content .revert ol,
+.entry .entry-inner .entry-content .revert ul,
+.entry .entry-inner .entry-content .revert li,
+.entry .entry-inner .entry-content .revert dl,
+.entry .entry-inner .entry-content .revert dt,
+.entry .entry-inner .entry-content .revert dd,
+.entry .entry-inner .entry-content .revert figure,
+.entry .entry-inner .entry-content .revert figcaption,
+.entry .entry-inner .entry-content .revert main,
+.entry .entry-inner .entry-content .revert div,
+.entry .entry-inner .entry-content .revert a,
+.entry .entry-inner .entry-content .revert em,
+.entry .entry-inner .entry-content .revert strong,
+.entry .entry-inner .entry-content .revert small,
+.entry .entry-inner .entry-content .revert s,
+.entry .entry-inner .entry-content .revert cite,
+.entry .entry-inner .entry-content .revert q,
+.entry .entry-inner .entry-content .revert dfn,
+.entry .entry-inner .entry-content .revert abbr,
+.entry .entry-inner .entry-content .revert code,
+.entry .entry-inner .entry-content .revert var,
+.entry .entry-inner .entry-content .revert samp,
+.entry .entry-inner .entry-content .revert kbd,
+.entry .entry-inner .entry-content .revert data,
+.entry .entry-inner .entry-content .revert sub,
+.entry .entry-inner .entry-content .revert sup,
+.entry .entry-inner .entry-content .revert time,
+.entry .entry-inner .entry-content .revert i,
+.entry .entry-inner .entry-content .revert b,
+.entry .entry-inner .entry-content .revert u,
+.entry .entry-inner .entry-content .revert mark,
+.entry .entry-inner .entry-content .revert ruby,
+.entry .entry-inner .entry-content .revert rb,
+.entry .entry-inner .entry-content .revert rt,
+.entry .entry-inner .entry-content .revert rtc,
+.entry .entry-inner .entry-content .revert rp,
+.entry .entry-inner .entry-content .revert bdi,
+.entry .entry-inner .entry-content .revert bdo,
+.entry .entry-inner .entry-content .revert span,
+.entry .entry-inner .entry-content .revert br,
+.entry .entry-inner .entry-content .revert wbr,
+.entry .entry-inner .entry-content .revert ins,
+.entry .entry-inner .entry-content .revert del,
+.entry .entry-inner .entry-content .revert img,
+.entry .entry-inner .entry-content .revert picture,
+.entry .entry-inner .entry-content .revert iframe,
+.entry .entry-inner .entry-content .revert embed,
+.entry .entry-inner .entry-content .revert object,
+.entry .entry-inner .entry-content .revert param,
+.entry .entry-inner .entry-content .revert video,
+.entry .entry-inner .entry-content .revert audio,
+.entry .entry-inner .entry-content .revert track,
+.entry .entry-inner .entry-content .revert source,
+.entry .entry-inner .entry-content .revert map,
+.entry .entry-inner .entry-content .revert area,
+.entry .entry-inner .entry-content .revert table,
+.entry .entry-inner .entry-content .revert caption,
+.entry .entry-inner .entry-content .revert colgroup,
+.entry .entry-inner .entry-content .revert col,
+.entry .entry-inner .entry-content .revert tbody,
+.entry .entry-inner .entry-content .revert thead,
+.entry .entry-inner .entry-content .revert tfoot,
+.entry .entry-inner .entry-content .revert tr,
+.entry .entry-inner .entry-content .revert td,
+.entry .entry-inner .entry-content .revert th,
+.entry .entry-inner .entry-content .revert form,
+.entry .entry-inner .entry-content .revert fieldset,
+.entry .entry-inner .entry-content .revert legend,
+.entry .entry-inner .entry-content .revert label,
+.entry .entry-inner .entry-content .revert input,
+.entry .entry-inner .entry-content .revert select,
+.entry .entry-inner .entry-content .revert option,
+.entry .entry-inner .entry-content .revert optgroup,
+.entry .entry-inner .entry-content .revert textarea,
+.entry .entry-inner .entry-content .revert button,
+.entry .entry-inner .entry-content .revert datalist,
+.entry .entry-inner .entry-content .revert script,
+.entry .entry-inner .entry-content .revert noscript,
+.entry .entry-inner .entry-content .revert template,
+.entry .entry-inner .entry-content .revert canvas,
+.entry .entry-inner .entry-content .revert details,
+.entry .entry-inner .entry-content .revert summary,
+.entry .entry-inner .entry-content .revert menu,
+.entry .entry-inner .entry-content .revert menuitem {
+  color: unset;
+  opacity: unset;
+  font: unset;
+  font-family: unset;
+  font-feature-settings: unset;
+  font-kerning: unset;
+  font-language-override: unset;
+  font-size: unset;
+  font-size-adjust: unset;
+  font-stretch: unset;
+  font-style: unset;
+  font-synthesis: unset;
+  font-variant: unset;
+  font-variant-alternates: unset;
+  font-variant-caps: unset;
+  font-variant-east-asian: unset;
+  font-variant-ligatures: unset;
+  font-variant-numeric: unset;
+  font-variant-position: unset;
+  font-weight: unset;
+  hanging-punctuation: unset;
+  hyphens: unset;
+  letter-spacing: unset;
+  line-break: unset;
+  line-height: unset;
+  overflow-wrap: unset;
+  tab-size: unset;
+  text-align: unset;
+  text-align-last: unset;
+  text-decoration: unset;
+  text-decoration-line: unset;
+  text-decoration-style: unset;
+  text-decoration-color: unset;
+  text-emphasis: unset;
+  text-emphasis-color: unset;
+  text-emphasis-position: unset;
+  text-emphasis-style: unset;
+  text-indent: unset;
+  text-justify: unset;
+  text-shadow: unset;
+  text-transform: unset;
+  text-underline-position: unset;
+  vertical-align: unset;
+  white-space: unset;
+  word-break: unset;
+  word-spacing: unset;
+  word-wrap: unset;
+  text-decoration: unset;
+  text-shadow: unset;
+  direction: unset;
+  unicode-bidi: unset;
+  writing-mode: unset;
+  ruby-align: unset;
+  ruby-merge: unset;
+  ruby-position: unset;
+  break-after: unset;
+  break-before: unset;
+  break-inside: unset;
+  page-break-after: unset;
+  page-break-before: unset;
+  page-break-inside: unset;
+  list-style: unset;
+  list-style-image: unset;
+  list-style-position: unset;
+  list-style-type: unset;
+  border-collapse: unset;
+  border-spacing: unset;
+  caption-side: unset;
+  empty-cells: unset;
+  table-layout: unset;
+  content: unset;
+  counter-increment: unset;
+  counter-reset: unset;
+  quotes: unset;
+  image-orientation: unset;
+  marks: unset;
+  orphans: unset;
+  page-break-after: unset;
+  page-break-before: unset;
+  page-break-inside: unset;
+  size: unset;
+  widows: unset;
+  background-blend-mode: unset;
+  mix-blend-mode: unset;
+  bottom: unset;
+  break-after: unset;
+  break-before: unset;
+  break-inside: unset;
+  caption-side: unset;
+  clear: unset;
+  clip: unset;
+  column-count: unset;
+  column-fill: unset;
+  column-gap: unset;
+  column-rule: unset;
+  column-rule-color: unset;
+  column-rule-style: unset;
+  column-rule-width: unset;
+  columns: unset;
+  column-span: unset;
+  column-width: unset;
+  display: unset;
+  float: unset;
+  hanging-punctuation: unset;
+  height: unset;
+  left: unset;
+  line-height: unset;
+  max-height: unset;
+  max-width: unset;
+  min-height: unset;
+  min-width: unset;
+  orphans: unset;
+  outline: unset;
+  outline-offset: unset;
+  outline-style: unset;
+  outline-width: unset;
+  overflow: unset;
+  overflow-x: unset;
+  overflow-y: unset;
+  position: unset;
+  right: unset;
+  ruby-align: unset;
+  ruby-position: unset;
+  size: unset;
+  table-layout: unset;
+  text-align: unset;
+  text-align-last: unset;
+  top: unset;
+  vertical-align: unset;
+  width: unset;
+  z-index: unset;
+  clear: unset;
+  clip: unset;
+  cursor: unset;
+  display: unset;
+  empty-cells: unset;
+  float: unset;
+  grid-column: unset;
+  grid-row: unset;
+  list-style: unset;
+  list-style-image: unset;
+  list-style-position: unset;
+  list-style-type: unset;
+  opacity: unset;
+  outline-color: unset;
+  overflow: unset;
+  overflow-x: unset;
+  overflow-y: unset;
+  quotes: unset;
+  visibility: unset;
+  z-index: unset;
+  margin: unset;
+  margin-bottom: unset;
+  margin-left: unset;
+  margin-right: unset;
+  margin-top: unset;
+  padding: unset;
+  padding-bottom: unset;
+  padding-left: unset;
+  padding-right: unset;
+  padding-top: unset;
+  box-sizing: unset;
+  height: unset;
+  max-height: unset;
+  max-width: unset;
+  min-height: unset;
+  min-width: unset;
+  width: unset;
+  background: unset;
+  background-attachment: unset;
+  background-clip: unset;
+  background-color: unset;
+  background-image: unset;
+  background-origin: unset;
+  background-position: unset;
+  background-repeat: unset;
+  background-size: unset;
+  border: unset;
+  border-bottom: unset;
+  border-bottom-color: unset;
+  border-bottom-left-radius: unset;
+  border-bottom-right-radius: unset;
+  border-bottom-style: unset;
+  border-bottom-width: unset;
+  border-collapse: unset;
+  border-color: unset;
+  border-image: unset;
+  border-image-outset: unset;
+  border-image-repeat: unset;
+  border-image-slice: unset;
+  border-image-source: unset;
+  border-image-width: unset;
+  border-left: unset;
+  border-left-color: unset;
+  border-left-style: unset;
+  border-left-width: unset;
+  border-radius: unset;
+  border-right: unset;
+  border-right-color: unset;
+  border-right-style: unset;
+  border-right-width: unset;
+  border-spacing: unset;
+  border-style: unset;
+  border-top: unset;
+  border-top-color: unset;
+  border-top-left-radius: unset;
+  border-top-right-radius: unset;
+  border-top-style: unset;
+  border-top-width: unset;
+  border-width: unset;
+  border-bottom-left-radius: unset;
+  border-bottom-right-radius: unset;
+  border-radius: unset;
+  border-top-left-radius: unset;
+  border-top-right-radius: unset;
+  border-image: unset;
+  border-image-outset: unset;
+  border-image-repeat: unset;
+  border-image-slice: unset;
+  border-image-source: unset;
+  border-image-width: unset;
+  box-shadow: unset;
+  outline: unset;
+  outline-color: unset;
+  outline-style: unset;
+  outline-width: unset;
+  clip: unset;
+  clip-path: unset;
+  animation: unset;
+  animation-delay: unset;
+  animation-direction: unset;
+  animation-duration: unset;
+  animation-fill-mode: unset;
+  animation-iteration-count: unset;
+  animation-name: unset;
+  animation-play-state: unset;
+  animation-timing-function: unset;
+  perspective: unset;
+  perspective-origin: unset;
+  transition: unset;
+  transition-delay: unset;
+  transition-duration: unset;
+  transition-property: unset;
+  transition-timing-function: unset;
+  backface-visibility: unset;
+  perspective: unset;
+  perspective-origin: unset;
+  transform: unset;
+  transform-origin: unset;
+  transform-style: unset;
+  transition: unset;
+  transition-delay: unset;
+  transition-duration: unset;
+  transition-property: unset;
+  transition-timing-function: unset;
+  break-after: unset;
+  break-before: unset;
+  break-inside: unset;
+  column-count: unset;
+  column-fill: unset;
+  column-gap: unset;
+  column-rule: unset;
+  column-rule-color: unset;
+  column-rule-style: unset;
+  column-rule-width: unset;
+  columns: unset;
+  column-span: unset;
+  column-width: unset;
+  align-content: unset;
+  align-items: unset;
+  align-self: unset;
+  flex: unset;
+  flex-basis: unset;
+  flex-direction: unset;
+  flex-flow: unset;
+  flex-grow: unset;
+  flex-shrink: unset;
+  flex-wrap: unset;
+  justify-content: unset;
+  order: unset;
+  box-sizing: unset;
+  cursor: unset;
+  ime-mode: unset;
+  nav-down: unset;
+  nav-index: unset;
+  nav-left: unset;
+  nav-right: unset;
+  nav-up: unset;
+  outline: unset;
+  outline-color: unset;
+  outline-style: unset;
+  outline-width: unset;
+  resize: unset;
+  text-overflow: unset;
+  azimuth: unset;
+  speak-as: unset;
+  filter: unset;
+  image-resolution: unset;
+  object-fit: unset;
+  object-position: unset;
+  grid: unset;
+  grid-area: unset;
+  grid-auto-columns: unset;
+  grid-auto-flow: unset;
+  grid-auto-rows: unset;
+  grid-column: unset;
+  grid-column-end: unset;
+  grid-column-start: unset;
+  grid-gap: unset;
+  grid-row: unset;
+  grid-row-end: unset;
+  grid-row-start: unset;
+  grid-template: unset;
+  grid-template-areas: unset;
+  grid-template-columns: unset;
+  grid-template-rows: unset;
+  clear: unset;
+  display: unset;
+  float: unset;
+  height: unset;
+  margin: unset;
+  margin-bottom: unset;
+  margin-left: unset;
+  margin-right: unset;
+  margin-top: unset;
+  max-height: unset;
+  max-width: unset;
+  min-height: unset;
+  min-width: unset;
+  overflow: unset;
+  overflow-x: unset;
+  overflow-y: unset;
+  padding: unset;
+  padding-bottom: unset;
+  padding-left: unset;
+  padding-right: unset;
+  padding-top: unset;
+  visibility: unset;
+  width: unset;
+  line-height: unset;
+  vertical-align: unset;
+  direction: unset;
+  font: unset;
+  font-family: unset;
+  font-size: unset;
+  font-size-adjust: unset;
+  font-stretch: unset;
+  font-style: unset;
+  font-variant: unset;
+  font-weight: unset;
+  hyphens: unset;
+  letter-spacing: unset;
+  text-align: unset;
+  text-align-last: unset;
+  text-decoration: unset;
+  text-emphasis: unset;
+  text-indent: unset;
+  text-justify: unset;
+  text-shadow: unset;
+  text-transform: unset;
+  unicode-bidi: unset;
+  white-space: unset;
+  word-break: unset;
+  word-spacing: unset;
+  word-wrap: unset;
+  box-shadow: unset;
+  box-sizing: unset;
+  image-orientation: unset;
+  image-rendering: unset;
+  image-resolution: unset;
+  bleed: unset;
+  justify-items: unset;
+  pointer-events: unset;
+  scroll-behavior: unset;
+  text-rendering: unset;
+  touch-action: unset;
+  will-change: unset;
+}
+.entry .entry-inner .entry-content .revert html {
+  display: revert;
+}
+.entry .entry-inner .entry-content .revert head {
+  display: revert;
+}
+.entry .entry-inner .entry-content .revert meta {
+  display: revert;
+}
+.entry .entry-inner .entry-content .revert title {
+  display: revert;
+}
+.entry .entry-inner .entry-content .revert link {
+  display: revert;
+}
+.entry .entry-inner .entry-content .revert style {
+  display: revert;
+}
+.entry .entry-inner .entry-content .revert script {
+  display: revert;
+}
+.entry .entry-inner .entry-content .revert body {
+  display: revert;
+  margin: revert;
+}
+.entry .entry-inner .entry-content .revert body:-webkit-full-page-media {
+  background-color: revert;
+}
+.entry .entry-inner .entry-content .revert p {
+  display: revert;
+  -webkit-margin-before: revert;
+  -webkit-margin-after: revert;
+  -webkit-margin-start: revert;
+  -webkit-margin-end: revert;
+}
+.entry .entry-inner .entry-content .revert div {
+  display: revert;
+}
+.entry .entry-inner .entry-content .revert layer {
+  display: revert;
+}
+.entry .entry-inner .entry-content .revert article, .entry .entry-inner .entry-content .revert aside, .entry .entry-inner .entry-content .revert footer, .entry .entry-inner .entry-content .revert header, .entry .entry-inner .entry-content .revert hgroup, .entry .entry-inner .entry-content .revert main, .entry .entry-inner .entry-content .revert nav, .entry .entry-inner .entry-content .revert section {
+  display: revert;
+}
+.entry .entry-inner .entry-content .revert marquee {
+  display: revert;
+}
+.entry .entry-inner .entry-content .revert address {
+  display: revert;
+}
+.entry .entry-inner .entry-content .revert blockquote {
+  display: revert;
+  -webkit-margin-before: revert;
+  -webkit-margin-after: revert;
+  -webkit-margin-start: revert;
+  -webkit-margin-end: revert;
+}
+.entry .entry-inner .entry-content .revert figcaption {
+  display: revert;
+}
+.entry .entry-inner .entry-content .revert figure {
+  display: revert;
+  -webkit-margin-before: revert;
+  -webkit-margin-after: revert;
+  -webkit-margin-start: revert;
+  -webkit-margin-end: revert;
+}
+.entry .entry-inner .entry-content .revert q {
+  display: revert;
+}
+.entry .entry-inner .entry-content .revert q:before {
+  content: revert;
+}
+.entry .entry-inner .entry-content .revert q:after {
+  content: revert;
+}
+.entry .entry-inner .entry-content .revert center {
+  display: revert;
+  text-align: revert;
+}
+.entry .entry-inner .entry-content .revert hr {
+  display: revert;
+  -webkit-margin-before: revert;
+  -webkit-margin-after: revert;
+  -webkit-margin-start: revert;
+  -webkit-margin-end: revert;
+  border-style: revert;
+  border-width: revert;
+}
+.entry .entry-inner .entry-content .revert map {
+  display: revert;
+}
+.entry .entry-inner .entry-content .revert video {
+  object-fit: revert;
+}
+.entry .entry-inner .entry-content .revert h1 {
+  display: revert;
+  font-size: revert;
+  -webkit-margin-before: revert;
+  -webkit-margin-after: revert;
+  -webkit-margin-start: revert;
+  -webkit-margin-end: revert;
+  font-weight: revert;
+}
+.entry .entry-inner .entry-content .revert :-webkit-any(article,aside,nav,section) h1 {
+  font-size: revert;
+  -webkit-margin-before: revert;
+  -webkit-margin-after: revert;
+}
+.entry .entry-inner .entry-content .revert :-webkit-any(article,aside,nav,section) :-webkit-any(article,aside,nav,section) h1 {
+  font-size: revert;
+  -webkit-margin-before: revert;
+  -webkit-margin-after: revert;
+}
+.entry .entry-inner .entry-content .revert :-webkit-any(article,aside,nav,section) :-webkit-any(article,aside,nav,section) :-webkit-any(article,aside,nav,section) h1 {
+  font-size: revert;
+  -webkit-margin-before: revert;
+  -webkit-margin-after: revert;
+}
+.entry .entry-inner .entry-content .revert :-webkit-any(article,aside,nav,section) :-webkit-any(article,aside,nav,section) :-webkit-any(article,aside,nav,section) :-webkit-any(article,aside,nav,section) h1 {
+  font-size: revert;
+  -webkit-margin-before: revert;
+  -webkit-margin-after: revert;
+}
+.entry .entry-inner .entry-content .revert :-webkit-any(article,aside,nav,section) :-webkit-any(article,aside,nav,section) :-webkit-any(article,aside,nav,section) :-webkit-any(article,aside,nav,section) :-webkit-any(article,aside,nav,section) h1 {
+  font-size: revert;
+  -webkit-margin-before: revert;
+  -webkit-margin-after: revert;
+}
+.entry .entry-inner .entry-content .revert h2 {
+  display: revert;
+  font-size: revert;
+  -webkit-margin-before: revert;
+  -webkit-margin-after: revert;
+  -webkit-margin-start: revert;
+  -webkit-margin-end: revert;
+  font-weight: revert;
+}
+.entry .entry-inner .entry-content .revert h3 {
+  display: revert;
+  font-size: revert;
+  -webkit-margin-before: revert;
+  -webkit-margin-after: revert;
+  -webkit-margin-start: revert;
+  -webkit-margin-end: revert;
+  font-weight: revert;
+}
+.entry .entry-inner .entry-content .revert h4 {
+  display: revert;
+  -webkit-margin-before: revert;
+  -webkit-margin-after: revert;
+  -webkit-margin-start: revert;
+  -webkit-margin-end: revert;
+  font-weight: revert;
+}
+.entry .entry-inner .entry-content .revert h5 {
+  display: revert;
+  font-size: revert;
+  -webkit-margin-before: revert;
+  -webkit-margin-after: revert;
+  -webkit-margin-start: revert;
+  -webkit-margin-end: revert;
+  font-weight: revert;
+}
+.entry .entry-inner .entry-content .revert h6 {
+  display: revert;
+  font-size: revert;
+  -webkit-margin-before: revert;
+  -webkit-margin-after: revert;
+  -webkit-margin-start: revert;
+  -webkit-margin-end: revert;
+  font-weight: revert;
+}
+.entry .entry-inner .entry-content .revert table {
+  display: revert;
+  border-collapse: revert;
+  border-spacing: revert;
+  border-color: revert;
+}
+.entry .entry-inner .entry-content .revert thead {
+  display: revert;
+  vertical-align: revert;
+  border-color: revert;
+}
+.entry .entry-inner .entry-content .revert tbody {
+  display: revert;
+  vertical-align: revert;
+  border-color: revert;
+}
+.entry .entry-inner .entry-content .revert tfoot {
+  display: revert;
+  vertical-align: revert;
+  border-color: revert;
+}
+.entry .entry-inner .entry-content .revert table > tr {
+  vertical-align: revert;
+}
+.entry .entry-inner .entry-content .revert col {
+  display: revert;
+}
+.entry .entry-inner .entry-content .revert colgroup {
+  display: revert;
+}
+.entry .entry-inner .entry-content .revert tr {
+  display: revert;
+  vertical-align: revert;
+  border-color: revert;
+}
+.entry .entry-inner .entry-content .revert td, .entry .entry-inner .entry-content .revert th {
+  display: revert;
+  vertical-align: revert;
+}
+.entry .entry-inner .entry-content .revert th {
+  font-weight: revert;
+}
+.entry .entry-inner .entry-content .revert caption {
+  display: revert;
+  text-align: revert;
+}
+.entry .entry-inner .entry-content .revert ul, .entry .entry-inner .entry-content .revert menu, .entry .entry-inner .entry-content .revert dir {
+  display: revert;
+  list-style-type: revert;
+  -webkit-margin-before: revert;
+  -webkit-margin-after: revert;
+  -webkit-margin-start: revert;
+  -webkit-margin-end: revert;
+  -webkit-padding-start: revert;
+}
+.entry .entry-inner .entry-content .revert ol {
+  display: revert;
+  list-style-type: revert;
+  -webkit-margin-before: revert;
+  -webkit-margin-after: revert;
+  -webkit-margin-start: revert;
+  -webkit-margin-end: revert;
+  -webkit-padding-start: revert;
+}
+.entry .entry-inner .entry-content .revert li {
+  display: revert;
+  text-align: revert;
+}
+.entry .entry-inner .entry-content .revert ul ul, .entry .entry-inner .entry-content .revert ol ul {
+  list-style-type: revert;
+}
+.entry .entry-inner .entry-content .revert ol ol ul, .entry .entry-inner .entry-content .revert ol ul ul, .entry .entry-inner .entry-content .revert ul ol ul, .entry .entry-inner .entry-content .revert ul ul ul {
+  list-style-type: revert;
+}
+.entry .entry-inner .entry-content .revert dd {
+  display: revert;
+  -webkit-margin-start: revert;
+}
+.entry .entry-inner .entry-content .revert dl {
+  display: revert;
+  -webkit-margin-before: revert;
+  -webkit-margin-after: revert;
+  -webkit-margin-start: revert;
+  -webkit-margin-end: revert;
+}
+.entry .entry-inner .entry-content .revert dt {
+  display: revert;
+}
+.entry .entry-inner .entry-content .revert ol ul, .entry .entry-inner .entry-content .revert ul ol, .entry .entry-inner .entry-content .revert ul ul, .entry .entry-inner .entry-content .revert ol ol {
+  -webkit-margin-before: revert;
+  -webkit-margin-after: revert;
+}
+.entry .entry-inner .entry-content .revert form {
+  display: revert;
+  margin-top: revert;
+}
+.entry .entry-inner .entry-content .revert label {
+  cursor: revert;
+}
+.entry .entry-inner .entry-content .revert legend {
+  display: revert;
+  -webkit-padding-start: revert;
+  -webkit-padding-end: revert;
+  border: revert;
+}
+.entry .entry-inner .entry-content .revert fieldset {
+  display: revert;
+  -webkit-margin-start: revert;
+  -webkit-margin-end: revert;
+  -webkit-padding-before: revert;
+  -webkit-padding-start: revert;
+  -webkit-padding-end: revert;
+  -webkit-padding-after: revert;
+  border: revert;
+  min-width: revert;
+}
+.entry .entry-inner .entry-content .revert button {
+  -webkit-appearance: revert;
+}
+.entry .entry-inner .entry-content .revert input, .entry .entry-inner .entry-content .revert textarea, .entry .entry-inner .entry-content .revert keygen, .entry .entry-inner .entry-content .revert select, .entry .entry-inner .entry-content .revert button, .entry .entry-inner .entry-content .revert meter, .entry .entry-inner .entry-content .revert progress {
+  -webkit-writing-mode: revert;
+}
+.entry .entry-inner .entry-content .revert input, .entry .entry-inner .entry-content .revert textarea, .entry .entry-inner .entry-content .revert keygen, .entry .entry-inner .entry-content .revert select, .entry .entry-inner .entry-content .revert button {
+  margin: revert;
+  font: revert;
+  text-rendering: revert;
+  color: revert;
+  letter-spacing: revert;
+  word-spacing: revert;
+  line-height: revert;
+  text-transform: revert;
+  text-indent: revert;
+  text-shadow: revert;
+  display: revert;
+  text-align: revert;
+}
+.entry .entry-inner .entry-content .revert input[type="hidden" i] {
+  display: revert;
+}
+.entry .entry-inner .entry-content .revert input {
+  -webkit-appearance: revert;
+  padding: revert;
+  background-color: revert;
+  border: revert;
+  -webkit-rtl-ordering: revert;
+  -webkit-user-select: revert;
+  cursor: revert;
+}
+.entry .entry-inner .entry-content .revert input[type="search" i] {
+  -webkit-appearance: revert;
+  box-sizing: revert;
+}
+.entry .entry-inner .entry-content .revert input::-webkit-textfield-decoration-container {
+  display: revert;
+  align-items: revert;
+  -webkit-user-modify: revert;
+  content: revert;
+}
+.entry .entry-inner .entry-content .revert input[type="search" i]::-webkit-textfield-decoration-container {
+  direction: revert;
+}
+.entry .entry-inner .entry-content .revert input::-webkit-clear-button {
+  -webkit-appearance: revert;
+  display: revert;
+  flex: revert;
+  -webkit-user-modify: revert;
+  -webkit-margin-start: revert;
+  opacity: revert;
+  pointer-events: revert;
+}
+.entry .entry-inner .entry-content .revert input:enabled:read-write:-webkit-any(:focus,:hover)::-webkit-clear-button {
+  opacity: revert;
+  pointer-events: revert;
+}
+.entry .entry-inner .entry-content .revert input[type="search" i]::-webkit-search-cancel-button {
+  -webkit-appearance: revert;
+  display: revert;
+  flex: revert;
+  -webkit-user-modify: revert;
+  -webkit-margin-start: revert;
+  opacity: revert;
+  pointer-events: revert;
+}
+.entry .entry-inner .entry-content .revert input[type="search" i]:enabled:read-write:-webkit-any(:focus,:hover)::-webkit-search-cancel-button {
+  opacity: revert;
+  pointer-events: revert;
+}
+.entry .entry-inner .entry-content .revert input[type="search" i]::-webkit-search-decoration {
+  -webkit-appearance: revert;
+  display: revert;
+  flex: revert;
+  -webkit-user-modify: revert;
+  -webkit-align-self: revert;
+  margin: revert;
+}
+.entry .entry-inner .entry-content .revert input[type="search" i]::-webkit-search-results-decoration {
+  -webkit-appearance: revert;
+  display: revert;
+  flex: revert;
+  -webkit-user-modify: revert;
+  -webkit-align-self: revert;
+  margin: revert;
+}
+.entry .entry-inner .entry-content .revert input::-webkit-inner-spin-button {
+  -webkit-appearance: revert;
+  display: revert;
+  cursor: revert;
+  flex: revert;
+  align-self: revert;
+  -webkit-user-select: revert;
+  -webkit-user-modify: revert;
+  opacity: revert;
+  pointer-events: revert;
+}
+.entry .entry-inner .entry-content .revert input:enabled:read-write:-webkit-any(:focus,:hover)::-webkit-inner-spin-button {
+  opacity: revert;
+  pointer-events: revert;
+}
+.entry .entry-inner .entry-content .revert keygen, .entry .entry-inner .entry-content .revert select {
+  border-radius: revert;
+}
+.entry .entry-inner .entry-content .revert keygen::-webkit-keygen-select {
+  margin: revert;
+}
+.entry .entry-inner .entry-content .revert textarea {
+  -webkit-appearance: revert;
+  background-color: revert;
+  border: revert;
+  -webkit-rtl-ordering: revert;
+  -webkit-user-select: revert;
+  flex-direction: revert;
+  resize: revert;
+  cursor: revert;
+  padding: revert;
+  white-space: revert;
+  word-wrap: revert;
+}
+::-webkit-input-placeholder {
+  -webkit-text-security: revert;
+  color: revert;
+  pointer-events: revert;
+}
+.entry .entry-inner .entry-content .revert input::-webkit-input-placeholder {
+  white-space: revert;
+  word-wrap: revert;
+  overflow: revert;
+  -webkit-user-modify: revert;
+}
+.entry .entry-inner .entry-content .revert input[type="password" i] {
+  -webkit-text-security: revert;
+}
+.entry .entry-inner .entry-content .revert input[type="hidden" i], .entry .entry-inner .entry-content .revert input[type="image" i], .entry .entry-inner .entry-content .revert input[type="file" i] {
+  -webkit-appearance: revert;
+  padding: revert;
+  background-color: revert;
+  border: revert;
+}
+.entry .entry-inner .entry-content .revert input[type="file" i] {
+  align-items: revert;
+  color: revert;
+  text-align: revert;
+}
+.entry .entry-inner .entry-content .revert input:-webkit-autofill, .entry .entry-inner .entry-content .revert textarea:-webkit-autofill, .entry .entry-inner .entry-content .revert select:-webkit-autofill {
+  background-color: revert;
+  background-image: revert;
+  color: revert;
+}
+.entry .entry-inner .entry-content .revert input[type="radio" i], .entry .entry-inner .entry-content .revert input[type="checkbox" i] {
+  margin: revert;
+  padding: revert;
+  background-color: revert;
+  border: revert;
+}
+.entry .entry-inner .entry-content .revert input[type="button" i], .entry .entry-inner .entry-content .revert input[type="submit" i], .entry .entry-inner .entry-content .revert input[type="reset" i] {
+  -webkit-appearance: revert;
+  -webkit-user-select: revert;
+  white-space: revert;
+}
+.entry .entry-inner .entry-content .revert input[type="file" i]::-webkit-file-upload-button {
+  -webkit-appearance: revert;
+  -webkit-user-modify: revert;
+  white-space: revert;
+  margin: revert;
+  font-size: revert;
+}
+.entry .entry-inner .entry-content .revert input[type="button" i], .entry .entry-inner .entry-content .revert input[type="submit" i], .entry .entry-inner .entry-content .revert input[type="reset" i], .entry .entry-inner .entry-content .revert input[type="file" i]::-webkit-file-upload-button, .entry .entry-inner .entry-content .revert button {
+  align-items: revert;
+  text-align: revert;
+  cursor: revert;
+  color: revert;
+  padding: revert;
+  border: revert;
+  background-color: revert;
+  box-sizing: revert;
+}
+.entry .entry-inner .entry-content .revert input[type="range" i] {
+  -webkit-appearance: revert;
+  padding: revert;
+  border: revert;
+  margin: revert;
+  color: revert;
+}
+.entry .entry-inner .entry-content .revert input[type="range" i]::-webkit-slider-container, .entry .entry-inner .entry-content .revert input[type="range" i]::-webkit-media-slider-container {
+  flex: revert;
+  min-width: revert;
+  box-sizing: revert;
+  -webkit-user-modify: revert;
+  display: revert;
+}
+.entry .entry-inner .entry-content .revert input[type="range" i]::-webkit-slider-runnable-track {
+  flex: revert;
+  min-width: revert;
+  -webkit-align-self: revert;
+  box-sizing: revert;
+  -webkit-user-modify: revert;
+  display: revert;
+}
+.entry .entry-inner .entry-content .revert input[type="range" i]::-webkit-slider-thumb, .entry .entry-inner .entry-content .revert input[type="range" i]::-webkit-media-slider-thumb {
+  -webkit-appearance: revert;
+  box-sizing: revert;
+  -webkit-user-modify: revert;
+  display: revert;
+}
+.entry .entry-inner .entry-content .revert input[type="button" i]:disabled, .entry .entry-inner .entry-content .revert input[type="submit" i]:disabled, .entry .entry-inner .entry-content .revert input[type="reset" i]:disabled,
+.entry .entry-inner .entry-content .revert input[type="file" i]:disabled::-webkit-file-upload-button, .entry .entry-inner .entry-content .revert button:disabled,
+.entry .entry-inner .entry-content .revert select:disabled, .entry .entry-inner .entry-content .revert keygen:disabled, .entry .entry-inner .entry-content .revert optgroup:disabled, .entry .entry-inner .entry-content .revert option:disabled,
+.entry .entry-inner .entry-content .revert select[disabled]>option {
+  color: revert;
+}
+.entry .entry-inner .entry-content .revert input[type="button" i]:active, .entry .entry-inner .entry-content .revert input[type="submit" i]:active, .entry .entry-inner .entry-content .revert input[type="reset" i]:active, .entry .entry-inner .entry-content .revert input[type="file" i]:active::-webkit-file-upload-button, .entry .entry-inner .entry-content .revert button:active {
+  border-style: revert;
+}
+.entry .entry-inner .entry-content .revert input[type="button" i]:active:disabled, .entry .entry-inner .entry-content .revert input[type="submit" i]:active:disabled, .entry .entry-inner .entry-content .revert input[type="reset" i]:active:disabled, .entry .entry-inner .entry-content .revert input[type="file" i]:active:disabled::-webkit-file-upload-button, .entry .entry-inner .entry-content .revert button:active:disabled {
+  border-style: revert;
+}
+.entry .entry-inner .entry-content .revert option:-internal-spatial-navigation-focus {
+  outline: revert;
+  outline-offset: revert;
+}
+.entry .entry-inner .entry-content .revert datalist {
+  display: revert;
+}
+.entry .entry-inner .entry-content .revert area {
+  display: revert;
+  cursor: revert;
+}
+.entry .entry-inner .entry-content .revert param {
+  display: revert;
+}
+.entry .entry-inner .entry-content .revert input[type="checkbox" i] {
+  -webkit-appearance: revert;
+  box-sizing: revert;
+}
+.entry .entry-inner .entry-content .revert input[type="radio" i] {
+  -webkit-appearance: revert;
+  box-sizing: revert;
+}
+.entry .entry-inner .entry-content .revert input[type="color" i] {
+  -webkit-appearance: revert;
+  width: revert;
+  height: revert;
+  background-color: revert;
+  border: revert;
+  padding: revert;
+}
+.entry .entry-inner .entry-content .revert input[type="color" i]::-webkit-color-swatch-wrapper {
+  display: revert;
+  padding: revert;
+  box-sizing: revert;
+  -webkit-user-modify: revert;
+  width: revert;
+  height: revert;
+}
+.entry .entry-inner .entry-content .revert input[type="color" i]::-webkit-color-swatch {
+  background-color: revert;
+  border: revert;
+  flex: revert;
+  min-width: revert;
+  -webkit-user-modify: revert;
+}
+.entry .entry-inner .entry-content .revert input[type="color" i][list] {
+  -webkit-appearance: revert;
+  width: revert;
+  height: revert;
+}
+.entry .entry-inner .entry-content .revert input[type="color" i][list]::-webkit-color-swatch-wrapper {
+  padding-left: revert;
+  padding-right: revert;
+}
+.entry .entry-inner .entry-content .revert input[type="color" i][list]::-webkit-color-swatch {
+  border-color: revert;
+}
+.entry .entry-inner .entry-content .revert input::-webkit-calendar-picker-indicator {
+  display: revert;
+  width: revert;
+  height: revert;
+  padding: revert;
+  -webkit-user-modify: revert;
+  opacity: revert;
+  pointer-events: revert;
+}
+.entry .entry-inner .entry-content .revert input::-webkit-calendar-picker-indicator:hover {
+  background-color: revert;
+}
+.entry .entry-inner .entry-content .revert input:enabled:read-write:-webkit-any(:focus,:hover)::-webkit-calendar-picker-indicator,
+.entry .entry-inner .entry-content .revert input::-webkit-calendar-picker-indicator:focus {
+  opacity: revert;
+  pointer-events: revert;
+}
+.entry .entry-inner .entry-content .revert input[type="date" i]:disabled::-webkit-clear-button,
+.entry .entry-inner .entry-content .revert input[type="date" i]:disabled::-webkit-inner-spin-button,
+.entry .entry-inner .entry-content .revert input[type="datetime-local" i]:disabled::-webkit-clear-button,
+.entry .entry-inner .entry-content .revert input[type="datetime-local" i]:disabled::-webkit-inner-spin-button,
+.entry .entry-inner .entry-content .revert input[type="month" i]:disabled::-webkit-clear-button,
+.entry .entry-inner .entry-content .revert input[type="month" i]:disabled::-webkit-inner-spin-button,
+.entry .entry-inner .entry-content .revert input[type="week" i]:disabled::-webkit-clear-button,
+.entry .entry-inner .entry-content .revert input[type="week" i]:disabled::-webkit-inner-spin-button,
+.entry .entry-inner .entry-content .revert input:disabled::-webkit-calendar-picker-indicator,
+.entry .entry-inner .entry-content .revert input[type="date" i][readonly]::-webkit-clear-button,
+.entry .entry-inner .entry-content .revert input[type="date" i][readonly]::-webkit-inner-spin-button,
+.entry .entry-inner .entry-content .revert input[type="datetime-local" i][readonly]::-webkit-clear-button,
+.entry .entry-inner .entry-content .revert input[type="datetime-local" i][readonly]::-webkit-inner-spin-button,
+.entry .entry-inner .entry-content .revert input[type="month" i][readonly]::-webkit-clear-button,
+.entry .entry-inner .entry-content .revert input[type="month" i][readonly]::-webkit-inner-spin-button,
+.entry .entry-inner .entry-content .revert input[type="week" i][readonly]::-webkit-clear-button,
+.entry .entry-inner .entry-content .revert input[type="week" i][readonly]::-webkit-inner-spin-button,
+.entry .entry-inner .entry-content .revert input[readonly]::-webkit-calendar-picker-indicator {
+  visibility: revert;
+}
+.entry .entry-inner .entry-content .revert select {
+  -webkit-appearance: revert;
+  box-sizing: revert;
+  align-items: revert;
+  border: revert;
+  white-space: revert;
+  -webkit-rtl-ordering: revert;
+  color: revert;
+  background-color: revert;
+  cursor: revert;
+}
+.entry .entry-inner .entry-content .revert select:not(:-internal-list-box) {
+  overflow: revert;
+}
+.entry .entry-inner .entry-content .revert select:-internal-list-box {
+  -webkit-appearance: revert;
+  align-items: revert;
+  border: revert;
+  border-radius: revert;
+  overflow-x: revert;
+  overflow-y: revert;
+  vertical-align: revert;
+  -webkit-user-select: revert;
+  white-space: revert;
+}
+.entry .entry-inner .entry-content .revert optgroup {
+  font-weight: revert;
+  display: revert;
+}
+.entry .entry-inner .entry-content .revert option {
+  font-weight: revert;
+  display: revert;
+  padding: revert;
+  white-space: revert;
+  min-height: revert;
+}
+.entry .entry-inner .entry-content .revert select:-internal-list-box optgroup option:before {
+  content: revert;
+}
+.entry .entry-inner .entry-content .revert select:-internal-list-box option,
+.entry .entry-inner .entry-content .revert select:-internal-list-box optgroup {
+  line-height: revert;
+}
+.entry .entry-inner .entry-content .revert select:-internal-list-box:focus option:checked {
+  background-color: revert;
+  color: revert;
+}
+.entry .entry-inner .entry-content .revert select:-internal-list-box option:checked {
+  background-color: revert;
+  color: revert;
+}
+.entry .entry-inner .entry-content .revert select:-internal-list-box:disabled option:checked,
+.entry .entry-inner .entry-content .revert select:-internal-list-box option:checked:disabled {
+  color: revert;
+}
+.entry .entry-inner .entry-content .revert select:-internal-list-box hr {
+  border-style: revert;
+}
+.entry .entry-inner .entry-content .revert output {
+  display: revert;
+}
+.entry .entry-inner .entry-content .revert meter {
+  -webkit-appearance: revert;
+  box-sizing: revert;
+  display: revert;
+  height: revert;
+  width: revert;
+  vertical-align: revert;
+}
+.entry .entry-inner .entry-content .revert meter::-webkit-meter-inner-element {
+  -webkit-appearance: revert;
+  box-sizing: revert;
+  -webkit-user-modify: revert;
+  height: revert;
+  width: revert;
+}
+.entry .entry-inner .entry-content .revert meter::-webkit-meter-bar {
+  background: revert;
+  height: revert;
+  width: revert;
+  -webkit-user-modify: revert;
+  box-sizing: revert;
+}
+.entry .entry-inner .entry-content .revert meter::-webkit-meter-optimum-value {
+  background: revert;
+  height: revert;
+  -webkit-user-modify: revert;
+  box-sizing: revert;
+}
+.entry .entry-inner .entry-content .revert meter::-webkit-meter-suboptimum-value {
+  background: revert;
+  height: revert;
+  -webkit-user-modify: revert;
+  box-sizing: revert;
+}
+.entry .entry-inner .entry-content .revert meter::-webkit-meter-even-less-good-value {
+  background: revert;
+  height: revert;
+  -webkit-user-modify: revert;
+  box-sizing: revert;
+}
+.entry .entry-inner .entry-content .revert progress {
+  -webkit-appearance: revert;
+  box-sizing: revert;
+  display: revert;
+  height: revert;
+  width: revert;
+  vertical-align: revert;
+}
+.entry .entry-inner .entry-content .revert progress::-webkit-progress-inner-element {
+  -webkit-appearance: revert;
+  box-sizing: revert;
+  -webkit-user-modify: revert;
+  height: revert;
+  width: revert;
+}
+.entry .entry-inner .entry-content .revert progress::-webkit-progress-bar {
+  background-color: revert;
+  height: revert;
+  width: revert;
+  -webkit-user-modify: revert;
+  box-sizing: revert;
+}
+.entry .entry-inner .entry-content .revert progress::-webkit-progress-value {
+  background-color: revert;
+  height: revert;
+  width: revert;
+  -webkit-user-modify: revert;
+  box-sizing: revert;
+}
+.entry .entry-inner .entry-content .revert u, .entry .entry-inner .entry-content .revert ins {
+  text-decoration: revert;
+}
+.entry .entry-inner .entry-content .revert strong, .entry .entry-inner .entry-content .revert b {
+  font-weight: revert;
+}
+.entry .entry-inner .entry-content .revert i, .entry .entry-inner .entry-content .revert cite, .entry .entry-inner .entry-content .revert em, .entry .entry-inner .entry-content .revert var, .entry .entry-inner .entry-content .revert address, .entry .entry-inner .entry-content .revert dfn {
+  font-style: revert;
+}
+.entry .entry-inner .entry-content .revert tt, .entry .entry-inner .entry-content .revert code, .entry .entry-inner .entry-content .revert kbd, .entry .entry-inner .entry-content .revert samp {
+  font-family: revert;
+}
+.entry .entry-inner .entry-content .revert pre, .entry .entry-inner .entry-content .revert xmp, .entry .entry-inner .entry-content .revert plaintext, .entry .entry-inner .entry-content .revert listing {
+  display: revert;
+  font-family: revert;
+  white-space: revert;
+  margin: revert;
+}
+.entry .entry-inner .entry-content .revert mark {
+  background-color: revert;
+  color: revert;
+}
+.entry .entry-inner .entry-content .revert big {
+  font-size: revert;
+}
+.entry .entry-inner .entry-content .revert small {
+  font-size: revert;
+}
+.entry .entry-inner .entry-content .revert s, .entry .entry-inner .entry-content .revert strike, .entry .entry-inner .entry-content .revert del {
+  text-decoration: revert;
+}
+.entry .entry-inner .entry-content .revert sub {
+  vertical-align: revert;
+  font-size: revert;
+}
+.entry .entry-inner .entry-content .revert sup {
+  vertical-align: revert;
+  font-size: revert;
+}
+.entry .entry-inner .entry-content .revert nobr {
+  white-space: revert;
+}
+:focus { 
+  outline: revert;
+}
+.entry .entry-inner .entry-content .revert html:focus, .entry .entry-inner .entry-content .revert body:focus, .entry .entry-inner .entry-content .revert input[readonly]:focus { 
+  outline: revert;
+}
+.entry .entry-inner .entry-content .revert embed:focus, .entry .entry-inner .entry-content .revert iframe:focus, .entry .entry-inner .entry-content .revert object:focus {
+  outline: revert;
+}
+  
+.entry .entry-inner .entry-content .revert input:focus, .entry .entry-inner .entry-content .revert textarea:focus, .entry .entry-inner .entry-content .revert keygen:focus, .entry .entry-inner .entry-content .revert select:focus {
+  outline-offset: revert;
+}
+.entry .entry-inner .entry-content .revert input[type="button" i]:focus,
+.entry .entry-inner .entry-content .revert input[type="checkbox" i]:focus,
+.entry .entry-inner .entry-content .revert input[type="file" i]:focus,
+.entry .entry-inner .entry-content .revert input[type="hidden" i]:focus,
+.entry .entry-inner .entry-content .revert input[type="image" i]:focus,
+.entry .entry-inner .entry-content .revert input[type="radio" i]:focus,
+.entry .entry-inner .entry-content .revert input[type="reset" i]:focus,
+.entry .entry-inner .entry-content .revert input[type="search" i]:focus,
+.entry .entry-inner .entry-content .revert input[type="submit" i]:focus,
+.entry .entry-inner .entry-content .revert input[type="file" i]:focus::-webkit-file-upload-button {
+  outline-offset: revert;
+}
+  
+.entry .entry-inner .entry-content .revert a:-webkit-any-link {
+  color: revert;
+  text-decoration: revert;
+  cursor: revert;
+}
+.entry .entry-inner .entry-content .revert a:-webkit-any-link:active {
+  color: revert;
+}
+.entry .entry-inner .entry-content .revert ruby, .entry .entry-inner .entry-content .revert rt {
+  text-indent: revert;
+}
+.entry .entry-inner .entry-content .revert rt {
+  line-height: revert;
+  -webkit-text-emphasis: revert;
+}
+.entry .entry-inner .entry-content .revert ruby > rt {
+  display: revert;
+  font-size: revert;
+  text-align: revert;
+}
+.entry .entry-inner .entry-content .revert ruby > rp {
+  display: revert;
+}
+.entry .entry-inner .entry-content .revert noframes {
+  display: revert;
+}
+.entry .entry-inner .entry-content .revert frameset, .entry .entry-inner .entry-content .revert frame {
+  display: revert;
+}
+.entry .entry-inner .entry-content .revert frameset {
+  border-color: revert;
+}
+.entry .entry-inner .entry-content .revert iframe {
+  border: revert;
+}
+.entry .entry-inner .entry-content .revert details {
+  display: revert;
+}
+.entry .entry-inner .entry-content .revert summary {
+  display: revert;
+}
+.entry .entry-inner .entry-content .revert summary::-webkit-details-marker {
+  display: revert;
+  width: revert;
+  height: revert;
+  -webkit-margin-end: revert;
+}
+.entry .entry-inner .entry-content .revert template {
+  display: revert;
+}
+.entry .entry-inner .entry-content .revert bdi, .entry .entry-inner .entry-content .revert output {
+  unicode-bidi: revert;
+}
+.entry .entry-inner .entry-content .revert bdo {
+  unicode-bidi: revert;
+}
+.entry .entry-inner .entry-content .revert textarea[dir=auto i] {
+  unicode-bidi: revert;
+}
+.entry .entry-inner .entry-content .revert dialog:not([open]) {
+  display: revert;
+}
+.entry .entry-inner .entry-content .revert dialog {
+  position: revert;
+  left: revert;
+  right: revert;
+  width: revert;
+  height: revert;
+  margin: revert;
+  border: revert;
+  padding: revert;
+  background: revert;
+  color: revert;
+}
+.entry .entry-inner .entry-content .revert dialog::backdrop {
+  position: revert;
+  top: revert;
+  right: revert;
+  bottom: revert;
+  left: revert;
+  background: revert;
+}
+@media print {
+  .entry .entry-inner .entry-content .revert * { -webkit-columns: revert;}
+}

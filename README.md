@@ -12,10 +12,18 @@
   ちなみにこれは僕がメソッド reduce() を知らずに書いたもので、 reduce() を使えば簡単に同じことができるようです。
 - esc.js  
   正規表現のためのエスケープをするライブラリ。
+- hatena-increment-column.html  
+  はてなブログのカラムを増やすサイドバー要素。
+- hatenablog-head.html  
+  はてなブログの head への記述。
+- hatenablog.css  
+  はてなブログのデザイン CSS 。
 - kanji.html  
   入力した文字を大きく表示することで漢字の綴りを確認することのできるページ。
 - markdown.esy  
   EmEditor の Markdown 用強調表示構文。
+- mdcharcount.html  
+  Markdown 文書の正味の文字数を数える。
 - md-toc.html  
   Markdown の文書から目次を生成するページ。
 - narou-novel-analytics.html  

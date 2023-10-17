@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ja-JP">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>htmlcharcount</title>
+    <link rel="stylesheet" href="../base.css">
+    <link rel="stylesheet" href="../color-scheme-standard.css">
+    <script src="../mdparse.js/mdparse.js"></script>
+    <style>
+      #container {
+        position: absolute;
+        width: 100%;
+        max-width: 600px;
+        margin: auto;
+        padding: 50px;
+        box-sizing: border-box;
+      }
+      #input {
+        width: 100%;
+        padding: 10px;
+        box-sizing: border-box;
+        color: var(--dark-1);
+        background-color: var(--light-1);
+        border: 1px solid var(--dark-2);
+        outline: none;
+      }
+      @media (prefers-color-scheme: dark) {
+        #input {
+          color: var(--light-0);
+          background-color: var(--dark-1);
+          border: 1px solid var(--dark-2);
+        }
+      }
+      html.dark #input {
+        color: var(--light-0);
+        background-color: var(--dark-1);
+        border: 1px solid var(--dark-2);
+      }
+      html.light #input {
+        color: var(--dark-1);
+        background-color: var(--light-1);
+        border: 1px solid var(--dark-2);
+      }
+    </style>
+    <script>
+      window.addEventListener("DOMContentLoaded", () => {
+        let elm_input = document.getElementById("input")
+        let elm_output = document.getElementById("output")
+        let elm_container = document.getElementById("container")
+        elm_input.style.height = elm_input.getBoundingClientRect().width * (9 / 16) + "px"
+        elm_container.style.height = elm_container.getBoundingClientRect().height + "px"
+        elm_container.style.inset = 0
+        elm_input.focus()
+        elm_input.oninput = () => {
+          mdparse(elm_input.value, "permissive")
+          .then(rly => {
+            elm_output.innerText = htmlcharcount(rly)
+            elm_input.select()
+          })
+        }
+        elm_input.onclick = () => {
+          elm_input.value = ""
+        }
+      })
+      function htmlcharcount(src) {
+        let spChar = `&([a-zA-Z0-9]{2,6}|#[0-9]{4}|#x[a-fA-F0-9]{4,5});`
+        let tag = `<\\/?(a|abbr|acronym|address|applet|area|article|aside|audio|b|base|bdi|bdo|bgsound|big|blink|blockquote|body|br|button|canvas|caption|center|cite|code|col|colgroup|content|data|datalist|dd|del|details|dfn|dialog|dir|div|dl|dt|em|embed|fieldset|figcaption|figure|font|footer|form|frame|frameset|h1|head|header|hgroup|hr|html|i|iframe|image|img|input|ins|kbd|keygen|label|legend|li|link|main|map|mark|marquee|menu|menuitem|meta|meter|nav|nobr|noembed|noframes|noscript|object|ol|optgroup|option|output|p|param|picture|plaintext|portal|pre|progress|q|rb|rp|rt|rtc|ruby|s|samp|script|section|select|shadow|slot|small|source|spacer|span|strike|strong|style|sub|summary|sup|table|tbody|td|template|textarea|tfoot|th|thead|time|title|tr|track|tt|u|ul|var|video|wbr|xmp)[ \\t]*.*?>`
+        let doctype = `<!DOCTYPE[ \\t]+html>`
+        let whiteSpace = `( |\\t|　|\\r?\\n|\\r)`
+        let rx0 = new RegExp(spChar, "g")
+        let rx1 = new RegExp(`${tag}|${doctype}|${whiteSpace}`, "g")
+        return src.replace(rx0, "0").replace(rx1, "").length
+      }
+    </script>
+  </head>
+  <body>
+    <div id="container">
+      <textarea id="input"></textarea>
+      <p id="output"></p>
+    </div>
+  </body>
+</html>
