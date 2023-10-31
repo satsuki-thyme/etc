@@ -215,6 +215,10 @@
 .entry .entry-inner .entry-content p.float-right.narrow {
   width: 25%;
 }
+.entry .entry-inner .entry-content p.float-left.wide,
+.entry .entry-inner .entry-content p.float-right.wide {
+  width: 65%;
+}
 .entry .entry-inner .entry-content p + p.float-left,
 .entry .entry-inner .entry-content h1 + p.float-left,
 .entry .entry-inner .entry-content h2 + p.float-left,
