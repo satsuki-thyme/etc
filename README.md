@@ -14,7 +14,7 @@
 - mdcharcount.html: Markdown 文書の正味の文字数を数える
 - md-toc.html: Markdown の文書から目次を生成するページ
 - narou-novel-analytics.html: 作りかけ
-- narou-ranking-analytics.htnl: 作りかけ
+- narou-ranking-analytics.html: 作りかけ
 - photorand.html: 画像をウィンドウいっぱいに表示してスライドショーするページ
 - prefurl.json: 各都道府県のサイトの URL をまとめた JSON 
 - random.html: 数字をランダムに表示するページ
