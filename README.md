@@ -3,6 +3,7 @@
 
 ## 目次
 - amazon-url-properly.js: Amaozn.co.jp の商品ページの URL から余分なものを取り除くブックマークレット
+- amazon-url-copy: Amazon.co.jp の商品ページの URL から余分なものを取り除いたものをクリップボードにコピーするブックマークレット
 - anagram.html: 作りかけ
 - dimensionBreaker.js: 多次元配列を一次元配列にするライブラリ。連想配列には対応していません（僕がメソッド reduce() を知らずに書いたもので、 reduce() を使えば簡単に同じことができるようです）
 - esc.js: 正規表現のためのエスケープをするライブラリ
