@@ -24,29 +24,26 @@
   border-bottom: 1px solid #a8a8a8;
 }
 .entry .entry-inner .entry-content h1 {
-  font-size: 27px;
+  font-size: 35px;
 }
 .entry .entry-inner .entry-content h2 {
-  font-size: 25px;
+  font-size: 29px;
 }
 .entry .entry-inner .entry-content h1 ~ h2 {
-  font-size: 20px;
-  border-bottom: 0 none;
+  border-bottom: 0;
 }
 .entry .entry-inner .entry-content h3 {
-  font-size: 16px;
+  font-size: 24px;
 }
 .entry .entry-inner .entry-content h4 {
-  font-size: 16px;
-  font-weight: normal;
+  font-size: 18px;
 }
 .entry .entry-inner .entry-content h5 {
-  font-size: 16px;
-  font-weight: normal;
+  font-size: 17px;
   color: #555;
 }
 .entry .entry-inner .entry-content h6 {
-  font-size: 16px;
+  font-size: 17px;
   color: #777;
 }
 .entry .entry-inner .entry-content h1:first-child,
