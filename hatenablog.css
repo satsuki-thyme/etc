@@ -29,14 +29,26 @@
 .entry .entry-inner .entry-content h2 {
   font-size: 29px;
 }
+.entry .entry-inner .entry-content h2::before {
+  content: "🎀";
+  display: inline-block;
+}
 .entry .entry-inner .entry-content h1 ~ h2 {
   border-bottom: 0;
 }
 .entry .entry-inner .entry-content h3 {
   font-size: 24px;
 }
+.entry .entry-inner .entry-content h3::before {
+  content: "🌻";
+  display: inline-block;
+}
 .entry .entry-inner .entry-content h4 {
   font-size: 18px;
+}
+.entry .entry-inner .entry-content h4::before {
+  content: "🥑";
+  display: inline-block;
 }
 .entry .entry-inner .entry-content h5 {
   font-size: 17px;
