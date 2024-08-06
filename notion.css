@@ -1,0 +1,27 @@
+.layout {
+	padding-bottom: 500px !important;
+}
+[contenteditable] {
+	text-align: justify;
+}
+h2 {
+	font-size: 2.5em !important;
+}
+h2::bofore {
+	content: "🎀";
+	display: inline;
+}
+h3 {
+	font-size: 1.75em !important;
+}
+h3::before {
+	content: "🌻";
+	display: inline;
+}
+h4 {
+	font-size: 1em !important;
+}
+h4::before {
+	content: "🥑";
+	display: inline;
+}
