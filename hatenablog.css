@@ -42,6 +42,7 @@
 .entry .entry-inner .entry-content h3::before {
   content: "🌻";
   display: inline-block;
+  margin-left: -0.2em;
 }
 .entry .entry-inner .entry-content h4 {
   font-size: 18px;
