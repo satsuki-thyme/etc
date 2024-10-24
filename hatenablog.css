@@ -27,37 +27,35 @@
   font-size: 35px;
 }
 .entry .entry-inner .entry-content h2 {
-  font-size: 29px;
-}
-.entry .entry-inner .entry-content h2::before {
-  content: "🎀";
-  display: inline-block;
+  font-size: 35px;
 }
 .entry .entry-inner .entry-content h1 ~ h2 {
+  font-size: 29px;
   border-bottom: 0;
 }
 .entry .entry-inner .entry-content h3 {
+  font-size: 29px;
+}
+.entry .entry-inner .entry-content h1 ~ h3 {
   font-size: 24px;
 }
-.entry .entry-inner .entry-content h3::before {
-  content: "🌻";
-  display: inline-block;
-  margin-left: -0.2em;
-}
 .entry .entry-inner .entry-content h4 {
+  font-size: 24px;
+}
+.entry .entry-inner .entry-content h1 ~ h4 {
   font-size: 18px;
 }
-.entry .entry-inner .entry-content h4::before {
-  content: "🥑";
-  display: inline-block;
-}
 .entry .entry-inner .entry-content h5 {
-  font-size: 17px;
-  color: #555;
+  font-size: 18px;
+}
+.entry .entry-inner .entry-content h1 ~ h5 {
+  font-size: 16px;
 }
 .entry .entry-inner .entry-content h6 {
-  font-size: 17px;
-  color: #777;
+  font-size: 16px;
+}
+.entry .entry-inner .entry-content h1 ~ h6 {
+  font-size: 12px;
 }
 .entry .entry-inner .entry-content h1:first-child,
 .entry .entry-inner .entry-content h2:first-child,
