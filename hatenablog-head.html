@@ -1,41 +1,28 @@
-<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/styles/monokai-sublime.min.css">
-<script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/highlight.min.js"></script>
+cdnjsjsDeliverunpkgSelf hosted
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/vs.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+<!-- and it's easy to individually load additional languages -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/apache.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/css.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/excel.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/http.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/json.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/markdown.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/powershell.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/shell.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/xml.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js"></script>
 <script>
 (() => {
-  let promotion = true
   document.addEventListener("DOMContentLoaded", () => {
-    /*
-
-      フリーライティングを加工する
-    
-    */
-    document.querySelectorAll(".entry-content").forEach(rly => {
-      console.log(rly.childNodes.length)
-      if (
-        rly.children.length === 1
-        &&
-        (
-          rly.children[0].nodeName === "p" // 小文字
-          ||
-          rly.children[0].nodeName === "P" // 大文字
-        )
-      ) {
-        rly.innerHTML = oneP(rly)
-      }
-    })
-    /*
-
-      highlight.js
-    
-    */
     document.querySelectorAll('code').forEach((el) => {
       hljs.highlightElement(el)
     })
   })
-  function oneP(rly) {
-    let text = rly.children[0].innerText
-    return `<p><small>段落は 5 句点ごとに機械的に設けたものです。</small></p>\n${text.replace(/((?:.*?。){1,5})/g, '<p>$1</p>')}\n<p style="text-align: right;"><small>${text.replace(/(^\d{4}[/\-]\d{2}[/\-]\d{2}[ \t　]?|[ \t　])/gm, "").length} 文字</small></p>`
-  }
 })()
 </script>
 
