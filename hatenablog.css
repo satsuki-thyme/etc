@@ -84,7 +84,7 @@
 .entry .entry-inner .entry-content pre,
 .entry .entry-inner .entry-content code,
 .entry .entry-inner .entry-content code span {
-    background-color: #1e1f1c !important;
+    background-color: #f8f8f2 !important;
 }
 .entry .entry-inner .entry-content pre {
   padding-left: 13px;
@@ -360,6 +360,10 @@
 /* もっともっと小さい（見え方の目視チェックしてない） */
 .entry .entry-inner .entry-content .s3 {
   font-size: 0.37em;
+}
+/* インデント */
+.entry .entry-inner .entry-content .indent-1 {
+  padding-left: 7%;
 }
 /*
 
